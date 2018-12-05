@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy/padavanNgrok1.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy/padavanNgrok2.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy/MyMoto.jpg">
-<meta property="og:updated_time" content="2018-12-05T17:41:36.854Z">
+<meta property="og:updated_time" content="2018-12-05T17:54:17.148Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用linuxdeploy在安卓手机中部署一个Wordpress">
 <meta name="twitter:description" content="硬件：安卓手机一台（已root）软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT思路：1.搭建linux环境–&amp;gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH 2.部署LNMP–&amp;gt;在linux环境中使用oneinstack工具一键部署LNMP 3.放置wordpress–&amp;gt;将wordpress框架放到部署好的LNMP环">
@@ -333,8 +333,11 @@
 <p>2.部署LNMP–&gt;在linux环境中使用oneinstack工具一键部署LNMP</p>
 <p>3.放置wordpress–&gt;将wordpress框架放到部署好的LNMP环境中</p>
 <p>4.外网访问–&gt;使用ngrok工具，让你的博客能从外网访问</p>
-<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><p>​        自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
-<h3 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h3><p>1.在已经root过的手机上安装BusyBox、linuxdeploy、JuiceSSH这三个APP</p>
+<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><p>自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
+<ul>
+<li><h3 id="安装linuxdeploy并部署一个debian"><a href="#安装linuxdeploy并部署一个debian" class="headerlink" title="安装linuxdeploy并部署一个debian"></a>安装linuxdeploy并部署一个debian</h3></li>
+</ul>
+<p>1.在已经root过的手机上安装BusyBox、linuxdeploy、JuiceSSH这三个APP</p>
 <p><img src="/2018/12/06/linuxdeploy/needed.jpg" alt="needed"></p>
 <p>2.点开BusyBox，点击安装，弹出root权限确认点击授予。</p>
 <p><img src="/2018/12/06/linuxdeploy/busybox.jpg" alt="busybox"></p>
@@ -353,7 +356,11 @@
 <p>DNS：自动</p>
 <p>再下面的勾选启用SSH就行了，挂载Android上的资源以后空间不够了可以给SD卡分区一下挂上去，图形界面想用的也可以启用，基本用不着。</p>
 <p><img src="/2018/12/06/linuxdeploy/remoteCtrl.jpg" alt="remoteCtrl"></p>
-<p>家里联通50M，20分钟不到就部署完了，部署完点击左下角的启动，正常启动完，没报错啥的话，linux就已经装好了，点开另一个软件JuiceSSH，输入ip（这里的192.168.123.233是我随便输的，具体的局域网ip，linuxdeploy这个app打开，显示在最上面一行的就是，要连着家里的wifi，自己的电脑才能连的上，连4G网是连不上的），端口号：22，用户名密码是刚刚自己设置的，不过手机上字太小，不好操作我们用电脑上的SecureCRT或者putty、xshell连接这台手机的局域网IP来操作，这里我用的是secureCRT。</p>
+<p>家里联通50M，20分钟不到就部署完了，部署完点击左下角的启动，正常启动完，没报错啥的话，linux就已经装好了</p>
+<ul>
+<li><h3 id="进入debian部署LNMP"><a href="#进入debian部署LNMP" class="headerlink" title="进入debian部署LNMP"></a>进入debian部署LNMP</h3></li>
+</ul>
+<p>点开另一个软件JuiceSSH，输入ip（这里的192.168.123.233是我手机的局域网ip，linuxdeploy这个app打开，显示在最上面一行的就是，要连着家里的wifi，自己的电脑才能连的上，连4G网是连不上的），端口号：22，用户名密码是刚刚自己设置的，不过手机上字太小，不好操作我们用电脑上的SecureCRT或者putty、xshell连接这台手机的局域网IP来操作，这里我用的是secureCRT。</p>
 <p><img src="/2018/12/06/linuxdeploy/ssh.png" alt="ssh"></p>
 <p>点击连接，输入完密码之后就进入了它的命令行界面。</p>
 <p>先设置一下root用户的密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root #输入回车后再输入两遍密码admin@ssh</span><br></pre></td></tr></table></figure></p>
@@ -373,6 +380,9 @@
 <p><img src="/2018/12/06/linuxdeploy/restartPHP.jpg" alt="restartPHP"></p>
 <p>然后电脑打开浏览器访问 http://（你的手机的局域网ip）比如192.168.123.233 查看是否有 welcome to  nginx！的提示</p>
 <p><img src="/2018/12/06/linuxdeploy/welcomeToNginx.png" alt="welcomeToNginx"></p>
+<ul>
+<li><h3 id="布置wordpress"><a href="#布置wordpress" class="headerlink" title="布置wordpress"></a>布置wordpress</h3></li>
+</ul>
 <p>然后下载wordpress上传到linux系统的 /var/www/html 路径下（这个路径在上面修改的那个文件里也可以改）</p>
 <p>进入wordperss官网，找到下载Wordpress按钮 ，先放到本地电脑的随便哪里，比如说D:/Download这里</p>
 <p><img src="/2018/12/06/linuxdeploy/downloadWP.png" alt="downloadWP"></p>
@@ -393,6 +403,9 @@
 <p>然后一直下一步就装完了，再次访问默认主题就是这样的，可以自己去搜个主题装一下哟</p>
 <p><img src="/2018/12/06/linuxdeploy/welcomeTOWP.png" alt="welcomeTOWP"></p>
 <p>后面可能出现一个wordpress无法操作一个contig文件的错误，照着它的提示在本地编辑好，再用sftp上传到/var/www/html/wordpress里就可以了</p>
+<ul>
+<li><h3 id="搞定外网访问"><a href="#搞定外网访问" class="headerlink" title="搞定外网访问"></a>搞定外网访问</h3></li>
+</ul>
 <p>接下来是使你的博客能从外网访问，可以用花生壳，可以用ngrok，这里我用的是ngrok</p>
 <p>打开ngrok 注册一个免费账户，申请一个免费的隧道，<strong>并记下隧道id</strong>，这里我买了10元钱的付费一个月服务，免费的就可以</p>
 <p><img src="/2018/12/06/linuxdeploy/ngrok1.png" alt="ngrok1"><br><img src="/2018/12/06/linuxdeploy/ngrok2.png" alt="ngrok2"><br><img src="/2018/12/06/linuxdeploy/ngrok3.png" alt="ngrok3"></p>
@@ -569,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件：安卓手机一台（已root）"><span class="nav-number">1.</span> <span class="nav-text">硬件：安卓手机一台（已root）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><span class="nav-number">2.</span> <span class="nav-text">软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">2.1.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文："><span class="nav-number">2.2.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步："><span class="nav-number">2.2.1.</span> <span class="nav-text">第一步：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件：安卓手机一台（已root）"><span class="nav-number">1.</span> <span class="nav-text">硬件：安卓手机一台（已root）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><span class="nav-number">2.</span> <span class="nav-text">软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">2.1.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文："><span class="nav-number">2.2.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装linuxdeploy并部署一个debian"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装linuxdeploy并部署一个debian</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入debian部署LNMP"><span class="nav-number">2.2.2.</span> <span class="nav-text">进入debian部署LNMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布置wordpress"><span class="nav-number">2.2.3.</span> <span class="nav-text">布置wordpress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搞定外网访问"><span class="nav-number">2.2.4.</span> <span class="nav-text">搞定外网访问</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
