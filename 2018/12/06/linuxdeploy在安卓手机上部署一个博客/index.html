@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/padavanNgrok1.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/padavanNgrok2.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/MyMoto.jpg">
-<meta property="og:updated_time" content="2018-12-05T17:25:54.779Z">
+<meta property="og:updated_time" content="2018-12-05T17:30:20.495Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linuxdeploy">
 <meta name="twitter:description" content="硬件：安卓手机一台（已root）软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT思路：1.搭建linux环境–&amp;gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH 2.部署LNMP–&amp;gt;在linux环境中使用oneinstack工具一键部署LNMP 3.放置wordpress–&amp;gt;将wordpress框架放到部署好的LNMP环">
@@ -329,11 +329,11 @@
       
 
       
-        <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h1 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h1><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
+        <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
 <p>2.部署LNMP–&gt;在linux环境中使用oneinstack工具一键部署LNMP</p>
 <p>3.放置wordpress–&gt;将wordpress框架放到部署好的LNMP环境中</p>
 <p>4.外网访问–&gt;使用ngrok工具，让你的博客能从外网访问</p>
-<h1 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h1><p>​        自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
+<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><p>​        自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
 <h3 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h3><p>1.在已经root过的手机上安装BusyBox、linuxdeploy、JuiceSSH这三个APP</p>
 <p><img src="/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/needed.jpg" alt="needed"></p>
 <p>2.点开BusyBox，点击安装，弹出root权限确认点击授予。</p>
@@ -569,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件：安卓手机一台（已root）"><span class="nav-number">1.</span> <span class="nav-text">硬件：安卓手机一台（已root）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><span class="nav-number">2.</span> <span class="nav-text">软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思路："><span class="nav-number">3.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文："><span class="nav-number">4.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步："><span class="nav-number">4.0.1.</span> <span class="nav-text">第一步：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件：安卓手机一台（已root）"><span class="nav-number">1.</span> <span class="nav-text">硬件：安卓手机一台（已root）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><span class="nav-number">2.</span> <span class="nav-text">软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">2.1.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文："><span class="nav-number">2.2.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步："><span class="nav-number">2.2.1.</span> <span class="nav-text">第一步：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
