@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Android,">
 
 
 
@@ -79,13 +79,47 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="硬件：安卓手机一台（已root）软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT思路：1.搭建linux环境–&amp;gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH 2.部署LNMP–&amp;gt;在linux环境中使用oneinstack工具一键部署LNMP 3.放置wordpress–&amp;gt;将wordpress框架放到部署好的LNMP环">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linuxdeploy">
+<meta property="og:url" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="硬件：安卓手机一台（已root）软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT思路：1.搭建linux环境–&amp;gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH 2.部署LNMP–&amp;gt;在linux环境中使用oneinstack工具一键部署LNMP 3.放置wordpress–&amp;gt;将wordpress框架放到部署好的LNMP环">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/needed.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/busybox.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/remoteCtrl.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/ssh.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/admin@ssh.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/permitRootLogin.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/root@ssh.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/installnmp.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/restartPHP.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/welcomeToNginx.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/downloadWP.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/SFTP.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/SFTPput.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/startInstallWP.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/MariaDB.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/restartMysql.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/setWPDB.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/welcomeTOWP.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/ngrok1.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/ngrok2.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/ngrok3.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/downloadNgrok.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/pushNgrok.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/runNgrok.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/NgrokStatus.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/padavanNgrok1.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/padavanNgrok2.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/MyMoto.jpg">
+<meta property="og:updated_time" content="2018-12-05T17:25:54.779Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="linuxdeploy">
+<meta name="twitter:description" content="硬件：安卓手机一台（已root）软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT思路：1.搭建linux环境–&amp;gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH 2.部署LNMP–&amp;gt;在linux环境中使用oneinstack工具一键部署LNMP 3.放置wordpress–&amp;gt;将wordpress框架放到部署好的LNMP环">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/needed.jpg">
 
 
 
@@ -115,13 +149,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/06/linuxdeploy在安卓手机上部署一个博客/">
 
 
 
 
 
-  <title>Hexo</title>
+  <title>linuxdeploy | Hexo</title>
   
 
 
@@ -140,8 +174,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -214,9 +247,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -246,9 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/06/linuxdeploy在安卓手机上部署一个博客/" itemprop="url">linuxdeploy</a></h1>
+          <h1 class="post-title" itemprop="name headline">linuxdeploy</h1>
         
 
         <div class="post-meta">
@@ -298,9 +329,7 @@
       
 
       
-        
-          
-            <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h1 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h1><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
+        <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h1 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h1><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
 <p>2.部署LNMP–&gt;在linux环境中使用oneinstack工具一键部署LNMP</p>
 <p>3.放置wordpress–&gt;将wordpress框架放到部署好的LNMP环境中</p>
 <p>4.外网访问–&gt;使用ngrok工具，让你的博客能从外网访问</p>
@@ -380,8 +409,6 @@
 <p>最后，纪念一下我的狗魔</p>
 <p><img src="/2018/12/06/linuxdeploy在安卓手机上部署一个博客/linuxdeploy/MyMoto.jpg" alt="MyMoto"></p>
 
-          
-        
       
     </div>
     
@@ -396,279 +423,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/10/gutianfeng-CV/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/10/gutianfeng-CV/" itemprop="url">我的简历</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-10T01:29:13+08:00">
-                2018-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
-<li>手机：18115698647 17351097293</li>
-<li>Email：<a href="mailto:gutianfeng1993@163.com" target="_blank" rel="noopener">gutianfeng1993@163.com</a></li>
-</ul>
-<h1 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h1><ul>
-<li>顾天峰/男/1993</li>
-<li>本科/苏州大学 电气工程与自动化 </li>
-<li>工作年限：3年</li>
-<li><p>博客：<a href="https://hellogu.github.io" target="_blank" rel="noopener">https://hellogu.github.io</a></p>
-</li>
-<li><p>期望职位：测试工程师</p>
-</li>
-<li>期望薪资：税前月薪12k~15k，特别喜欢的公司可例外</li>
-<li>期望城市：苏州</li>
-</ul>
-<h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><h2 id="苏州东菱科技-测试工程师（-2015年3月-2016年7月-）"><a href="#苏州东菱科技-测试工程师（-2015年3月-2016年7月-）" class="headerlink" title="苏州东菱科技 |测试工程师（ 2015年3月 ~ 2016年7月 ）"></a>苏州东菱科技 |测试工程师（ 2015年3月 ~ 2016年7月 ）</h2><h2 id="苏州软通动力公司-测试工程师（-2016年8月-至今-）"><a href="#苏州软通动力公司-测试工程师（-2016年8月-至今-）" class="headerlink" title="苏州软通动力公司 |测试工程师（ 2016年8月 至今 ）"></a>苏州软通动力公司 |测试工程师（ 2016年8月 至今 ）</h2><h3 id="华为视讯项目"><a href="#华为视讯项目" class="headerlink" title="华为视讯项目"></a>华为视讯项目</h3><p>我在此项目中负责了安全测试及功能测试<br>曾发现一处XSS与文件校验的组合漏洞，被测产品对XSS脚本进行了防范，一旦检测到XSS脚本输入则停止所有用户操作，而在产品的升级过程中升级包会经历<br>1.上传–&gt;2.读取升级包信息并校验（包括版本号和完整性校验）–&gt;3.校验通过剪切入最终路径or校验不通过删除。<br>根据这个特性我尝试将产品的升级包中软件版本更改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(123)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>，当升级包上传后系统读取版本号检测到XSS脚本即停止所有用户操作，此时升级包校验动作还没有全部完成，系统还未作出第3步动作，所以错误的升级包被留在了临时目录而不被删除。通过这个漏洞可实现将任意文件带在升级包中上传至产品系统中。  </p>
-<h1 id="技能"><a href="#技能" class="headerlink" title="技能"></a>技能</h1><h2 id="工作描述"><a href="#工作描述" class="headerlink" title="工作描述"></a>工作描述</h2><p>1.手工测试，web测试，功能测试<br>2.编写自动化测试脚本<br>3.安全测试：漏洞扫描、注入测试、协议健壮性<br>4.熟悉kali linux基本操作，会使用基本的SQL增删改查语句。</p>
-<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>CET6级</p>
-<h2 id="技术文章"><a href="#技术文章" class="headerlink" title="技术文章"></a>技术文章</h2><ul>
-<li>旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客(<a href="https://post.smzdm.com/p/228886/" target="_blank" rel="noopener">https://post.smzdm.com/p/228886/</a>)</li>
-</ul>
-<hr>
-<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>感谢您花时间阅读我的简历，期待能有机会和您共事。<br>​      </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/20/T1/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/20/T1/" itemprop="url">T1刷机记录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-20T17:06:07+08:00">
-                2018-05-20
-              </time>
+              <a href="/2018/07/10/gutianfeng-CV/" rel="next" title="我的简历">
+                <i class="fa fa-chevron-left"></i> 我的简历
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="斐讯T1刷机记录"><a href="#斐讯T1刷机记录" class="headerlink" title="斐讯T1刷机记录"></a>斐讯T1刷机记录</h1><p>不知不觉已经上了4车<a href="http://pinpai.smzdm.com/3505/" target="_blank" rel="noopener">斐讯路由器</a>了，前天老爸打电话来说家里的<a href="http://pinpai.smzdm.com/4999/" target="_blank" rel="noopener">天猫魔盒</a>越来越卡了，立马京东下单又上一车斐讯盒子。晒一下当年秒的两台1代魔盒<img src="https://res.smzdm.com/images/emotions/38.png" alt="斐讯T1刷机记录"> 我也曾欧过，可惜现在转非了。</p>
-<p><img src="/2018/05/20/T1/D:/Download\微信截图_20180324133858.png" alt="微信截图_20180324133858"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -678,10 +462,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -689,6 +474,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -709,8 +498,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -761,6 +559,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件：安卓手机一台（已root）"><span class="nav-number">1.</span> <span class="nav-text">硬件：安卓手机一台（已root）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><span class="nav-number">2.</span> <span class="nav-text">软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思路："><span class="nav-number">3.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文："><span class="nav-number">4.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步："><span class="nav-number">4.0.1.</span> <span class="nav-text">第一步：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -901,6 +715,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
