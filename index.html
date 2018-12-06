@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,13 +79,16 @@
 
 
 
+<meta name="description" content="顾师傅的Hexo站点">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="default">
+<meta property="og:description" content="顾师傅的Hexo站点">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="顾师傅的Hexo站点">
 
 
 
@@ -95,13 +98,13 @@
     root: '/',
     scheme: 'Pisces',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -133,14 +136,14 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
     
   
 
-  <div class="container sidebar-position-left 
+  <div class="container sidebar-position-right 
   page-home">
     <div class="headband"></div>
 
@@ -182,7 +185,27 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
-            Home
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
           </a>
         </li>
       
@@ -192,7 +215,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -232,9 +255,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/06/linuxdeploy/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="顾师傅讨厌吃香菜">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -258,9 +281,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-06T00:09:40+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-06T00:09:40+08:00">
                 2018-12-06
               </time>
             
@@ -299,101 +322,17 @@
 
       
         
-          
-            <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
+          <h1 id="硬件：安卓手机一台（已root）"><a href="#硬件：安卓手机一台（已root）" class="headerlink" title="硬件：安卓手机一台（已root）"></a>硬件：安卓手机一台（已root）</h1><h1 id="软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT"><a href="#软件工具：BusyBox-linuxdeploy-JuiceSSH-secureCRT" class="headerlink" title="软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT"></a>软件工具：BusyBox linuxdeploy JuiceSSH  secureCRT</h1><h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>1.搭建linux环境–&gt;在安卓上安装BusyBox、linuxdeploy、JuiceSSH</p>
 <p>2.部署LNMP–&gt;在linux环境中使用oneinstack工具一键部署LNMP</p>
 <p>3.放置wordpress–&gt;将wordpress框架放到部署好的LNMP环境中</p>
 <p>4.外网访问–&gt;使用ngrok工具，让你的博客能从外网访问</p>
-<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><p>自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
-<ul>
-<li><h3 id="安装linuxdeploy并部署一个debian"><a href="#安装linuxdeploy并部署一个debian" class="headerlink" title="安装linuxdeploy并部署一个debian"></a>安装linuxdeploy并部署一个debian</h3></li>
-</ul>
-<p>1.在已经root过的手机上安装BusyBox、linuxdeploy、JuiceSSH这三个APP</p>
-<p><img src="/2018/12/06/linuxdeploy/needed.jpg" alt="needed"></p>
-<p>2.点开BusyBox，点击安装，弹出root权限确认点击授予。</p>
-<p><img src="/2018/12/06/linuxdeploy/busybox.jpg" alt="busybox"></p>
-<p>3.点开linux deploy，先点击右下角的设置，设置好要安装的linux版本，设置完之后，点击右上角的三个点点，点击安装。（我的手机屏幕一半黑了，所以是连着电脑控制着操作的）</p>
-<p>具体linux版本和安装的设置可以参考我的：</p>
-<p>容器类型：chroot </p>
-<p>发行版GUN/Linux：Debian </p>
-<p>架构：armhf  #最初我选的是arm64，后来想装花生壳的时候发现linux版的x86和x64都不能安装，而适配给树莓派的armhf版可以安装。</p>
-<p>发行版GUN/Linux版本：stretch</p>
-<p>源地址：<a href="https://mirrors.ustc.edu.cn/debian/" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/debian/</a> #中科大的镜像源，官方源太慢了</p>
-<p>安装类型：目录</p>
-<p>安装路径：保持默认</p>
-<p>用户名：自定义</p>
-<p>用户密码：自定义</p>
-<p>特权用户：root</p>
-<p>DNS：自动</p>
-<p>再下面的勾选启用SSH就行了，挂载Android上的资源以后空间不够了可以给SD卡分区一下挂上去，图形界面想用的也可以启用，基本用不着。</p>
-<p><img src="/2018/12/06/linuxdeploy/remoteCtrl.jpg" alt="remoteCtrl"></p>
-<p>家里联通50M，20分钟不到就部署完了，部署完点击左下角的启动，正常启动完，没报错啥的话，linux就已经装好了</p>
-<ul>
-<li><h3 id="进入debian部署LNMP"><a href="#进入debian部署LNMP" class="headerlink" title="进入debian部署LNMP"></a>进入debian部署LNMP</h3></li>
-</ul>
-<p>点开另一个软件JuiceSSH，输入ip（这里的192.168.123.233是我手机的局域网ip，linuxdeploy这个app打开，显示在最上面一行的就是，要连着家里的wifi，自己的电脑才能连的上，连4G网是连不上的），端口号：22，用户名密码是刚刚自己设置的，不过手机上字太小，不好操作我们用电脑上的SecureCRT或者putty、xshell连接这台手机的局域网IP来操作，这里我用的是secureCRT。</p>
-<p><img src="/2018/12/06/linuxdeploy/ssh.png" alt="ssh"></p>
-<p>点击连接，输入完密码之后就进入了它的命令行界面。</p>
-<p>先设置一下root用户的密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root #输入回车后再输入两遍密码admin@ssh</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/admin@ssh.png" alt="admin@ssh"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su #输入后回车，再输入刚刚设置的密码，切换成root用户</span><br><span class="line">apt-get install vim #安装vim编辑器，需要确认的地方输个Y</span><br><span class="line">vim /etc/ssh/sshd_config #编辑ssh设置文件，打开root用户的远程登陆权限</span><br></pre></td></tr></table></figure>
-<p>找到PermitRootLogin 这一样，按Shift+I键进入编辑，将PermitRootLogin前面的“#”删掉，后面的改成yes，如图</p>
-<p><img src="/2018/12/06/linuxdeploy/permitRootLogin.png" alt="permitRootLogin"></p>
-<p><strong>然后按一下Esc键，输入:wq!后回车，注意有个冒号。</strong></p>
-<p>好了，接下来就直接用root用户登陆，不用先登陆admin再切换到root了</p>
-<p><img src="/2018/12/06/linuxdeploy/root@ssh.png" alt="root@ssh"></p>
-<p>接下来安装nginx，php，mysql，可以一次性输入安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-getinstall nginx php7.0-fpm mysql-server-5.7 php7.0-mysql</span><br><span class="line">service nginx start #装完之后启动服务</span><br><span class="line">service php7.0-fpm start</span><br><span class="line">service mysql start #我这里MySQL启动失败，输入 usermod -a -G aid_net_raw mysql后再次输入启动mysql的命令</span><br></pre></td></tr></table></figure></p>
-<p>然后配置一下nginx的配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim/etc/nginx/sites-available/default #修改两个，增加一个index.php格式支持，把关于php7.0-fpm的注释去掉</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/installnmp.png" alt="installnmp"></p>
-<p>**然后按一下Esc键，输入:wq!后回车，注意有个冒号。</p>
-<p>装一下防火墙并打开80和3306端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get install ufw #安装防火墙</span><br><span class="line">ufw allow 3306 #打开3306端口 数据库远程</span><br><span class="line">ufw allow 80 #打开80端口</span><br></pre></td></tr></table></figure></p>
-<p>然后重启一下服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service nginx restart</span><br><span class="line">services php7.0-fpm restart</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/restartPHP.jpg" alt="restartPHP"></p>
-<p>然后电脑打开浏览器访问 http://（你的手机的局域网ip）比如192.168.123.233 查看是否有 welcome to  nginx！的提示</p>
-<p><img src="/2018/12/06/linuxdeploy/welcomeToNginx.png" alt="welcomeToNginx"></p>
-<ul>
-<li><h3 id="布置wordpress"><a href="#布置wordpress" class="headerlink" title="布置wordpress"></a>布置wordpress</h3></li>
-</ul>
-<p>然后下载wordpress上传到linux系统的 /var/www/html 路径下（这个路径在上面修改的那个文件里也可以改）</p>
-<p>进入wordperss官网，找到下载Wordpress按钮 ，先放到本地电脑的随便哪里，比如说D:/Download这里</p>
-<p><img src="/2018/12/06/linuxdeploy/downloadWP.png" alt="downloadWP"></p>
-<p>下载.zip或者.tar.gz格式的都可以，只是一会儿解压的命令不同</p>
-<p>点击SecureCRT左上角的File–&gt;Connect SFTP session，右边会出来一个sftp窗口</p>
-<p><img src="/2018/12/06/linuxdeploy/SFTP.png" alt="SFTP"></p>
-<p>在stfp窗口输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/ #表示进入linux的opt目录</span><br><span class="line">lcd D:/Download/ #表示进入本计算机的D:/Download （刚刚存放wordpress压缩包的路径）</span><br><span class="line">put wordpress-4.9.1-zh_CN.tar.gz #将此压缩包由本地推送到linux的指定目录</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/SFTPput.png" alt="SFTPput"></p>
-<p>然后浏览器访问<a href="http://192.168.123.233（你的手机的局域网ip）/wordpress" target="_blank" rel="noopener">http://192.168.123.233（你的手机的局域网ip）/wordpress</a>  能看到wordpress的安装引导，我已经安装过了，就网上截了个图给大家看一下</p>
-<p><img src="/2018/12/06/linuxdeploy/startInstallWP.png" alt="startInstallWP"></p>
-<p>**接下来先不急着安装，我们得先准备这个页面上所说的数据库用户信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root # 以root用户登陆mysql数据库，这里之前apt-get install mysql的过程中如果让设置了密码，就要输入 mysql -u root -p，然后回车后输入密码，我这里没设置，不输密码就能进入</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/MariaDB.png" alt="MariaDB"></p>
-<p>然后开始进入数据库的操作命令行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE **wpdb**; #创建一个叫wpdb的数据库，这个名字自定义，记得就好，**装完之后启动服务**</span><br><span class="line">CREATE USER **wpuser**@localhost IDENTIFIED BY ‘**wppass**’; #wpuser和wppass分别是用户名和密码，也可以自定义，**注意分号**</span><br><span class="line">GRANT ALL PRIVILEGES ON **wpdb**.* TO **wpuser**@localhost; #给wpuser操作wpdb的权限，**注意分号**</span><br><span class="line">FLUSH PRIVILEGES; #立即刷新生效，**注意分号**</span><br><span class="line">EXIT #退出mysql操作命令行，这个不需要分号</span><br></pre></td></tr></table></figure></p>
-<p>然后重启一下mysql和nginx服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart</span><br><span class="line"></span><br><span class="line">service nginx restart</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/restartMysql.png" alt="restartMysql"></p>
-<p>然后访问<a href="http://192.168.123.233（你的局域网里的手机ip）/wordpress" target="_blank" rel="noopener">http://192.168.123.233（你的局域网里的手机ip）/wordpress</a> 再次进入wordpress的安装界面，根据提示填入刚刚设置的数据库名，数据库用户名，密码，就是下图打码的地方，我已经装好了，这是网上截图的。</p>
-<p><img src="/2018/12/06/linuxdeploy/setWPDB.jpg" alt="setWPDB"></p>
-<p>然后一直下一步就装完了，再次访问默认主题就是这样的，可以自己去搜个主题装一下哟</p>
-<p><img src="/2018/12/06/linuxdeploy/welcomeTOWP.png" alt="welcomeTOWP"></p>
-<p>后面可能出现一个wordpress无法操作一个contig文件的错误，照着它的提示在本地编辑好，再用sftp上传到/var/www/html/wordpress里就可以了</p>
-<ul>
-<li><h3 id="搞定外网访问"><a href="#搞定外网访问" class="headerlink" title="搞定外网访问"></a>搞定外网访问</h3></li>
-</ul>
-<p>接下来是使你的博客能从外网访问，可以用花生壳，可以用ngrok，这里我用的是ngrok</p>
-<p>打开ngrok 注册一个免费账户，申请一个免费的隧道，<strong>并记下隧道id</strong>，这里我买了10元钱的付费一个月服务，免费的就可以</p>
-<p><img src="/2018/12/06/linuxdeploy/ngrok1.png" alt="ngrok1"><br><img src="/2018/12/06/linuxdeploy/ngrok2.png" alt="ngrok2"><br><img src="/2018/12/06/linuxdeploy/ngrok3.png" alt="ngrok3"></p>
-<p>域名自定义，这里ngrok可以直接部署在你手机上的linux系统中，也可以部署在路由器中，直接部署在系统中就填127.0.0.1:80用户名密码不用填，部署在路由器上的话，填入路由器给你手机分的ip 192.168.123.233:80，用户名密码和路由器上设置的一样，撸了斐讯路由器的刷个padavan或者荒野无灯的固件就可以设置ngrok了</p>
-<p>然后去ngrok的首页下载安装包</p>
-<p><img src="/2018/12/06/linuxdeploy/downloadNgrok.png" alt="downloadNgrok"></p>
-<p>然后还是用sftp推送到linux系统里</p>
-<p><img src="/2018/12/06/linuxdeploy/pushNgrok.png" alt="pushNgrok"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/ #进入目录</span><br><span class="line">chmod -R 777 sunny #给这个文件赋予可执行权限</span><br><span class="line">./sunny clientid** #这里的**是你的隧道id</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2018/12/06/linuxdeploy/runNgrok.png" alt="runNgrok"></p>
-<p>出现下面页面就是运行成功了，然后访问http://你的前置域名.free.ngrok.cc/wordpress  就可以访问你的博客了，(如果是付费的，是http://前置域名.viphk.ngrok.org/wordpress 我的前置域名是lipten哟)（这张图片来自ngrok官方指导）</p>
-<p><img src="/2018/12/06/linuxdeploy/NgrokStatus.png" alt="NgrokStatus"></p>
-<p>下面给大家看一下如果是把ngrok运行在路由器上怎么设置，刷了荒野无灯固件和padavan的斐讯路由器可以参考一下</p>
-<p><img src="/2018/12/06/linuxdeploy/padavanNgrok1.png" alt="padavanNgrok1"><br><img src="/2018/12/06/linuxdeploy/padavanNgrok2.png" alt="padavanNgrok2"></p>
-<p>最后，纪念一下我的狗魔</p>
-<p><img src="/2018/12/06/linuxdeploy/MyMoto.jpg" alt="MyMoto"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/06/linuxdeploy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -443,9 +382,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/10/gutianfeng-CV/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="顾师傅讨厌吃香菜">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -469,9 +408,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-10T01:29:13+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T01:29:13+08:00">
                 2018-07-10
               </time>
             
@@ -510,34 +449,26 @@
 
       
         
-          
-            <h1 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
-<li>手机：18115698647 17351097293</li>
+          <h1 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
+<li>手机：18115698647</li>
 <li>Email：<a href="mailto:gutianfeng1993@163.com" target="_blank" rel="noopener">gutianfeng1993@163.com</a></li>
 </ul>
 <h1 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h1><ul>
 <li>顾天峰/男/1993</li>
 <li>本科/苏州大学 电气工程与自动化 </li>
 <li>工作年限：3年</li>
-<li><p>博客：<a href="https://hellogu.github.io" target="_blank" rel="noopener">https://hellogu.github.io</a></p>
-</li>
-<li><p>期望职位：测试工程师</p>
-</li>
+<li>博客：<a href="https://hellogu.github.io" target="_blank" rel="noopener">https://hellogu.github.io</a></li>
+<li>期望职位：测试工程师</li>
 <li>期望薪资：税前月薪12k~15k，特别喜欢的公司可例外</li>
 <li>期望城市：苏州</li>
 </ul>
-<h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><h2 id="苏州东菱科技-测试工程师（-2015年3月-2016年7月-）"><a href="#苏州东菱科技-测试工程师（-2015年3月-2016年7月-）" class="headerlink" title="苏州东菱科技 |测试工程师（ 2015年3月 ~ 2016年7月 ）"></a>苏州东菱科技 |测试工程师（ 2015年3月 ~ 2016年7月 ）</h2><h2 id="苏州软通动力公司-测试工程师（-2016年8月-至今-）"><a href="#苏州软通动力公司-测试工程师（-2016年8月-至今-）" class="headerlink" title="苏州软通动力公司 |测试工程师（ 2016年8月 至今 ）"></a>苏州软通动力公司 |测试工程师（ 2016年8月 至今 ）</h2><h3 id="华为视讯项目"><a href="#华为视讯项目" class="headerlink" title="华为视讯项目"></a>华为视讯项目</h3><p>我在此项目中负责了安全测试及功能测试<br>曾发现一处XSS与文件校验的组合漏洞，被测产品对XSS脚本进行了防范，一旦检测到XSS脚本输入则停止所有用户操作，而在产品的升级过程中升级包会经历<br>1.上传–&gt;2.读取升级包信息并校验（包括版本号和完整性校验）–&gt;3.校验通过剪切入最终路径or校验不通过删除。<br>根据这个特性我尝试将产品的升级包中软件版本更改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(123)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>，当升级包上传后系统读取版本号检测到XSS脚本即停止所有用户操作，此时升级包校验动作还没有全部完成，系统还未作出第3步动作，所以错误的升级包被留在了临时目录而不被删除。通过这个漏洞可实现将任意文件带在升级包中上传至产品系统中。  </p>
-<h1 id="技能"><a href="#技能" class="headerlink" title="技能"></a>技能</h1><h2 id="工作描述"><a href="#工作描述" class="headerlink" title="工作描述"></a>工作描述</h2><p>1.手工测试，web测试，功能测试<br>2.编写自动化测试脚本<br>3.安全测试：漏洞扫描、注入测试、协议健壮性<br>4.熟悉kali linux基本操作，会使用基本的SQL增删改查语句。</p>
-<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>CET6级</p>
-<h2 id="技术文章"><a href="#技术文章" class="headerlink" title="技术文章"></a>技术文章</h2><ul>
-<li>旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客(<a href="https://post.smzdm.com/p/228886/" target="_blank" rel="noopener">https://post.smzdm.com/p/228886/</a>)</li>
-</ul>
-<hr>
-<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>感谢您花时间阅读我的简历，期待能有机会和您共事。<br>​      </p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/10/gutianfeng-CV/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -587,9 +518,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/20/T1/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="顾师傅讨厌吃香菜">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -613,9 +544,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-20T17:06:07+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-20T17:06:07+08:00">
                 2018-05-20
               </time>
             
@@ -727,8 +658,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
-              <p class="site-description motion-element" itemprop="description"></p>
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="顾师傅讨厌吃香菜">
+            
+              <p class="site-author-name" itemprop="name">顾师傅讨厌吃香菜</p>
+              <p class="site-description motion-element" itemprop="description">顾师傅的Hexo站点</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -739,7 +672,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">3</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
@@ -752,7 +685,7 @@
               <div class="site-state-item site-state-tags">
                 
                   <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">tags</span>
+                  <span class="site-state-item-name">标签</span>
                 
               </div>
             
@@ -761,6 +694,22 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hellogu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005056223442990" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -792,13 +741,13 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">顾师傅讨厌吃香菜</span>
 
   
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -806,7 +755,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
