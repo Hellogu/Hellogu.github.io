@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="猫盘其实已经上车好久了，最近论坛里出了单群晖固件使得猫盘上车价格从最初的40包邮上升到了120，今天特地记录一下这个刷机的全过程 工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex固件： 花王网络制作 感谢分享过程：1.刷入uboot flash-image.bin由于官方原版uboot不支持usb/tftp启动方式，所以第一步刷入花王网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="垃圾佬的快乐日记-猫盘群晖">
+<meta property="og:url" content="http://yoursite.com/2019/11/23/垃圾佬的快乐日记-猫盘群晖/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="猫盘其实已经上车好久了，最近论坛里出了单群晖固件使得猫盘上车价格从最初的40包邮上升到了120，今天特地记录一下这个刷机的全过程 工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex固件： 花王网络制作 感谢分享过程：1.刷入uboot flash-image.bin由于官方原版uboot不支持usb/tftp启动方式，所以第一步刷入花王网络">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/catdrive_ttl.jpg">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/catdrive_disk.png">
+<meta property="og:updated_time" content="2019-11-23T09:00:30.751Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="垃圾佬的快乐日记-猫盘群晖">
+<meta name="twitter:description" content="猫盘其实已经上车好久了，最近论坛里出了单群晖固件使得猫盘上车价格从最初的40包邮上升到了120，今天特地记录一下这个刷机的全过程 工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex固件： 花王网络制作 感谢分享过程：1.刷入uboot flash-image.bin由于官方原版uboot不支持usb/tftp启动方式，所以第一步刷入花王网络">
+<meta name="twitter:image" content="http://q1erxabh4.bkt.clouddn.com/catdrive_ttl.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/23/垃圾佬的快乐日记-猫盘群晖/">
+
+
+
+
+
+  <title>垃圾佬的快乐日记-猫盘群晖 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/23/垃圾佬的快乐日记-猫盘群晖/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="顾师傅讨厌吃香菜">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">垃圾佬的快乐日记-猫盘群晖</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-23T15:50:06+08:00">
+                2019-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>猫盘其实已经上车好久了，最近论坛里出了单群晖固件使得猫盘上车价格从最初的40包邮上升到了120，今天特地记录一下这个刷机的全过程</p>
+<h2 id="工具：tftp-exe-CH340Gttl串口线-ssh工具（putty、mobaxterm等）winhex"><a href="#工具：tftp-exe-CH340Gttl串口线-ssh工具（putty、mobaxterm等）winhex" class="headerlink" title="工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex"></a>工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex</h2><h2 id="固件：-花王网络制作-感谢分享"><a href="#固件：-花王网络制作-感谢分享" class="headerlink" title="固件： 花王网络制作 感谢分享"></a>固件： <a href="https://www.huakings.cn/post/190.html" target="_blank" rel="noopener">花王网络</a>制作 感谢分享</h2><h2 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h2><h3 id="1-刷入uboot-flash-image-bin"><a href="#1-刷入uboot-flash-image-bin" class="headerlink" title="1.刷入uboot flash-image.bin"></a>1.刷入uboot flash-image.bin</h3><p>由于官方原版uboot不支持usb/tftp启动方式，所以第一步刷入花王网络修改的uboot（个人理解类似于安卓刷机的recovery）<br>刷入方式有多种，如果使用过矿渣论坛里发布的猫盘刷onespace工具的话可以直接在onespace的后台命令行里刷入，本文中介绍的是使用ttl刷入，首先是ttl的接法，来自<a href="https://www.jianshu.com/p/77e529fb35f9" target="_blank" rel="noopener">libgcc</a>,要注意ch340g上的tx接猫盘的rx，ch340g上的rx接猫盘的tx，vcc不要接<br><img src="http://q1erxabh4.bkt.clouddn.com/catdrive_ttl.jpg" alt=""></p>
+<p>打开tftp.exe工具，将固件放入tftp目录<br>插入ttl线之后打开mobaxterm新建serial连接，端口选择ch340g的com口波特率115200，插上猫盘电源后能看见屏幕上输出猫盘的启动日志，连续按键盘任意键打断猫盘启动，进入猫盘的uboot命令模式<br>命令行输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">setenv ipaddr 192.168.123.4           设置猫盘ip</span><br><span class="line">setenv serverip 192.168.123.5         设置tftp服务器ip（本机ip）</span><br><span class="line">tftpboot 0x1000000 flash-image.bin    将uboot固件上传至0x1000000处</span><br><span class="line">sf probe                              挂载spi</span><br><span class="line">sf erase 0x0 0x800000                 擦除spi</span><br><span class="line">sf write 0x1000000 0x0 0x800000       将0x1000000处写入spi</span><br><span class="line">saveenv                               保存当前操作spi</span><br><span class="line">reset                                 重启</span><br></pre></td></tr></table></figure></p>
+<p>重启后再次按键盘打断猫盘启动即可进入修改版的uboot命令行</p>
+<h3 id="2-修改群晖8M固件-bin"><a href="#2-修改群晖8M固件-bin" class="headerlink" title="2.修改群晖8M固件.bin"></a>2.修改群晖8M固件.bin</h3><p>使用winhex或者UEditor工具修改固件中的MAC和SN以及校验码，搜索001132定位到MAC的位置，替换，校验码计算方法百度</p>
+<h3 id="3-将修改后的固件写入spi"><a href="#3-将修改后的固件写入spi" class="headerlink" title="3.将修改后的固件写入spi"></a>3.将修改后的固件写入spi</h3><p>打开tftp工具，将修改后的群晖固件.bin放入tftp目录<br>mobaxterm serial连接中命令行输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setenv ipaddr 192.168.123.4            设置猫盘ip</span><br><span class="line">setenv serverip 192.168.123.5          设置tftp服务器ip（本机ip）</span><br><span class="line">bubt full.bin spi tftp                 full.bin为修改后的固件</span><br><span class="line">reset</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-装入硬盘，浏览器访问猫盘ip-5000开始安装"><a href="#4-装入硬盘，浏览器访问猫盘ip-5000开始安装" class="headerlink" title="4.装入硬盘，浏览器访问猫盘ip:5000开始安装"></a>4.装入硬盘，浏览器访问猫盘ip:5000开始安装</h3><p>省略</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><h3 id="1-安装transmission"><a href="#1-安装transmission" class="headerlink" title="1.安装transmission"></a>1.安装transmission</h3><p>套件中心-设置-常规-勾选Synology Inc.和信任的发行者<br>套件中心-设置-套件来源-新增：<a href="http://packages.synocommunity.com/" target="_blank" rel="noopener">http://packages.synocommunity.com/</a><br>保存后，在 社群 中找到transmission安装，此时的transmission为原版界面，接下来安装<a href="https://github.com/ronggang/transmission-web-control" target="_blank" rel="noopener">ronggang</a>的汉化界面<br>点击 控制面板-终端机和SNMP-启动SSH功能<br>mobaxterm新建连接，ip为当前群晖的ip，用户名admin密码为群晖的admin密码<br>输入命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo -i                                切换成root用户，验证密码admin的密码</span><br><span class="line">wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh                       获取安装脚本</span><br><span class="line">bash install-tr-control-cn.sh          执行安装脚本，根据提示选择</span><br></pre></td></tr></table></figure></p>
+<p>提示安装完成后，重新打开transmission（可能需要Ctrl+F5强制刷新浏览器页面）</p>
+<h3 id="2-安装entware（qbittorrent，aria2）"><a href="#2-安装entware（qbittorrent，aria2）" class="headerlink" title="2.安装entware（qbittorrent，aria2）"></a>2.安装entware（qbittorrent，aria2）</h3><p>安装entware与安装transmission类似，添加源<a href="https://www.cphub.net，然后在社群中找到Easy" target="_blank" rel="noopener">https://www.cphub.net，然后在社群中找到Easy</a> Bootstrap Installer安装，安装时选择entware，安装完成后，再次进入mobaxterm群晖的命令行中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">opkg install qbittorrent               使用opkg安装qb</span><br><span class="line">/opt/etc/init.d/S89qbittorrent start   启动qb</span><br><span class="line">opkg install aria2                     使用opkg安装aria2 </span><br><span class="line">/opt/etc/init.d/S81aria2 start         启动</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后，qb可以通过群晖ip:9080打开管理页面，aria2可以通过pandownload、Transdroid（安卓）等客户端管理，也可以使用群晖的创建建站功能创建一个<a href="https://github.com/colinwjd/aria2-ariang" target="_blank" rel="noopener">ariang</a>页面</p>
+<h3 id="3-设置硬盘休眠"><a href="#3-设置硬盘休眠" class="headerlink" title="3.设置硬盘休眠"></a>3.设置硬盘休眠</h3><p>进入mobaxterm群晖的命令行编辑syslog-ng.conf文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -i                                切换root用户</span><br><span class="line">vi /etc/init/syslog-ng.conf            编辑</span><br></pre></td></tr></table></figure></p>
+<p>加入以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#scemd bind</span><br><span class="line">touch /tmp/scemd.log.new || true</span><br><span class="line">chmod 660 /tmp/scemd.log.new || true</span><br><span class="line">chown system:log /tmp/scemd.log.new || true</span><br><span class="line">mount -o bind /tmp/scemd.log.new /var/log/scemd.log || true</span><br><span class="line">#</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://q1erxabh4.bkt.clouddn.com/catdrive_disk.png" alt=""></p>
+<p>登陆群晖，控制面板-电源设置-硬盘休眠-勾选启动硬盘休眠和启动硬盘休眠日志-重启群晖</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/23/使用七牛云作为hexo图床/" rel="next" title="使用七牛云作为hexo图床">
+                <i class="fa fa-chevron-left"></i> 使用七牛云作为hexo图床
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="顾师傅讨厌吃香菜">
+            
+              <p class="site-author-name" itemprop="name">顾师傅讨厌吃香菜</p>
+              <p class="site-description motion-element" itemprop="description">顾师傅的Hexo站点</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hellogu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005056223442990" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#工具：tftp-exe-CH340Gttl串口线-ssh工具（putty、mobaxterm等）winhex"><span class="nav-number">1.</span> <span class="nav-text">工具：tftp.exe CH340Gttl串口线 ssh工具（putty、mobaxterm等）winhex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#固件：-花王网络制作-感谢分享"><span class="nav-number">2.</span> <span class="nav-text">固件： 花王网络制作 感谢分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程："><span class="nav-number">3.</span> <span class="nav-text">过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-刷入uboot-flash-image-bin"><span class="nav-number">3.1.</span> <span class="nav-text">1.刷入uboot flash-image.bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-修改群晖8M固件-bin"><span class="nav-number">3.2.</span> <span class="nav-text">2.修改群晖8M固件.bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将修改后的固件写入spi"><span class="nav-number">3.3.</span> <span class="nav-text">3.将修改后的固件写入spi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-装入硬盘，浏览器访问猫盘ip-5000开始安装"><span class="nav-number">3.4.</span> <span class="nav-text">4.装入硬盘，浏览器访问猫盘ip:5000开始安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续"><span class="nav-number">4.</span> <span class="nav-text">后续</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装transmission"><span class="nav-number">4.1.</span> <span class="nav-text">1.安装transmission</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-安装entware（qbittorrent，aria2）"><span class="nav-number">4.2.</span> <span class="nav-text">2.安装entware（qbittorrent，aria2）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置硬盘休眠"><span class="nav-number">4.3.</span> <span class="nav-text">3.设置硬盘休眠</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">顾师傅讨厌吃香菜</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
