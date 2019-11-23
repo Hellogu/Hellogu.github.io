@@ -87,16 +87,16 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="steps：降级-刷breed-刷padavan">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/4.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/1.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/2.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/3.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/5.png">
-<meta property="og:updated_time" content="2019-08-24T09:26:35.560Z">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_4.png">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_1.PNG">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_2.PNG">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_3.PNG">
+<meta property="og:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_5.PNG">
+<meta property="og:updated_time" content="2019-11-23T06:50:36.072Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="歌华链刷机备忘">
 <meta name="twitter:description" content="steps：降级-刷breed-刷padavan">
-<meta name="twitter:image" content="http://yoursite.com/2019/08/24/歌华链刷机备忘/4.png">
+<meta name="twitter:image" content="http://q1erxabh4.bkt.clouddn.com/ghl_4.png">
 
 
 
@@ -329,11 +329,12 @@
         <h2 id="steps："><a href="#steps：" class="headerlink" title="steps："></a>steps：</h2><p>降级-刷breed-刷padavan</p>
 <a id="more"></a>
 <p>1.拿到手是1.25固件，需要降级1.21<br> 1.25降级直接系统管理里刷入，如果是1.26固件，需要用诱骗固件降级</p>
-<p>2.刷入breed<br> 打开工具hfs，将breed文件拖入<br> <img src="/2019/08/24/歌华链刷机备忘/4.png" alt="needed"><br> 使用mobaxterm/putty  telnet进入路由器系统，端口2317<br> 用户名 root<br> 密码 admin<br> 输入命令<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd tmp #进入tmp目录</span><br><span class="line">wget http://192.168.123.3/breed-mt7621-gehua-ghl-r-001.bin #下载breed文件</span><br><span class="line">mtd write breed-mt7621-pbr-m1.bin Bootloader #写入breed</span><br></pre></td></tr></table></figure></p>
-<p>3.拔掉路由器电源，按住reset键插入电源，按住保持10秒<br> 浏览器打开192.168.1.1进入breed<br><img src="/2019/08/24/歌华链刷机备忘/1.png" alt="needed"></p>
+<p>2.刷入breed<br> 打开工具hfs，将breed文件拖入<br><img src="http://q1erxabh4.bkt.clouddn.com/ghl_4.png" alt=""><br>使用mobaxterm/putty  telnet进入路由器系统，端口2317<br> 用户名 root<br> 密码 admin<br> 输入命令</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd tmp #进入tmp目录</span><br><span class="line">wget http://192.168.123.3/breed-mt7621-gehua-ghl-r-001.bin #下载breed文件</span><br><span class="line">mtd write breed-mt7621-pbr-m1.bin Bootloader #写入breed</span><br></pre></td></tr></table></figure>
+<p>3.拔掉路由器电源，按住reset键插入电源，按住保持10秒<br> 浏览器打开192.168.1.1进入breed<br><img src="http://q1erxabh4.bkt.clouddn.com/ghl_1.PNG" alt=""></p>
 <p>4.恢复出厂设置-选择公版</p>
-<p>5.固件更新-固件-选择padavan固件文件，更新完自动重启<br> <img src="/2019/08/24/歌华链刷机备忘/2.png" alt="needed"><br> <img src="/2019/08/24/歌华链刷机备忘/3.png" alt="needed"></p>
-<p>6.浏览器进入192.168.123.1<br> 默认用户名admin 密码admin<br> <img src="/2019/08/24/歌华链刷机备忘/5.png" alt="needed"></p>
+<p>5.固件更新-固件-选择padavan固件文件，更新完自动重启<br><img src="http://q1erxabh4.bkt.clouddn.com/ghl_2.PNG" alt=""><br><img src="http://q1erxabh4.bkt.clouddn.com/ghl_3.PNG" alt=""></p>
+<p>6.浏览器进入192.168.123.1<br> 默认用户名admin 密码admin<br><img src="http://q1erxabh4.bkt.clouddn.com/ghl_5.PNG" alt=""></p>
 
       
     </div>
