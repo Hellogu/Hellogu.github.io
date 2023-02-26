@@ -1,0 +1,183 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>花生壳DDNS强制更新 | 顾师傅的网络记事本</title>
+<link rel="shortcut icon" href="https://hellogu.github.io/favicon.ico?v=1677401295286">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://hellogu.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="花生壳DDNS强制更新 | 顾师傅的网络记事本 - Atom Feed" href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="花生壳强制更新
+http://username:password@ddns.oray.com/ph/update?hostname=yourhostname&amp;myip=ipaddress
+
+username: 你在花生壳上注册的用户..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://hellogu.github.io">
+  <img class="avatar" src="https://hellogu.github.io/images/avatar.png?v=1677401295286" alt="">
+  </a>
+  <h1 class="site-title">
+    顾师傅的网络记事本
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              花生壳DDNS强制更新
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-02-26
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>花生壳强制更新<br>
+http://username:password@ddns.oray.com/ph/update?hostname=yourhostname&amp;myip=ipaddress</p>
+<ul>
+<li>username: 你在花生壳上注册的用户名</li>
+<li>password: 你的花生壳密码</li>
+<li>hostname: 你在花生壳上申请的域名：如：test.zicp.net</li>
+<li>myip   : 你想更新成的IP地址。（可以不填，如果没有花生壳会直接使用你的出口公网地址）<br>
+返回说明：</li>
+<li>good 更新成功，域名的IP地址已经更新，同时会返回本次更新成功的IP，用空格隔开，如：good 1.2.3.4</li>
+<li>nochg 更新成功，但没有改变IP。一般这种情况为本次提交的IP跟上一次的一样</li>
+<li>notfqdn 未有激活花生壳的域名</li>
+<li>nohost 域名不存在或未激活花生壳</li>
+<li>nochg 更新成功，但没有改变IP。一般这种情况为本次提交的IP跟上一次的一样</li>
+<li>abuse 请求失败，频繁请求或验证失败时会出现</li>
+<li>!donator 表示此功能需要付费用户才能使用，如https</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://hellogu.github.io/post/watchtower-geng-xin-docker-rong-qi/">
+              <h3 class="post-title">
+                watchtower更新docker容器
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://hellogu.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

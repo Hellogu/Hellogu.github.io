@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://hellogu.github.io</id>
+    <title>顾师傅的网络记事本</title>
+    <updated>2023-02-26T08:48:16.902Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://hellogu.github.io"/>
+    <link rel="self" href="https://hellogu.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://hellogu.github.io/images/avatar.png</logo>
+    <icon>https://hellogu.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, 顾师傅的网络记事本</rights>
+    <entry>
+        <title type="html"><![CDATA[Win10 Wsl2安装Ubuntu]]></title>
+        <id>https://hellogu.github.io/post/win10-wsl2-an-zhuang-ubuntu/</id>
+        <link href="https://hellogu.github.io/post/win10-wsl2-an-zhuang-ubuntu/">
+        </link>
+        <updated>2023-02-26T08:44:07.000Z</updated>
+        <content type="html"><![CDATA[<p>1.管理员权限运行powershell</p>
+<pre><code>wsl --install
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --set-default-version 2
+</code></pre>
+<p>2.重启电脑<br>
+3.在弹出的命令行中设置账号密码<br>
+4.安装内核更新<br>
+https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi<br>
+5.在商店中搜索Ubuntu安装</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[批量给集群里的node追加标签（awk分割）]]></title>
+        <id>https://hellogu.github.io/post/pi-liang-gei-ji-qun-li-de-node-zhui-jia-biao-qian-awk-fen-ge/</id>
+        <link href="https://hellogu.github.io/post/pi-liang-gei-ji-qun-li-de-node-zhui-jia-biao-qian-awk-fen-ge/">
+        </link>
+        <updated>2023-02-26T08:41:16.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>kubectl get nodes --show-labels | grep xib.desb/mesh=true | awk -F ' ' '{print $1}' &gt; node.txt
+
+for i in $(cat node.txt) ; do kubectl label node $i xib.desb/mesh-control=true ; done
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[花生壳DDNS强制更新]]></title>
+        <id>https://hellogu.github.io/post/hua-sheng-ke-ddns-qiang-zhi-geng-xin/</id>
+        <link href="https://hellogu.github.io/post/hua-sheng-ke-ddns-qiang-zhi-geng-xin/">
+        </link>
+        <updated>2023-02-26T08:39:56.000Z</updated>
+        <content type="html"><![CDATA[<p>花生壳强制更新<br>
+http://username:password@ddns.oray.com/ph/update?hostname=yourhostname&amp;myip=ipaddress</p>
+<ul>
+<li>username: 你在花生壳上注册的用户名</li>
+<li>password: 你的花生壳密码</li>
+<li>hostname: 你在花生壳上申请的域名：如：test.zicp.net</li>
+<li>myip   : 你想更新成的IP地址。（可以不填，如果没有花生壳会直接使用你的出口公网地址）<br>
+返回说明：</li>
+<li>good 更新成功，域名的IP地址已经更新，同时会返回本次更新成功的IP，用空格隔开，如：good 1.2.3.4</li>
+<li>nochg 更新成功，但没有改变IP。一般这种情况为本次提交的IP跟上一次的一样</li>
+<li>notfqdn 未有激活花生壳的域名</li>
+<li>nohost 域名不存在或未激活花生壳</li>
+<li>nochg 更新成功，但没有改变IP。一般这种情况为本次提交的IP跟上一次的一样</li>
+<li>abuse 请求失败，频繁请求或验证失败时会出现</li>
+<li>!donator 表示此功能需要付费用户才能使用，如https</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[watchtower更新docker容器]]></title>
+        <id>https://hellogu.github.io/post/watchtower-geng-xin-docker-rong-qi/</id>
+        <link href="https://hellogu.github.io/post/watchtower-geng-xin-docker-rong-qi/">
+        </link>
+        <updated>2023-02-26T08:39:17.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>docker run -d \
+--name watchtower \
+-v /var/run/docker.sock:/var/run/docker.sock \
+containrrr/watchtower -c \
+$(cat /opt/watchtower.list)
+</code></pre>
+<p>watchtower一次性运行</p>
+<pre><code>docker run --rm \
+-v /var/run/docker.sock:/var/run/docker.sock \
+containrrr/watchtower -c \
+--run-once \
+qinglong
+aria2-pro
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Docker部署Jenkins]]></title>
+        <id>https://hellogu.github.io/post/docker-bu-shu-jenkins/</id>
+        <link href="https://hellogu.github.io/post/docker-bu-shu-jenkins/">
+        </link>
+        <updated>2023-02-26T08:39:03.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-shell">docker run \
+-u root \
+-d \
+-p 8080:8080 \
+-p 50000:50000 \
+-v /home/jenkins_home:/var/jenkins_home \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /etc/localtime:/etc/localtime \
+jenkinsci/blueocean
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[git备忘]]></title>
+        <id>https://hellogu.github.io/post/git-bei-wang/</id>
+        <link href="https://hellogu.github.io/post/git-bei-wang/">
+        </link>
+        <updated>2023-02-26T08:38:49.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>git clone https://github.com/
+git add .        （注：别忘记后面的.，此操作是把Test文件夹下面的文件都添加进来）
+git commit  -m  &quot;提交信息&quot;  （注：“提交信息”里面换成你需要，如“first commit”）
+git push -u origin master   （注：此操作目的是把本地仓库push到github上面，此步骤需要你输入帐号和密码）
+git pull origin master
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[jellyfin部署]]></title>
+        <id>https://hellogu.github.io/post/jellyfin-bu-shu/</id>
+        <link href="https://hellogu.github.io/post/jellyfin-bu-shu/">
+        </link>
+        <updated>2023-02-26T08:38:30.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-shell">docker run -d \
+-v /storage/jellyfin/config:/config \
+-v /storage/jellyfin/cache:/cache \
+-v /storage/jellyfin/media:/media \
+--net=host \
+--name=jellyfin \
+--restart=always \
+jellyfin/jellyfin:latest
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[tmm刮削器]]></title>
+        <id>https://hellogu.github.io/post/tmm-gua-xue-qi/</id>
+        <link href="https://hellogu.github.io/post/tmm-gua-xue-qi/">
+        </link>
+        <updated>2023-02-26T08:38:03.000Z</updated>
+        <content type="html"><![CDATA[<p>tmm-web</p>
+<pre><code class="language-shell">docker run -d --name=tinymediamanager \
+-v /storage/tmm/config:/config \
+-v /storage/tmm/media:/media \
+-e GROUP_ID=0 -e USER_ID=0 -e TZ=Europe/Madrid \
+-p 5800:5800 \
+-p 5900:5900 \
+romancin/tinymediamanager:latest
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[部署openclash]]></title>
+        <id>https://hellogu.github.io/post/bu-shu-openclash/</id>
+        <link href="https://hellogu.github.io/post/bu-shu-openclash/">
+        </link>
+        <updated>2023-02-26T08:36:21.000Z</updated>
+        <content type="html"><![CDATA[<p>主程序</p>
+<pre><code class="language-shell">docker run -d --name=clash -v &quot;$PWD/config.yaml:/root/.config/clash/config.yaml&quot; -p &quot;7890:7890&quot; -p &quot;9090:9090&quot; --restart=unless-stopped dreamacro/clash
+</code></pre>
+<p>面板</p>
+<pre><code class="language-shell">docker run -p 1234:80 -d --rm --name yacd haishanh/yacd
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[docker wol ]]></title>
+        <id>https://hellogu.github.io/post/docker-wol/</id>
+        <link href="https://hellogu.github.io/post/docker-wol/">
+        </link>
+        <updated>2023-02-26T08:35:23.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-shell">docker run --rm --network host fopina/wakeonlan wake d8:cb:8a:7b:77:a5
+</code></pre>
+]]></content>
+    </entry>
+</feed>
