@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>WSL安装Kali | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="WSL安装Kali | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="WSL安装Kali" />
+  <meta property="og:url" content="https://hellogu.github.io/post/wsl-an-zhuang-kali/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/5Cl6vGEyk/" class="tag">kali</a>
+                
+                <a href="https://hellogu.github.io/tag/9YwyGaFz3b/" class="tag">linux</a>
+                
+              </span>
+              <h1>WSL安装Kali</h1>
+              <span class="meta">
+                Posted on
+                2024-04-26，3 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/wsl-an-zhuang-kali.png" alt="封面图">
+          </img>
+          
+          <p>在WSL2中部署Kali Linux</p>
+<!-- more -->
+<h2 id="1安装">1.安装</h2>
+<p><a href="https://www.kali.org/docs/wsl/wsl-preparations/">Kali官方文档</a>进行安装<br>
+<img src="https://hellogu.github.io/post-images/1714106845564.png" alt="" loading="lazy"></p>
+<!-- more -->
+<p>在 Step.5 遇到了报错<br>
+<img src="https://hellogu.github.io/post-images/1714106891407.png" alt="" loading="lazy"><br>
+<a href="https://blog.csdn.net/weixin_43891732/article/details/133672607">参考CSDN文章</a>解决<br>
+<img src="https://hellogu.github.io/post-images/1714106985888.png" alt="" loading="lazy"></p>
+<h2 id="2安装桌面参考kali官方文档">2.安装桌面<a href="https://www.kali.org/docs/wsl/win-kex/">参考Kali官方文档</a></h2>
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1714107490340.png" alt="" loading="lazy"></figure>
+<pre><code class="language-shell"># 启动
+cd ~
+kex
+kex stop # 关闭
+kex --win -s # 窗口模式
+kex --sl -s # 无缝模式
+kex --esm --sound # windows rdp 远程模式
+</code></pre>
+<h2 id="3卸载重装">3.卸载重装</h2>
+<p>先在windows应用管理中卸载kali-linux<br>
+然后在wsl中取消注册kali-linux</p>
+<pre><code>wsl --unregister kali-linux
+</code></pre>
+<p>最后在应用商店重装kali-linux(步骤1中的 Step.5 )</p>
+<h2 id="4wsl重启">4.WSL重启</h2>
+<pre><code class="language-shell">wsl -v -l #列出所有wsl发行版和状态
+wsl --shutdown  #立即终止所有正在运行的分发版和 WSL 2
+wsl --terminate kali-linux #终止指定发行版
+wsl -d kali-linux # 运行指定的分发版
+</code></pre>
+<h2 id="5一个诡异的问题">5.一个诡异的问题</h2>
+<p>在windows开始菜单中打开kali linux输入kex --win -s能正常启动kali桌面，在mobaxterm中连接kali后再输入kex --win -s，出现的kali桌面没有任务栏😂</p>
+<h2 id="6kex无缝模式打不开">6.kex无缝模式打不开</h2>
+<p><img src="https://hellogu.github.io/post-images/1714118815456.png" alt="" loading="lazy"><br>
+尝试了好久，没仔细看报错信息“Unable to find Win-KeX server (SL) running on host: 192.168.123.1”，为了让kali能科学上网，使用windows中的clash，我在.wslconfig中设置了networkingMode=mirrored，所以这里的host ip变成了windows中的网关ip(我的路由器地址)，正常情况host ip应该是windows的ip<br>
+<img src="https://hellogu.github.io/post-images/1714118999524.png" alt="" loading="lazy"></p>
+<h2 id="7设置中科大源">7.设置中科大源</h2>
+<pre><code class="language-shell">sudo sed -i '1i\deb https://mirrors.ustc.edu.cn/kali kali-rolling main non-free non-free-firmware contrib\n\
+deb-src https://mirrors.ustc.edu.cn/kali kali-rolling main non-free non-free-firmware contrib' /etc/apt/sources.list
+</code></pre>
+<h2 id="8设置wsl网络为镜像或桥接模式">8.设置WSL网络为镜像或桥接模式</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/659074950#:~:text=%E5%9C%A8%20%25USERPROFILE%25%20%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84.wslconfig%20%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%A6%82%E4%B8%8B%E9%85%8D%E7%BD%AE%20%5Bwsl2%5D%20networkingMode%3Dbridged%20vmSwitch%3DwslBridge%20%23,V2EX%20%EF%BC%8C%E5%A6%82%E4%B8%8B%E8%AE%BE%E7%BD%AE.wslconfig%20%E6%96%87%E4%BB%B6%EF%BC%9A%20%5Bexperimental%5D%20networkingMode%3Dmirrored%20dnsTunneling%3Dtrue%20firewall%3Dtrue%20autoProxy%3Dtrue">参考文档</a></p>
+<h2 id="9安装kali工具包">9.安装Kali工具包</h2>
+<p>安装标准工具包</p>
+<pre><code>sudo apt install -y kali-linux-default
+</code></pre>
+<p>安装大工具包（大概7 8G）</p>
+<pre><code>sudo apt install -y kali-linux-large
+</code></pre>
+<h2 id="10apt-install卡在setting-up-libc6amd64-237-14">10.apt install卡在Setting up libc6:amd64 (2.37-14) ...</h2>
+<p>安装hashcat时卡在了Setting up libc6，process 0%，笔记本风扇一直高转，重装WSL也没有解决，在github找到了<a href="https://github.com/microsoft/WSL/discussions/11097#discussioncomment-8356353">解决方法</a><br>
+<img src="https://hellogu.github.io/post-images/1714218105971.png" alt="" loading="lazy"></p>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#1%E5%AE%89%E8%A3%85">1.安装</a></li>
+<li><a href="#2%E5%AE%89%E8%A3%85%E6%A1%8C%E9%9D%A2%E5%8F%82%E8%80%83kali%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3">2.安装桌面参考Kali官方文档</a></li>
+<li><a href="#3%E5%8D%B8%E8%BD%BD%E9%87%8D%E8%A3%85">3.卸载重装</a></li>
+<li><a href="#4wsl%E9%87%8D%E5%90%AF">4.WSL重启</a></li>
+<li><a href="#5%E4%B8%80%E4%B8%AA%E8%AF%A1%E5%BC%82%E7%9A%84%E9%97%AE%E9%A2%98">5.一个诡异的问题</a></li>
+<li><a href="#6kex%E6%97%A0%E7%BC%9D%E6%A8%A1%E5%BC%8F%E6%89%93%E4%B8%8D%E5%BC%80">6.kex无缝模式打不开</a></li>
+<li><a href="#7%E8%AE%BE%E7%BD%AE%E4%B8%AD%E7%A7%91%E5%A4%A7%E6%BA%90">7.设置中科大源</a></li>
+<li><a href="#8%E8%AE%BE%E7%BD%AEwsl%E7%BD%91%E7%BB%9C%E4%B8%BA%E9%95%9C%E5%83%8F%E6%88%96%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F">8.设置WSL网络为镜像或桥接模式</a></li>
+<li><a href="#9%E5%AE%89%E8%A3%85kali%E5%B7%A5%E5%85%B7%E5%8C%85">9.安装Kali工具包</a></li>
+<li><a href="#10apt-install%E5%8D%A1%E5%9C%A8setting-up-libc6amd64-237-14">10.apt install卡在Setting up libc6:amd64 (2.37-14) ...</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/tai-qiang-la-geekhour/">
+              <span class="post-title">
+                太强辣， GeekHour课程笔记&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/wsl-an-zhuang-kali/" class="leancloud_visitors"
+              data-flag-title="WSL安装Kali">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

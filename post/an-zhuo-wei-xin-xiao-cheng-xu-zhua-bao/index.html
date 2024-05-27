@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>安卓微信小程序抓包 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="安卓微信小程序抓包 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="安卓微信小程序抓包" />
+  <meta property="og:url" content="https://hellogu.github.io/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="tag">搞机</a>
+                
+              </span>
+              <h1>安卓微信小程序抓包</h1>
+              <span class="meta">
+                Posted on
+                2024-04-13，3 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao.png" alt="封面图">
+          </img>
+          
+          <p>一直在使用的<a href="https://github.com/qd-today/qd/">qd签到框架</a>，最近发现某个微信小程序的自动签到任务出错了，看了一下，作者已经发布了新的签到模板，但是模板的设置由之前的只需要手机号变成了需要手机号和微信小程序的cookie了，记录一下</p>
+<!-- more -->
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1712992999066.png" alt="" loading="lazy"></figure>
+<ul>
+<li>iPhone的抓包比较简单，Appstore中搜索软件“stream”下载安装后信任证书就可以了</li>
+<li>安卓手机的话可以使用小黄鸟在手机上直接抓包，或者使用Burpsuite/fiddler/Charles等软件配置好代理后可以抓取http请求，抓取https请求的话需要配置证书<br>
+本文主要记录一下安卓上的实现方式</li>
+</ul>
+<h2 id="步骤">步骤</h2>
+<ol>
+<li>前置步骤：手机需要获取root权限并安装好<a href="https://github.com/HuskyDG/magisk-files/releases">magisk软件-kitsune版</a>,没有的话可以使用<a href="https://www.ghxi.com/ldmnq9.html">雷电模拟器</a>，参考文章<a href="https://www.duokaiya.com/786.html">雷电安装Magisk及Delta(狐狸面具)教程</a></li>
+<li>Burpsuite配置代理，导出证书</li>
+<li>使用openssl工具修改证书格式，导入手机</li>
+<li><s>手机安装movecert magisk模块，将导入的用户证书转移成系统证书</s>使用MT管理器直接将证书文件复制到系统证书目录</li>
+<li>手机配置局域网代理开始抓包</li>
+</ol>
+<h2 id="具体操作步骤">具体操作步骤</h2>
+<ol>
+<li>Burpsuite配置<br>
+Proxy-Options中点击Add添加一个Proxy监听器，端口随意，指定地址为电脑的网卡ip，OK保存<br>
+<img src="https://hellogu.github.io/post-images/1712994077878.png" alt="" loading="lazy"><br>
+浏览器打开设置的ip+端口号，点击右上角的CA Certificate导出证书<br>
+<img src="https://hellogu.github.io/post-images/1712994275835.png" alt="" loading="lazy"></li>
+<li>可以看到上一步中导出的证书为der格式，接下来需要使用openssl工具进行格式转换<br>
+<img src="https://hellogu.github.io/post-images/1712994428263.png" alt="" loading="lazy"><br>
+windows下使用openssl工具比较繁琐，需要下载解压配置环境变量，如果有linux环境的话会方便许多，因为大多数的linux发行版本都会自带openssl工具<br>
+<img src="https://hellogu.github.io/post-images/1712994608642.png" alt="" loading="lazy"><br>
+如下图，我已经将der证书放入/opt/目录下，接下来开始格式转换<pre><code class="language-shell">openssl x509 -inform der -in cacert.der -out cacert.pem # 将der证书转换为pem
+openssl x509 -subject_hash_old -in cacert.pem # 查看hash标识
+</code></pre>
+<img src="https://hellogu.github.io/post-images/1712995061395.png" alt="" loading="lazy"><br>
+把cacert.pem拷到本地，重命名为&quot;9a5ba575.0&quot;</li>
+<li>把证书文件&quot;9a5ba575.0&quot;复制到手机的系统证书目录，设置权限644<br>
+<img src="https://hellogu.github.io/post-images/1712998347954.jpg" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712998352051.jpg" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712998355439.jpg" alt="" loading="lazy"><br>
+不使用MT管理器的话，也可以直接adb push</li>
+</ol>
+<pre><code class="language-shell">adb push 9a5ba575.0 /system/etc/security/cacerts	# 移动
+adb shell chmod 644 /system/etc/security/cacerts/9a5ba575.0 #设置权限
+</code></pre>
+<ol start="4">
+<li>设置wlan代理<br>
+在手机的wlan设置中设置代理地址和端口为步骤1中的ip和端口<br>
+<img src="https://hellogu.github.io/post-images/1712998513098.jpg" alt="" loading="lazy"></li>
+<li>开始抓包<br>
+已经可以成功抓到手机的https请求和小程序中的https请求<br>
+<img src="https://hellogu.github.io/post-images/1712998777177.png" alt="" loading="lazy"><br>
+如果手机浏览器打开网页出现下面的提示就说明示证书没有设置好，检查步骤3<br>
+<img src="https://hellogu.github.io/post-images/1712998704056.jpg" alt="" loading="lazy"></li>
+</ol>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%AD%A5%E9%AA%A4">步骤</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4">具体操作步骤</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/jmeterinfluxdbprometheusgrafana-ya-ce-kuang-jia/">
+              <span class="post-title">
+                Jmeter+influxDB+prometheus+grafana压测框架&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/" class="leancloud_visitors"
+              data-flag-title="安卓微信小程序抓包">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

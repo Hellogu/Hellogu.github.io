@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>自动FOTA打包脚本 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="自动FOTA打包脚本 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="自动FOTA打包脚本" />
+  <meta property="og:url" content="https://hellogu.github.io/post/zi-dong-fota-da-bao-jiao-ben/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/y6iW6x2i4/" class="tag">工作</a>
+                
+              </span>
+              <h1>自动FOTA打包脚本</h1>
+              <span class="meta">
+                Posted on
+                2023-05-11，39 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/zi-dong-fota-da-bao-jiao-ben.png" alt="封面图">
+          </img>
+          
+          <p>充电桩共包含10多个模块，以往每次释放正式版本都需要测试人员手动重复打包10多次，通过该 shell 脚本，只需要输入选项即可对特定的模块或者所有模块进行打包操作，减少重复动作，简化版本发布流程</p>
+<!-- more -->
+<h2 id="已完成的功能">已完成的功能</h2>
+<ul>
+<li>提供菜单供测试人员选择常见的几种打包规则</li>
+<li>已实现所有ECU的打包功能</li>
+</ul>
+<h2 id="待优化的功能公司倒闭不用优化了">待优化的功能(公司倒闭，不用优化了🤡)</h2>
+<ul>
+<li>判断测试人员上传的bin和hex升级包是否有缺失并作出对应提示</li>
+<li>优化程序的判断逻辑，目前只是简单的将所有打包步骤写成方法，导致大量重复代码</li>
+</ul>
+<h2 id="程序运行演示">程序运行演示</h2>
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1712837700202.png" alt="" loading="lazy"></figure>
+<h2 id="具体实现">具体实现</h2>
+<pre><code class="language-shell">#!/bin/bash
+
+# 创建FotaPackageTool工作目录
+funCreateDir(){
+    if [ -d &quot;./FotaPackageTool&quot; ]; then
+        echo &quot;已有FotaPackageTool工作目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    else
+        mkdir FotaPackageTool
+        echo &quot;已创建FotaPackageTool工作目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    fi
+
+    if [ -d &quot;./FotaPackageTool/binfiles&quot; ]; then
+        echo &quot;已有FotaPackageTool/binfiles bin文件转存目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    else
+        mkdir FotaPackageTool/binfiles
+        echo &quot;已创建FotaPackageTool/binfiles bin文件转存目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    fi
+    if [ -d &quot;./FotaPackageTool/module_tmp&quot; ]; then
+        echo &quot;已有FotaPackageTool/module_tmp hex,s19文件转存目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    else
+        mkdir FotaPackageTool/module_tmp
+        echo &quot;已创建FotaPackageTool/module_tmp hex,s19文件转存目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    fi
+}
+
+# 清空module文件夹
+funClearModule(){
+    echo &quot;开始清空module目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    rm -rf ./module/*
+}
+
+# 清空./FotaPackageTool/binfiles中转文件夹
+funClearBinfiles(){
+    echo &quot;开始清空./FotaPackageTool/binfiles中转文件夹&quot; &gt;&gt; ./FotaPackageTool/package.log
+    rm -rf ./FotaPackageTool/binfiles/*
+}
+
+# 清空FotaPackageTool文件夹里的旧包
+funClearOldFotaPackage(){
+    echo &quot;开始清空module目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    rm -rf ./FotaPackageTool/*.gz
+}
+
+# 转移.bin文件到中转目录
+funMoveBin(){
+    mv ./module/*.bin ./FotaPackageTool/binfiles/
+}
+
+# 转移TBOX1.zip文件到中转目录
+funMoveZip(){
+    mv ./module/*.zip ./FotaPackageTool/binfiles/
+}
+
+# 转移TBox2.tar.gz文件到中转目录
+funMoveGz(){
+    mv ./module/*.tar.gz ./FotaPackageTool/binfiles/
+}
+
+# 转移HMI.tar文件到中转目录
+funMoveTar(){
+    mv ./module/*.tar ./FotaPackageTool/binfiles/
+}
+
+#更新release-time
+funUpdatePackageTime(){
+    echo &quot;开始填充release-time&quot; &gt;&gt; ./FotaPackageTool/package.log
+	# 获取当前时间
+	releasetime=$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)
+	# 替换文件中的引号内内容
+	sed -i 's/release-time = &quot;[^&quot;]*&quot;/release-time = &quot;'&quot;${releasetime}&quot;'&quot;/g' ./FotaPackageTool/config_fota.bak
+}
+
+#打包HMI
+funPackageHMI(){
+    echo &quot;开始打包HMI&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将TB2.tar.gz文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/hmi*.tar ./module/
+    # 将module文件夹里的以TB2*.tar.gz结尾的文件名存成变量
+    hmi_tar_file=$(cd ./module &amp;&amp; ls hmi*.tar)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/ad-video = \&quot;\&quot;/ad-video = \&quot;$hmi_tar_file\&quot;/g&quot; config_fota.txt
+    
+    # 执行打包命令并等待&quot;FOTA打包已创建成功&quot;的日志出现
+    echo &quot;执行FOTA打包命令&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_HMI.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_HMI.log; then
+			echo &quot;捕捉到ics_fota_HMI日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+    echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_HMI.tar.gz
+    unset latest_dir
+}
+
+# 打包TBOX1
+funPackageTBOX1(){
+    echo &quot;开始打包TBox1&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将MCU1.hex文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/MCU1*.hex ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成TBOX1.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_MCU.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_MCU.log; then
+			echo &quot;捕捉到ics_fota_MCU日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done	
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    mcu_bin_file1=$(cd ./module &amp;&amp; ls TBOX1*.bin)
+    # 将TBOX1的update.zip拷贝到module目录
+    cp ./FotaPackageTool/module_tmp/update.zip ./module
+	mpu_zip_file=$(cd ./module &amp;&amp; ls update.zip)
+    # 拷贝一次空的config_fota文件，写入MCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/TBOX1-MPU = \&quot;\&quot;/TBOX1-MPU = \&quot;$mpu_zip_file\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/TBOX1-MCU = \&quot;\&quot;/TBOX1-MCU = \&quot;$mcu_bin_file1\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+	echo &quot;开始指定.bin文件生成FOTA包&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_TBOX1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_TBOX1.log; then
+			echo &quot;捕捉到ics_fota_TBOX1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done	
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_TBOX1.tar.gz
+    unset latest_dir
+}
+
+# 打包TBOX2
+funPackageTBOX2(){
+    echo &quot;开始打包TBOX2&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将TB2.tar.gz文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/TB2*.tar.gz ./module/
+    # 将module文件夹里的以TB2*.tar.gz结尾的文件名存成变量
+    tbox2_tar_file=$(cd ./module &amp;&amp; ls TB2*.tar.gz)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/TBOX2-MPU = \&quot;\&quot;/TBOX2-MPU = \&quot;$tbox2_tar_file\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_TBOX2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_TBOX2.log; then
+			echo &quot;捕捉到ics_fota_TBOX2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_TBOX2.tar.gz
+    unset latest_dir
+}
+
+# 打包CCU
+funPackageCCU(){
+    echo &quot;开始打包CCU&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将ccu.s19文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/CCU*.s19 ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_CCU_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_CCU_1.log; then
+			echo &quot;捕捉到ics_fota_CCU_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    ccu_bin_file1=$(cd ./module &amp;&amp; ls CCU1*.bin)
+    ccu_bin_file2=$(cd ./module &amp;&amp; ls CCU2*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/CCU1 = \&quot;\&quot;/CCU1 = \&quot;$ccu_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/CCU2 = \&quot;\&quot;/CCU2 = \&quot;$ccu_bin_file2\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_CCU_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_CCU_2.log; then
+			echo &quot;捕捉到ics_fota_CCU_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_CCU.tar.gz
+    unset latest_dir
+}
+
+# 打包SECC
+funPackageSECC(){
+    echo &quot;开始打包SECC&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将secc.s19文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/SECC*.s19 ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_SECC_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_SECC_1.log; then
+			echo &quot;捕捉到ics_fota_SECC_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    secc_bin_file1=$(cd ./module &amp;&amp; ls SECC1*.bin)
+    secc_bin_file2=$(cd ./module &amp;&amp; ls SECC2*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/SECC1 = \&quot;\&quot;/SECC1 = \&quot;$secc_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/SECC2 = \&quot;\&quot;/SECC2 = \&quot;$secc_bin_file2\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_SECC_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_SECC_2.log; then
+			echo &quot;捕捉到ics_fota_SECC_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_SECC.tar.gz
+    unset latest_dir
+}
+
+# 打包HCU
+funPackageHCU(){
+    echo &quot;开始打包HCU&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将AFC.hex文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/AFC*.hex ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_HCU_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_HCU_1.log; then
+			echo &quot;捕捉到ics_fota_HCU_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    hcu_bin_file1=$(cd ./module &amp;&amp; ls HCU*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/HCU = \&quot;\&quot;/HCU = \&quot;$hcu_bin_file1\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_HCU_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_HCU_2.log; then
+			echo &quot;捕捉到ics_fota_HCU_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_HCU.tar.gz
+    unset latest_dir
+}
+
+# 打包DCDC和ACDC
+funPackagePM(){
+    echo &quot;开始打包DCDC和ACDC&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将ac*.hex和dc*.hex文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/AC*.hex ./module/
+    cp ./FotaPackageTool/module_tmp/DC*.hex ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_PM_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_PM_1.log; then
+			echo &quot;捕捉到ics_fota_PM_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    dc_bin_file1=$(cd ./module &amp;&amp; ls DCDC1*.bin)
+    dc_bin_file2=$(cd ./module &amp;&amp; ls DCDC2*.bin)
+    dc_bin_file3=$(cd ./module &amp;&amp; ls DCDC3*.bin)
+    dc_bin_file4=$(cd ./module &amp;&amp; ls DCDC4*.bin)
+    ac_bin_file1=$(cd ./module &amp;&amp; ls ACDC1*.bin)
+    ac_bin_file2=$(cd ./module &amp;&amp; ls ACDC2*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/DCCC1 = \&quot;\&quot;/DCCC1 = \&quot;$dc_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/DCCC2 = \&quot;\&quot;/DCCC2 = \&quot;$dc_bin_file2\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/DCCC3 = \&quot;\&quot;/DCCC3 = \&quot;$dc_bin_file3\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/DCCC4 = \&quot;\&quot;/DCCC4 = \&quot;$dc_bin_file4\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/ACCC1 = \&quot;\&quot;/ACCC1 = \&quot;$ac_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/ACCC2 = \&quot;\&quot;/ACCC2 = \&quot;$ac_bin_file2\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_PM_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_PM_2.log; then
+			echo &quot;捕捉到ics_fota_PM_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_PM.tar.gz
+    unset latest_dir
+}
+
+# 打包CMU
+funPackageCMU(){
+    echo &quot;开始打包CMU&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将cmu.hex文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/CMU*.hex ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_CMU_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_CMU_1.log; then
+			echo &quot;捕捉到ics_fota_CMU_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    cmu_bin_file1=$(cd ./module &amp;&amp; ls CMU1*.bin)
+    cmu_bin_file2=$(cd ./module &amp;&amp; ls CMU2*.bin)
+    cmu_bin_file3=$(cd ./module &amp;&amp; ls CMU3*.bin)
+    cmu_bin_file4=$(cd ./module &amp;&amp; ls CMU4*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/CMU1 = \&quot;\&quot;/CMU1 = \&quot;$cmu_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/CMU2 = \&quot;\&quot;/CMU2 = \&quot;$cmu_bin_file2\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/CMU3 = \&quot;\&quot;/CMU3 = \&quot;$cmu_bin_file3\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/CMU4 = \&quot;\&quot;/CMU4 = \&quot;$cmu_bin_file4\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_CMU_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_CMU_2.log; then
+			echo &quot;捕捉到ics_fota_CMU_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_CMU.tar.gz
+    unset latest_dir
+
+}
+
+# 打包BMS
+funPackageBMS(){
+    echo &quot;开始打包EMS&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将bmu.s19文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/BMU*.s19 ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_BMS_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_BMS_1.log; then
+			echo &quot;捕捉到ics_fota_BMS_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    bms_bin_file1=$(cd ./module &amp;&amp; ls BMS1*.bin)
+    bms_bin_file2=$(cd ./module &amp;&amp; ls BMS2*.bin)
+    # 拷贝一次空的config_fota文件，写入CCU版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/BMS1 = \&quot;\&quot;/BMS1 = \&quot;$bms_bin_file1\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/BMS2 = \&quot;\&quot;/BMS2 = \&quot;$bms_bin_file2\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_BMS_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_BMS_2.log; then
+			echo &quot;捕捉到ics_fota_BMS_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_BMS.tar.gz
+    unset latest_dir
+}
+
+# 打包EMS
+funPackageEMS(){
+    echo &quot;开始打包BMS&quot; &gt;&gt; ./FotaPackageTool/package.log
+    # 将bmu.s19文件拷贝到module文件夹
+    cp ./FotaPackageTool/module_tmp/EMS*.s19 ./module/
+    # 执行ics_fota命令
+    echo &quot;开始生成.bin文件&quot; &gt;&gt; ./FotaPackageTool/package.log
+    ./ics_fota -auto &gt;&gt; ./FotaPackageTool/ics_fota_EMS_1.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_EMS_1.log; then
+			echo &quot;捕捉到ics_fota_EMS_1日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 将module文件夹里的以.bin结尾的文件名存成变量
+    ems_bin_file1=$(cd ./module &amp;&amp; ls EMS*.bin)
+    # 拷贝一次空的config_fota文件，写入EMS版本的文件名
+    cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/EMS = \&quot;\&quot;/EMS = \&quot;$ems_bin_file1\&quot;/g&quot; config_fota.txt
+    # 生成bin文件后，指定config_fota文件第二次打包
+    ./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_EMS_2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_EMS_2.log; then
+			echo &quot;捕捉到ics_fota_EMS_2日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_EMS.tar.gz
+    unset latest_dir
+}
+
+# 打包所有
+funPackageALL(){
+    echo &quot;开始打包全部&quot; &gt;&gt; ./FotaPackageTool/package.log
+	# 将binfiles中的.bin和tar.gz和.zip拷贝到module目录
+	cp ./FotaPackageTool/binfiles/* ./module
+	# 拷贝一次空的config_fota文件，写入全部ECU版本的文件名
+	hmi_tar_file=$(cd ./module &amp;&amp; ls hmi*.tar)
+	mpu_zip_file=$(cd ./module &amp;&amp; ls update.zip)
+    mcu_bin_file1=$(cd ./module &amp;&amp; ls TBOX1*.bin)
+	tbox2_tar_file=$(cd ./module &amp;&amp; ls TB2*.tar.gz)
+	ccu_bin_file1=$(cd ./module &amp;&amp; ls CCU1*.bin)
+    ccu_bin_file2=$(cd ./module &amp;&amp; ls CCU2*.bin)
+	secc_bin_file1=$(cd ./module &amp;&amp; ls SECC1*.bin)
+    secc_bin_file2=$(cd ./module &amp;&amp; ls SECC2*.bin)
+	hcu_bin_file1=$(cd ./module &amp;&amp; ls HCU*.bin)
+	dc_bin_file1=$(cd ./module &amp;&amp; ls DCDC1*.bin)
+    dc_bin_file2=$(cd ./module &amp;&amp; ls DCDC2*.bin)
+    dc_bin_file3=$(cd ./module &amp;&amp; ls DCDC3*.bin)
+    dc_bin_file4=$(cd ./module &amp;&amp; ls DCDC4*.bin)
+    ac_bin_file1=$(cd ./module &amp;&amp; ls ACDC1*.bin)
+    ac_bin_file2=$(cd ./module &amp;&amp; ls ACDC2*.bin)
+	cmu_bin_file1=$(cd ./module &amp;&amp; ls CMU1*.bin)
+    cmu_bin_file2=$(cd ./module &amp;&amp; ls CMU2*.bin)
+    cmu_bin_file3=$(cd ./module &amp;&amp; ls CMU3*.bin)
+    cmu_bin_file4=$(cd ./module &amp;&amp; ls CMU4*.bin)
+	bms_bin_file1=$(cd ./module &amp;&amp; ls BMS1*.bin)
+    bms_bin_file2=$(cd ./module &amp;&amp; ls BMS2*.bin)
+	ems_bin_file1=$(cd ./module &amp;&amp; ls EMS*.bin)
+	cp ./FotaPackageTool/config_fota.bak config_fota.txt
+	sed -i &quot;s/ad-video = \&quot;\&quot;/ad-video = \&quot;$hmi_tar_file\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/TBOX1-MPU = \&quot;\&quot;/TBOX1-MPU = \&quot;$mpu_zip_file\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/TBOX1-MCU = \&quot;\&quot;/TBOX1-MCU = \&quot;$mcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/TBOX2-MPU = \&quot;\&quot;/TBOX2-MPU = \&quot;$tbox2_tar_file\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU1 = \&quot;\&quot;/CCU1 = \&quot;$ccu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU2 = \&quot;\&quot;/CCU2 = \&quot;$ccu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC1 = \&quot;\&quot;/SECC1 = \&quot;$secc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC2 = \&quot;\&quot;/SECC2 = \&quot;$secc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/HCU = \&quot;\&quot;/HCU = \&quot;$hcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC1 = \&quot;\&quot;/DCDC1 = \&quot;$dc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC2 = \&quot;\&quot;/DCDC2 = \&quot;$dc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC3 = \&quot;\&quot;/DCDC3 = \&quot;$dc_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC4 = \&quot;\&quot;/DCDC4 = \&quot;$dc_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC1 = \&quot;\&quot;/ACDC1 = \&quot;$ac_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC2 = \&quot;\&quot;/ACDC2 = \&quot;$ac_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU1 = \&quot;\&quot;/CMU1 = \&quot;$cmu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU2 = \&quot;\&quot;/CMU2 = \&quot;$cmu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU3 = \&quot;\&quot;/CMU3 = \&quot;$cmu_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU4 = \&quot;\&quot;/CMU4 = \&quot;$cmu_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS1 = \&quot;\&quot;/BMS1 = \&quot;$bms_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS2 = \&quot;\&quot;/BMS2 = \&quot;$bms_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/EMS = \&quot;\&quot;/EMS = \&quot;$ems_bin_file1\&quot;/g&quot; config_fota.txt
+	# 开始打包全部
+	./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_ALL.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_ALL.log; then
+			echo &quot;捕捉到ics_fota_ALL日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_ALL.tar.gz
+    unset latest_dir
+}
+
+# 打包所有（不含HMI和TBOX2）
+funPackageALLNoHMITB2(){
+    echo &quot;开始打包全部&quot; &gt;&gt; ./FotaPackageTool/package.log
+	# 将binfiles中的.bin和tar.gz和.zip拷贝到module目录
+	cp ./FotaPackageTool/binfiles/* ./module
+	# 拷贝一次空的config_fota文件，写入全部ECU版本的文件名
+	mpu_zip_file=$(cd ./module &amp;&amp; ls update.zip)
+    mcu_bin_file1=$(cd ./module &amp;&amp; ls TBOX1*.bin)
+	ccu_bin_file1=$(cd ./module &amp;&amp; ls CCU1*.bin)
+    ccu_bin_file2=$(cd ./module &amp;&amp; ls CCU2*.bin)
+	secc_bin_file1=$(cd ./module &amp;&amp; ls SECC1*.bin)
+    secc_bin_file2=$(cd ./module &amp;&amp; ls SECC2*.bin)
+	hcu_bin_file1=$(cd ./module &amp;&amp; ls HCU*.bin)
+	dc_bin_file1=$(cd ./module &amp;&amp; ls DCDC1*.bin)
+    dc_bin_file2=$(cd ./module &amp;&amp; ls DCDC2*.bin)
+    dc_bin_file3=$(cd ./module &amp;&amp; ls DCDC3*.bin)
+    dc_bin_file4=$(cd ./module &amp;&amp; ls DCDC4*.bin)
+    ac_bin_file1=$(cd ./module &amp;&amp; ls ACDC1*.bin)
+    ac_bin_file2=$(cd ./module &amp;&amp; ls ACDC2*.bin)
+	cmu_bin_file1=$(cd ./module &amp;&amp; ls CMU1*.bin)
+    cmu_bin_file2=$(cd ./module &amp;&amp; ls CMU2*.bin)
+    cmu_bin_file3=$(cd ./module &amp;&amp; ls CMU3*.bin)
+    cmu_bin_file4=$(cd ./module &amp;&amp; ls CMU4*.bin)
+	bms_bin_file1=$(cd ./module &amp;&amp; ls BMS1*.bin)
+    bms_bin_file2=$(cd ./module &amp;&amp; ls BMS2*.bin)
+	ems_bin_file1=$(cd ./module &amp;&amp; ls EMS*.bin)
+	cp ./FotaPackageTool/config_fota.bak config_fota.txt
+    sed -i &quot;s/TBOX1-MPU = \&quot;\&quot;/TBOX1-MPU = \&quot;$mpu_zip_file\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/TBOX1-MCU = \&quot;\&quot;/TBOX1-MCU = \&quot;$mcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU1 = \&quot;\&quot;/CCU1 = \&quot;$ccu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU2 = \&quot;\&quot;/CCU2 = \&quot;$ccu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC1 = \&quot;\&quot;/SECC1 = \&quot;$secc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC2 = \&quot;\&quot;/SECC2 = \&quot;$secc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/HCU = \&quot;\&quot;/HCU = \&quot;$hcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC1 = \&quot;\&quot;/DCDC1 = \&quot;$dc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC2 = \&quot;\&quot;/DCDC2 = \&quot;$dc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC3 = \&quot;\&quot;/DCDC3 = \&quot;$dc_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC4 = \&quot;\&quot;/DCDC4 = \&quot;$dc_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC1 = \&quot;\&quot;/ACDC1 = \&quot;$ac_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC2 = \&quot;\&quot;/ACDC2 = \&quot;$ac_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU1 = \&quot;\&quot;/CMU1 = \&quot;$cmu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU2 = \&quot;\&quot;/CMU2 = \&quot;$cmu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU3 = \&quot;\&quot;/CMU3 = \&quot;$cmu_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU4 = \&quot;\&quot;/CMU4 = \&quot;$cmu_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS1 = \&quot;\&quot;/BMS1 = \&quot;$bms_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS2 = \&quot;\&quot;/BMS2 = \&quot;$bms_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/EMS = \&quot;\&quot;/EMS = \&quot;$ems_bin_file1\&quot;/g&quot; config_fota.txt
+	# 开始打包全部
+	./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_ALL_NO_HMI_TB2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_ALL_NO_HMI_TB2.log; then
+			echo &quot;捕捉到ics_fota_ALL日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_ALL.tar.gz
+    unset latest_dir
+}
+
+# 打包所有(不含TBOX2)
+funPackageALLNOTB2(){
+    echo &quot;开始打包全部&quot; &gt;&gt; ./FotaPackageTool/package.log
+	# 将binfiles中的.bin和tar.gz和.zip拷贝到module目录
+	cp ./FotaPackageTool/binfiles/* ./module
+	# 拷贝一次空的config_fota文件，写入全部ECU版本的文件名
+	hmi_tar_file=$(cd ./module &amp;&amp; ls hmi*.tar)
+	mpu_zip_file=$(cd ./module &amp;&amp; ls update.zip)
+    mcu_bin_file1=$(cd ./module &amp;&amp; ls TBOX1*.bin)
+	tbox2_tar_file=$(cd ./module &amp;&amp; ls TB2*.tar.gz)
+	ccu_bin_file1=$(cd ./module &amp;&amp; ls CCU1*.bin)
+    ccu_bin_file2=$(cd ./module &amp;&amp; ls CCU2*.bin)
+	secc_bin_file1=$(cd ./module &amp;&amp; ls SECC1*.bin)
+    secc_bin_file2=$(cd ./module &amp;&amp; ls SECC2*.bin)
+	hcu_bin_file1=$(cd ./module &amp;&amp; ls HCU*.bin)
+	dc_bin_file1=$(cd ./module &amp;&amp; ls DCDC1*.bin)
+    dc_bin_file2=$(cd ./module &amp;&amp; ls DCDC2*.bin)
+    dc_bin_file3=$(cd ./module &amp;&amp; ls DCDC3*.bin)
+    dc_bin_file4=$(cd ./module &amp;&amp; ls DCDC4*.bin)
+    ac_bin_file1=$(cd ./module &amp;&amp; ls ACDC1*.bin)
+    ac_bin_file2=$(cd ./module &amp;&amp; ls ACDC2*.bin)
+	cmu_bin_file1=$(cd ./module &amp;&amp; ls CMU1*.bin)
+    cmu_bin_file2=$(cd ./module &amp;&amp; ls CMU2*.bin)
+    cmu_bin_file3=$(cd ./module &amp;&amp; ls CMU3*.bin)
+    cmu_bin_file4=$(cd ./module &amp;&amp; ls CMU4*.bin)
+	bms_bin_file1=$(cd ./module &amp;&amp; ls BMS1*.bin)
+    bms_bin_file2=$(cd ./module &amp;&amp; ls BMS2*.bin)
+	ems_bin_file1=$(cd ./module &amp;&amp; ls EMS*.bin)
+	cp ./FotaPackageTool/config_fota.bak config_fota.txt
+	sed -i &quot;s/ad-video = \&quot;\&quot;/ad-video = \&quot;$hmi_tar_file\&quot;/g&quot; config_fota.txt
+    sed -i &quot;s/TBOX1-MPU = \&quot;\&quot;/TBOX1-MPU = \&quot;$mpu_zip_file\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/TBOX1-MCU = \&quot;\&quot;/TBOX1-MCU = \&quot;$mcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU1 = \&quot;\&quot;/CCU1 = \&quot;$ccu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CCU2 = \&quot;\&quot;/CCU2 = \&quot;$ccu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC1 = \&quot;\&quot;/SECC1 = \&quot;$secc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/SECC2 = \&quot;\&quot;/SECC2 = \&quot;$secc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/HCU = \&quot;\&quot;/HCU = \&quot;$hcu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC1 = \&quot;\&quot;/DCDC1 = \&quot;$dc_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC2 = \&quot;\&quot;/DCDC2 = \&quot;$dc_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC3 = \&quot;\&quot;/DCDC3 = \&quot;$dc_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/DCDC4 = \&quot;\&quot;/DCDC4 = \&quot;$dc_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC1 = \&quot;\&quot;/ACDC1 = \&quot;$ac_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/ACDC2 = \&quot;\&quot;/ACDC2 = \&quot;$ac_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU1 = \&quot;\&quot;/CMU1 = \&quot;$cmu_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU2 = \&quot;\&quot;/CMU2 = \&quot;$cmu_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU3 = \&quot;\&quot;/CMU3 = \&quot;$cmu_bin_file3\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/CMU4 = \&quot;\&quot;/CMU4 = \&quot;$cmu_bin_file4\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS1 = \&quot;\&quot;/BMS1 = \&quot;$bms_bin_file1\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/BMS2 = \&quot;\&quot;/BMS2 = \&quot;$bms_bin_file2\&quot;/g&quot; config_fota.txt
+	sed -i &quot;s/EMS = \&quot;\&quot;/EMS = \&quot;$ems_bin_file1\&quot;/g&quot; config_fota.txt
+	# 开始打包全部
+	./ics_fota -auto -conf config_fota.txt &gt;&gt; ./FotaPackageTool/ics_fota_ALL_NO_TB2.log &amp;
+    pid=$!
+    waitFlag=0
+    while [ $waitFlag -eq 0 ]; do
+        if grep -q &quot;FOTA打包已创建成功&quot; ./FotaPackageTool/ics_fota_ALL_NO_TB2.log; then
+			echo &quot;捕捉到ics_fota_ALL日志中出现'FOTA打包已创建成功'&quot; &gt;&gt; ./FotaPackageTool/package.log
+            waitFlag=1
+        fi
+        sleep 1
+    done
+    # 获取OUTPUT文件夹中最新生成的文件夹名
+    latest_dir=$(ls -l OUTPUT/ |tail -n 1|awk '{print $9}')
+    # 获取config_fota.txt中的系统版本号
+    SW_Version=$(cat config_fota.txt |grep 系统版本号|awk '{print $3}'|sed 's/\&quot;//g')
+    # 将OUTPUT中最新的文件夹内的*.FOTA.tar.gz拷贝到FotaPackageOutput文件夹中并改名
+	echo &quot;将($latest_dir)中的FOTA包移动到FotaPackageTool目录&quot; &gt;&gt; ./FotaPackageTool/package.log
+    mv ./OUTPUT/&quot;$latest_dir&quot;/*.tar.gz ./FotaPackageTool/&quot;$SW_Version&quot;_ALL.tar.gz
+    unset latest_dir
+}
+# 入口
+funCreateDir
+echo &quot;请将HMI的.tar;TBOX1的.zip;TBOX2的.tar.gz;ACDC,DCDC,HCU,CMU,MCU的.hex;BMU,CCU,EMS,SECC的.s19上传至FotaPackageTool/module_tmp目录&quot;
+echo &quot;开始打包后module目录将会被清空！&quot;
+echo &quot;请输入  0:退出 1:开始打包全部 2.开始打包[不含HMI和TBOX2] 3.开始打包[不含TBOX2]&quot;
+
+read num
+
+if [ $num -eq 1 ]
+then
+    echo &quot;开始清理module目录和FotaPackageTool/binfiles中转目录&quot;
+	rm ./FotaPackageTool/*.log
+    funClearModule
+	funClearBinfiles
+	funClearOldFotaPackage
+	funUpdatePackageTime
+	echo &quot;开始打包HMI&quot;
+    funPackageHMI
+	funMoveTar
+	echo &quot;开始打包TBOX1&quot;
+    funPackageTBOX1
+	funMoveBin
+	funMoveZip
+	echo &quot;开始打包TBOX2&quot;
+	funClearModule
+	funPackageTBOX2
+	funMoveTar
+	echo &quot;开始打包CCU&quot;
+	funClearModule
+	funPackageCCU
+	funMoveBin
+	echo &quot;开始打包SECC&quot;
+	funClearModule
+	funPackageSECC
+	funMoveBin
+	echo &quot;开始打包HCU&quot;
+	funClearModule
+	funPackageHCU
+	funMoveBin
+	echo &quot;开始打包ACDC和DCDC&quot;
+	funClearModule
+	funPackagePM
+	funMoveBin
+	echo &quot;开始打包CMU&quot;
+	funClearModule
+	funPackageCMU
+	funMoveBin
+	echo &quot;开始打包BMS&quot;
+	funClearModule
+	funPackageBMS
+	funMoveBin
+	echo &quot;开始打包EMS&quot;
+	funClearModule
+	funPackageEMS
+	funMoveBin
+	echo &quot;开始打包全部&quot;
+	funClearModule
+	funPackageALL
+	mv /home/admin/ics_fota/FotaPackageTool/*.tar.gz /home/ICS/FTPHOME/
+	echo &quot;打包完成,日志文件在FotaPackageTool目录内,FOTA包已移动至FTP目录/home/ICS/FTPHOME/&quot;
+elif [ $num -eq 0 ]
+then
+    exit
+elif [ $num -eq 2 ]
+then
+echo &quot;开始清理module目录和FotaPackageTool/binfiles中转目录&quot;
+	rm ./FotaPackageTool/*.log
+    funClearModule
+	funClearBinfiles
+	funClearOldFotaPackage
+	funUpdatePackageTime
+	echo &quot;开始打包TBOX1&quot;
+    funPackageTBOX1
+	funMoveBin
+	funMoveZip
+	echo &quot;开始打包CCU&quot;
+	funClearModule
+	funPackageCCU
+	funMoveBin
+	echo &quot;开始打包SECC&quot;
+	funClearModule
+	funPackageSECC
+	funMoveBin
+	echo &quot;开始打包HCU&quot;
+	funClearModule
+	funPackageHCU
+	funMoveBin
+	echo &quot;开始打包ACDC和DCDC&quot;
+	funClearModule
+	funPackagePM
+	funMoveBin
+	echo &quot;开始打包CMU&quot;
+	funClearModule
+	funPackageCMU
+	funMoveBin
+	echo &quot;开始打包BMS&quot;
+	funClearModule
+	funPackageBMS
+	funMoveBin
+	echo &quot;开始打包EMS&quot;
+	funClearModule
+	funPackageEMS
+	funMoveBin
+	echo &quot;开始打包全部&quot;
+	funClearModule
+	funPackageALLNoHMITB2
+	mv /home/admin/ics_fota/FotaPackageTool/*.tar.gz /home/ICS/FTPHOME/
+	echo &quot;打包完成,日志文件在FotaPackageTool目录内,FOTA包已移动至FTP目录/home/ICS/FTPHOME/&quot;
+elif [ $num -eq 3 ]
+then
+echo &quot;开始清理module目录和FotaPackageTool/binfiles中转目录&quot;
+	rm ./FotaPackageTool/*.log
+    funClearModule
+	funClearBinfiles
+	funClearOldFotaPackage
+	funUpdatePackageTime
+	echo &quot;开始打包HMI&quot;
+    funPackageHMI
+	funMoveTar
+	echo &quot;开始打包TBOX1&quot;
+    funPackageTBOX1
+	funMoveBin
+	funMoveZip
+	echo &quot;开始打包CCU&quot;
+	funClearModule
+	funPackageCCU
+	funMoveBin
+	echo &quot;开始打包SECC&quot;
+	funClearModule
+	funPackageSECC
+	funMoveBin
+	echo &quot;开始打包HCU&quot;
+	funClearModule
+	funPackageHCU
+	funMoveBin
+	echo &quot;开始打包ACDC和DCDC&quot;
+	funClearModule
+	funPackagePM
+	funMoveBin
+	echo &quot;开始打包CMU&quot;
+	funClearModule
+	funPackageCMU
+	funMoveBin
+	echo &quot;开始打包BMS&quot;
+	funClearModule
+	funPackageBMS
+	funMoveBin
+	echo &quot;开始打包EMS&quot;
+	funClearModule
+	funPackageEMS
+	funMoveBin
+	echo &quot;开始打包全部&quot;
+	funClearModule
+	funPackageALLNOTB2
+	mv /home/admin/ics_fota/FotaPackageTool/*.tar.gz /home/ICS/FTPHOME/
+	echo &quot;打包完成,日志文件在FotaPackageTool目录内,FOTA包已移动至FTP目录/home/ICS/FTPHOME/&quot;
+else
+    echo &quot;输入有误&quot;
+fi
+</code></pre>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%B7%B2%E5%AE%8C%E6%88%90%E7%9A%84%E5%8A%9F%E8%83%BD">已完成的功能</a></li>
+<li><a href="#%E5%BE%85%E4%BC%98%E5%8C%96%E7%9A%84%E5%8A%9F%E8%83%BD%E5%85%AC%E5%8F%B8%E5%80%92%E9%97%AD%E4%B8%8D%E7%94%A8%E4%BC%98%E5%8C%96%E4%BA%86">待优化的功能(公司倒闭，不用优化了🤡)</a></li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%BC%94%E7%A4%BA">程序运行演示</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">具体实现</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/shi-yong-pyqt-kai-fa-yi-ge-gong-zuo-xiao-lu-gong-ju-tbox_log_tool/">
+              <span class="post-title">
+                使用pyqt开发一个工作效率工具TBox_Log_Tool&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/zi-dong-fota-da-bao-jiao-ben/" class="leancloud_visitors"
+              data-flag-title="自动FOTA打包脚本">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>使用pyqt开发一个工作效率工具TBox_Log_Tool | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="使用pyqt开发一个工作效率工具TBox_Log_Tool | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="使用pyqt开发一个工作效率工具TBox_Log_Tool" />
+  <meta property="og:url" content="https://hellogu.github.io/post/shi-yong-pyqt-kai-fa-yi-ge-gong-zuo-xiao-lu-gong-ju-tbox_log_tool/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/y6iW6x2i4/" class="tag">工作</a>
+                
+              </span>
+              <h1>使用pyqt开发一个工作效率工具TBox_Log_Tool</h1>
+              <span class="meta">
+                Posted on
+                2023-04-11，13 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/shi-yong-pyqt-kai-fa-yi-ge-gong-zuo-xiao-lu-gong-ju-tbox_log_tool.png" alt="封面图">
+          </img>
+          
+          <p>pyqt在实际工作中的应用</p>
+<!-- more -->
+<h2 id="以往手工测试时的低效点">以往手工测试时的低效点</h2>
+<ul>
+<li>每执行一条用例都需要打开三个CMD窗口分别记录 adb log、service log和监看OCPP log，每次执行完一条用例都需要重新在CMD窗口输入adb命令，非常繁琐</li>
+<li>每执行一条用例都需要记录以太网报文，并且在wireshark中点击另存以太网报文</li>
+<li>测试设备在1L车间中，冬冷夏热，测试时需要频繁进出空调间去操作设备的HMI，插拔设备的SIM卡</li>
+</ul>
+<h2 id="通过该工具改进了以上的三个点">通过该工具，改进了以上的三个点</h2>
+<ul>
+<li>只需要简单的点击就可以同时记录3种 log</li>
+<li>支持对开发板射频模块的打开和关闭</li>
+<li>集成了开源项目scrcpy，使测试人员在电脑上实现对充电桩操作界面的远程控制</li>
+</ul>
+<h2 id="待优化的功能公司倒闭不用优化了">待优化的功能(公司倒闭，不用优化了🤡)</h2>
+<ul>
+<li>使用python多线程对adb设备的意外断开做处理</li>
+</ul>
+<h2 id="工具效果展示与功能讲解">工具效果展示与功能讲解</h2>
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1712836738440.png" alt="" loading="lazy"></figure>
+<ul>
+<li>第一行控制测试设备（TBox）的连接状态，如连接了多个adb设备，可在下拉列表中选择TBox设备</li>
+<li>第二行是用serial库来对TBox发送指定的AT命令来启用/禁用射频模块，达到使TBox在线/离线的效果</li>
+<li>第二行的“连接HMI”使用scrcpy工具来对HMI进行投屏操作，方便测试人员在电脑上操作和观察HMI</li>
+<li>第三行日志名中一般填入用例编号，如果用例多次执行，程序会自动在新的log文件名中加入“_1”、“_2”以此类推</li>
+<li>第四行使用Tshark列出电脑上所有的网卡，勾选“录制以太网报文”后再点击“开始录制”会同步记录wireshark报文</li>
+<li>第四行的“弹出ocpplog”点击后会弹出ocpplog的实时监看窗口</li>
+<li>使用pyinstaller对程序进行打包后即可生成exe可执行文件</li>
+</ul>
+<!-- more -->
+<h2 id="具体实现">具体实现</h2>
+<pre><code class="language-python">import sys
+import time
+import os
+import subprocess
+import serial as ser
+import configparser
+import datetime
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout, QComboBox, QMessageBox,QCheckBox
+
+class LogRecorder(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.devices = []
+        self.device = None
+        self.case_name = None
+        self.logcat_process = None
+        self.ocpplog_process = None
+        self.init_ui()
+
+    def init_ui(self):
+        self.setWindowTitle(&quot;TBox Log Tool&quot;)
+        # 创建控件
+        device_label = QLabel(&quot;ADB设备:&quot;)
+        self.device_combo = QComboBox()
+        self.refresh_button = QPushButton(&quot;刷新&quot;)
+        self.connect_button = QPushButton(&quot;连接&quot;)
+        self.disconnect_button = QPushButton(&quot;断开&quot;)
+        self.disconnect_button.setEnabled(False)
+        case_label = QLabel(&quot;日志名:&quot;)
+        self.case_edit = QLineEdit()
+        self.case_edit.setEnabled(False)
+        self.record_button = QPushButton(&quot;开始录制&quot;)
+        self.record_button.setEnabled(False)
+        self.stop_button = QPushButton(&quot;停止录制&quot;)
+        self.stop_button.setEnabled(False)
+        atport_label = QLabel(&quot;AT COM口:&quot;)
+        self.atport_edit = QLineEdit()
+        self.offline_button = QPushButton(&quot;关闭射频模块&quot;)
+        self.online_button = QPushButton(&quot;打开射频模块&quot;)
+        self.online_button.setEnabled(False)
+        self.hmi_button = QPushButton(&quot;连接HMI&quot;)
+        net_label = QLabel(&quot;选择网口:&quot;)
+        self.net_device_combo = QComboBox()
+        self.net_capture_enable = QCheckBox(&quot;录制以太网报文&quot;)
+        self.ocpplog_button = QPushButton(&quot;弹出ocpplog&quot;)
+        self.ocpplog_button.setEnabled(False)
+
+
+
+        # 布局控件
+        device_layout = QHBoxLayout()
+        device_layout.addWidget(device_label)
+        device_layout.addWidget(self.device_combo)
+        device_layout.addWidget(self.refresh_button)
+        device_layout.addWidget(self.connect_button)
+        device_layout.addWidget(self.disconnect_button)
+        offline_layout = QHBoxLayout()
+        offline_layout.addWidget(atport_label)
+        offline_layout.addWidget(self.atport_edit)
+        offline_layout.addWidget(self.offline_button)
+        offline_layout.addWidget(self.online_button)
+        offline_layout.addWidget(self.hmi_button)
+        case_layout = QHBoxLayout()
+        case_layout.addWidget(case_label)
+        case_layout.addWidget(self.case_edit)
+        case_layout.addWidget(self.record_button)
+        case_layout.addWidget(self.stop_button)
+        netcapure_layout = QHBoxLayout()
+        netcapure_layout.addWidget(net_label)
+        netcapure_layout.addWidget(self.net_device_combo)
+        netcapure_layout.addWidget(self.net_capture_enable)
+        netcapure_layout.addWidget(self.ocpplog_button)
+        main_layout = QVBoxLayout()
+        main_layout.addLayout(device_layout)
+        main_layout.addLayout(offline_layout)
+        main_layout.addLayout(case_layout)
+        main_layout.addLayout(netcapure_layout)
+        self.setLayout(main_layout)
+
+        # 绑定事件
+        self.refresh_button.clicked.connect(self.refresh_devices)
+        self.connect_button.clicked.connect(self.connect_device)
+        self.disconnect_button.clicked.connect(self.disconnect_device)
+        self.offline_button.clicked.connect(self.offline)
+        self.online_button.clicked.connect(self.online)
+        self.hmi_button.clicked.connect(self.connect_hmi)
+        self.record_button.clicked.connect(self.start_record)
+        self.stop_button.clicked.connect(self.stop_record)
+        self.ocpplog_button.clicked.connect(self.open_ocpp)
+
+        # 初始化设备列表
+        self.refresh_devices()
+        self.refresh_net_devices()
+        # print(self.initInterfaceDict())
+
+    def getConfigValue(self, name): # 获取config.ini中的配置 当前配置项只有一个tshark路径
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
+        value = self.config.get(&quot;config&quot;, name)
+        return value
+
+    def refresh_devices(self):
+        # 刷新设备列表
+        devices = self.get_devices()
+        if devices != self.devices:
+            self.devices = devices
+            self.device_combo.clear()
+            self.device_combo.addItems(self.devices)
+
+    def get_devices(self):
+        # 获取设备列表
+        devices = []
+        try:
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            else:
+                startupinfo = None
+            output = subprocess.check_output([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;devices&quot;],startupinfo=startupinfo).decode(&quot;utf-8&quot;)
+            for line in output.splitlines()[1:]:
+                if line.strip():
+                    devices.append(line.split(&quot;\t&quot;)[0])
+        except subprocess.CalledProcessError:
+            pass
+        return devices
+
+    def refresh_net_devices(self):
+        # 刷新设备列表
+        net_devices = self.initInterfaceDict()
+        # print(net_devices)
+        # if net_devices != self.initInterfaceDict:
+        self.net_devices = net_devices
+        #     self.net_device_combo.clear()
+        self.net_device_combo.addItems(self.net_devices)
+        #     print(net_devices)
+
+    def initInterfaceDict(self):
+        # 获取接口列表
+        tshark_path = self.getConfigValue(&quot;tshark_path&quot;)
+        cmd = f'{tshark_path} -D'
+        # cmd = '&quot;C:/Program Files/Wireshark/tshark.exe&quot; -D'
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        interfaceList = result.stdout.decode().strip().split('\r\n')
+        # print(interfaceList)
+
+        interfaceList_dict = {}
+        for item in interfaceList:
+            key = item.split('(', 1)[1].strip(') ')  # 获取括号中的内容
+            value_list = [s for s in item.split() if s.startswith('\\')]
+            if value_list:  # 检查列表是否为空
+                value = value_list[0]  # 获取以&quot;\\Device\\&quot;开头的字符串
+                interfaceList_dict[key] = value
+
+        # print(interfaceList_dict)
+        return interfaceList_dict
+
+    def connect_device(self):
+        # 连接设备
+        self.device = self.device_combo.currentText()
+        if not self.device:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;请选择一个设备&quot;)
+            return
+        try:
+            # subprocess.check_output([&quot;adb&quot;, &quot;-s&quot;, self.device, &quot;shell&quot;, &quot;echo&quot;, &quot;connected&quot;])
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            else:
+                startupinfo = None
+            name = &quot;root&quot;
+            password = &quot;*************&quot;
+            self.process = subprocess.Popen([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;-s&quot;, self.device, &quot;shell&quot;], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,startupinfo=startupinfo,
+                                       encoding=&quot;utf-8&quot;, universal_newlines=True)
+            # self.wait()
+            # print(self.stdout.read())
+            # print(&quot;输入用户名&quot;)
+            time.sleep(3)
+            self.process.stdin.write(name + '\n')
+            self.process.stdin.flush()
+            # # print(&quot;输入密码&quot;)
+            time.sleep(3)
+            self.process.stdin.write(password + '\n')
+            self.process.stdin.flush()
+            self.connect_button.setEnabled(False)
+            self.disconnect_button.setEnabled(True)
+            self.record_button.setEnabled(True)
+            self.case_edit.setEnabled(True)
+            self.ocpplog_button.setEnabled(True)
+        except subprocess.CalledProcessError:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;连接设备失败&quot;)
+
+
+    def disconnect_device(self):
+        # 断开设备
+        self.device = None
+        self.connect_button.setEnabled(True)
+        self.stop_button.setEnabled(False)
+        self.stop_record()
+        self.case_edit.setEnabled(False)
+        self.record_button.setEnabled(False)
+        self.ocpplog_button.setEnabled(False)
+        self.disconnect_button.setEnabled(False)
+
+    def offline(self):
+        # 获取端口和波特率输入框中的值
+        self.port = self.atport_edit.text()
+        if not self.port:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;请输入AT COM口如‘COM19’&quot;)
+            return
+
+        # 执行离线命令
+        ser_obj = ser.Serial(port=self.port, baudrate=115200)
+        ser_obj.write(&quot;AT+CFUN=4\r&quot;.encode())
+        self.online_button.setEnabled(True)
+        self.offline_button.setEnabled(False)
+
+    def online(self):
+        # 获取端口和波特率输入框中的值
+        self.port = self.atport_edit.text()
+        if not self.port:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;请输入AT COM口如‘COM19’&quot;)
+            return
+
+        # 执行在线命令
+        ser_obj = ser.Serial(port=self.port, baudrate=115200)
+        ser_obj.write(&quot;AT+CFUN=1\r&quot;.encode())
+        self.online_button.setEnabled(False)
+        self.offline_button.setEnabled(True)
+
+    def connect_hmi(self):
+        # 检查设备状态
+        if os.name == 'nt':
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+        else:
+            startupinfo = None
+        hmi_devices = self.get_devices()
+        print(hmi_devices)
+        if '192.168.1.80:5555' in hmi_devices:
+            # 设备已连接，直接启动scrcpy
+            cmd = '.\scrcpy-win64-v1.25\scrcpy.exe -s 192.168.1.80 --always-on-top --max-size 640 --lock-video-orientation=2'
+            self.process = subprocess.Popen(cmd, shell=True, encoding=&quot;utf-8&quot;,startupinfo=startupinfo)
+        else:
+            # 设备未连接，先连接设备再启动scrcpy
+            # cmd = &quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;connect&quot; &quot;192.168.1.80&quot;
+            self.process = subprocess.Popen([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;connect&quot;, &quot;192.168.1.80&quot;], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=&quot;utf-8&quot;, universal_newlines=True,startupinfo=startupinfo)
+            time.sleep(5)
+            cmd = '.\scrcpy-win64-v1.25\scrcpy.exe -s 192.168.1.80 --always-on-top --max-size 640 --lock-video-orientation=2'
+            self.process = subprocess.Popen(cmd, shell=True, encoding=&quot;utf-8&quot;,startupinfo=startupinfo)
+
+    def start_record(self):
+        # 开始录制
+        self.case_name = self.case_edit.text().strip()
+        if not self.case_name:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;请输入日志名&quot;)
+            return
+        if self.logcat_process or self.ocpplog_process:
+            QMessageBox.warning(self, &quot;警告&quot;, &quot;正在录制中&quot;)
+            return
+        # 创建以当前日期为名字的文件夹
+        current_date = datetime.datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+        self.log_folder = os.path.join(os.getcwd(), &quot;Log&quot;, current_date)
+        if not os.path.exists(self.log_folder):
+            os.makedirs(self.log_folder)
+
+        logcat_file = os.path.join(self.log_folder, self.get_logcat_file())
+        ocpplog_file = os.path.join(self.log_folder, self.get_ocpplog_file())
+        netlog_file = os.path.join(self.log_folder, self.get_netlog_file())
+
+        if os.name == 'nt':
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+        else:
+            startupinfo = None
+        self.logcat_process = subprocess.Popen([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;-s&quot;, self.device, &quot;logcat&quot;, &quot;-s&quot;, &quot;TBoxService &quot;], stdout=open(logcat_file, &quot;wb&quot;), startupinfo=startupinfo)
+        self.ocpplog_process = subprocess.Popen([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;-s&quot;, self.device, &quot;shell&quot;, &quot;/oemapp/bin/ocppCli&quot;], stdout=open(ocpplog_file, &quot;wb&quot;), startupinfo=startupinfo)
+        if self.net_capture_enable.isChecked():
+            # print(&quot;开始录制以太网报文&quot;)
+            net_dict = self.initInterfaceDict()
+            net_device = self.net_device_combo.currentText()
+            net_id = net_dict[net_device]
+            tshark_path = self.getConfigValue(&quot;tshark_path&quot;)
+            cmd = f'{tshark_path} -i {net_id} -w &quot;{netlog_file}&quot;'
+            print(cmd)
+            self.net_capture_process = subprocess.Popen(cmd,startupinfo=startupinfo)
+        self.record_button.setEnabled(False)
+        self.stop_button.setEnabled(True)
+        self.case_edit.setEnabled(False)
+        self.disconnect_button.setEnabled(False)
+
+    def stop_record(self):
+        # 停止录制
+        if self.logcat_process:
+            self.logcat_process.terminate()
+            self.logcat_process.wait()
+            self.logcat_process = None
+        if self.ocpplog_process:
+            self.ocpplog_process.terminate()
+            self.ocpplog_process.wait()
+            self.ocpplog_process = None
+        if self.net_capture_process:
+            self.net_capture_process.terminate()
+            self.net_capture_process.wait()
+            self.net_capture_process = None
+        self.record_button.setEnabled(True)
+        self.stop_button.setEnabled(False)
+        self.case_edit.setEnabled(True)
+        self.disconnect_button.setEnabled(True)
+
+    def get_logcat_file(self):
+        # 获取logcat文件名
+        base_name = &quot;logcat_&quot; + self.case_name + &quot;.log&quot;
+        index = 1
+        while os.path.exists(os.path.join(self.log_folder, base_name)):
+            base_name = &quot;logcat_&quot; + self.case_name + &quot;_&quot; + str(index) + &quot;.log&quot;
+            index += 1
+        return base_name
+
+    def get_ocpplog_file(self):
+        # 获取ocpplog文件名
+        base_name = &quot;ocpplog_&quot; + self.case_name + &quot;.log&quot;
+        index = 1
+        while os.path.exists(os.path.join(self.log_folder, base_name)):
+            base_name = &quot;ocpplog_&quot; + self.case_name + &quot;_&quot; + str(index) + &quot;.log&quot;
+            index += 1
+        return base_name
+
+    def get_netlog_file(self):
+        # 获取netlog文件名
+        base_name = &quot;netlog_&quot; + self.case_name + &quot;.pcapng&quot;
+        index = 1
+        while os.path.exists(os.path.join(self.log_folder, base_name)):
+            base_name = &quot;netlog_&quot; + self.case_name + &quot;_&quot; + str(index) + &quot;.pcapng&quot;
+            index += 1
+        return base_name
+
+    def open_ocpp(self):
+        # os.system(' start cmd.exe /K  ./scrcpy-win64-v1.25/adb.exe -s b286526e shell /oemapp/bin/ocppCli')
+        self.device = self.device_combo.currentText()
+        self.process = subprocess.Popen([&quot;./scrcpy-win64-v1.25/adb.exe&quot;, &quot;-s&quot;, self.device, &quot;shell&quot;, &quot;/oemapp/bin/ocppCli&quot;])
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    recorder = LogRecorder()
+    recorder.show()
+    sys.exit(app.exec_())
+</code></pre>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%BB%A5%E5%BE%80%E6%89%8B%E5%B7%A5%E6%B5%8B%E8%AF%95%E6%97%B6%E7%9A%84%E4%BD%8E%E6%95%88%E7%82%B9">以往手工测试时的低效点</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87%E8%AF%A5%E5%B7%A5%E5%85%B7%E6%94%B9%E8%BF%9B%E4%BA%86%E4%BB%A5%E4%B8%8A%E7%9A%84%E4%B8%89%E4%B8%AA%E7%82%B9">通过该工具，改进了以上的三个点</a></li>
+<li><a href="#%E5%BE%85%E4%BC%98%E5%8C%96%E7%9A%84%E5%8A%9F%E8%83%BD%E5%85%AC%E5%8F%B8%E5%80%92%E9%97%AD%E4%B8%8D%E7%94%A8%E4%BC%98%E5%8C%96%E4%BA%86">待优化的功能(公司倒闭，不用优化了🤡)</a></li>
+<li><a href="#%E5%B7%A5%E5%85%B7%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA%E4%B8%8E%E5%8A%9F%E8%83%BD%E8%AE%B2%E8%A7%A3">工具效果展示与功能讲解</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">具体实现</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/ling-sui-bei-wang-lu/">
+              <span class="post-title">
+                Win10 Wsl2安装Ubuntu&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/shi-yong-pyqt-kai-fa-yi-ge-gong-zuo-xiao-lu-gong-ju-tbox_log_tool/" class="leancloud_visitors"
+              data-flag-title="使用pyqt开发一个工作效率工具TBox_Log_Tool">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

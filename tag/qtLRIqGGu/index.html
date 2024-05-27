@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>搞机 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="搞机 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 其他页面（archives、tags、about...）Header -->
+            <div class="sub-site-heading">
+              <h1 class="tag-tl">#搞机</h1>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/hua-sheng-ke-ddns-geng-xin-shell-jiao-ben/">
+              <h2 class="post-title">
+                花生壳DDNS更新shell脚本
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>前天给京东云路由器刷了这个DWRT，开启了clash，然后DDNS插件获取的ip就变成了代理ip，导致无法正常外网访问我局域网中部署的服务，DDNS插件设置从wan口获取ip一直无法保存，也不知道是插件的BUG还是固件的BUG，没实力排错，只能换个法子实现😅<br>
+具体实现办法：在不走代理的服务器上定时运行shell来更新DDNS，并且为了贯彻“能用鼠标点就不要敲键盘”的思想，定时用1panel面板的定时任务实现</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2024-05-22</span>
+              <span>,</span>
+              <span class="post-stats">3 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/hua-sheng-ke-ddns-geng-xin-shell-jiao-ben/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/hua-sheng-ke-ddns-geng-xin-shell-jiao-ben.jpg')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+          <a href="https://hellogu.github.io/tag/9YwyGaFz3b/" class="post-tag">
+            linux
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/">
+              <h2 class="post-title">
+                在机顶盒上部署一套k3s集群
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>捡垃圾好多年，攒了好多个机顶盒，都可以运行armbian系统，但每个盒子的磁盘都只有8G，用来跑docker服务没几个就磁盘满了，老是要我来规划哪些个服务跑在哪个机顶盒上，还要在路由器上设置端口转发，十分得不优雅，急需部署一套集群来自动编排这些docker应用，并且便宜的机顶盒如Q5仅需50元一个，以后资源不够了加机也很方便，还能挂载局域网中的共享存储给集群使用，非常的现代化</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2024-05-22</span>
+              <span>,</span>
+              <span class="post-stats">7 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun.jpg')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+          <a href="https://hellogu.github.io/tag/9YwyGaFz3b/" class="post-tag">
+            linux
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/jing-dong-yun-lu-you-qi-shua-qwrt/">
+              <h2 class="post-title">
+                京东云路由器AX1800Pro(亚瑟)刷QWRT
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>苏州联通开始封禁家庭宽带PCDN了，3月底给我上传限制到5M，微信视频都发不出去，联系了装机小哥签了个保证书才给我恢复😰还好我的几台京东云路由器早已回本，既然不能赚京豆了，就直接刷第三方系统吧。</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2024-05-20</span>
+              <span>,</span>
+              <span class="post-stats">4 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/jing-dong-yun-lu-you-qi-shua-qwrt/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/jing-dong-yun-lu-you-qi-shua-qwrt.jpg')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/xiao-ai-yin-xiang-jie-ru-chatgpt/">
+              <h2 class="post-title">
+                小爱音箱接入chatgpt
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>这是一个在github上看到的开源项目，点击<a href="https://github.com/yihong0618/xiaogpt">项目地址</a>给作者一个大大的Star吧</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2024-04-30</span>
+              <span>,</span>
+              <span class="post-stats">2 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/xiao-ai-yin-xiang-jie-ru-chatgpt/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/xiao-ai-yin-xiang-jie-ru-chatgpt.png')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/">
+              <h2 class="post-title">
+                安卓微信小程序抓包
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>一直在使用的<a href="https://github.com/qd-today/qd/">qd签到框架</a>，最近发现某个微信小程序的自动签到任务出错了，看了一下，作者已经发布了新的签到模板，但是模板的设置由之前的只需要手机号变成了需要手机号和微信小程序的cookie了，记录一下</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2024-04-13</span>
+              <span>,</span>
+              <span class="post-stats">3 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao.png')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 每行的总容器 -->
+      <div class="post-row-container">
+        <!-- 第0层；标题 -->
+        <div class="title-floor">
+          <div class="post-title-container">
+            
+            <a href="https://hellogu.github.io/post/fei-xun-t1-shua-ji-ji-lu/">
+              <h2 class="post-title">
+                斐讯T1刷机记录
+              </h2>
+            </a>
+          </div>
+        </div>
+        <!-- 第一层：包含文章描述、时间信息、封面图 -->
+        <div class="post-row-first-floor">
+          <div class="post-preview">
+            <h3 class="post-subtitle">
+              <p>不知不觉已经上了4车斐讯路由器了，前天老爸打电话来说家里的天猫魔盒越来越卡了，立马京东下单又上一车斐讯盒子。</p>
+
+            </h3>
+            <p class="post-meta">
+              <span class="time">2018-07-02</span>
+              <span>,</span>
+              <span class="post-stats">2 min read</span>
+            </p>
+          </div>
+          
+          <a href="https://hellogu.github.io/post/fei-xun-t1-shua-ji-ji-lu/" class="post-feature-image" style="background-image: url('https://hellogu.github.io/post-images/fei-xun-t1-shua-ji-ji-lu.jpg')">
+          </a>
+          
+        </div>
+        <!-- 第二层：下划线、占位标签、tags -->
+        <div class="post-row-sec-floor">
+          <hr>
+          <div class="clearfix"></div>
+          
+          <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="post-tag">
+            搞机
+          </a>
+          
+        </div>
+      </div>
+      </>
+      
+      <!-- 
+      
+      <a class="btn btn-primary float-right" href="https://hellogu.github.io/tag/qtLRIqGGu/page/2">下一页 &#9654;</a>
+       -->
+    </div>
+  </div>
+</div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+    <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+</body>
+
+</html>

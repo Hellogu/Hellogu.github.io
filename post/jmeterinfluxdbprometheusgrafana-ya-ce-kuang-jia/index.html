@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>Jmeter+influxDB+prometheus+grafana压测框架 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="Jmeter+influxDB+prometheus+grafana压测框架 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="Jmeter+influxDB+prometheus+grafana压测框架" />
+  <meta property="og:url" content="https://hellogu.github.io/post/jmeterinfluxdbprometheusgrafana-ya-ce-kuang-jia/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/y6iW6x2i4/" class="tag">工作</a>
+                
+              </span>
+              <h1>Jmeter+influxDB+prometheus+grafana压测框架</h1>
+              <span class="meta">
+                Posted on
+                2024-04-12，4 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/jmeterinfluxdbprometheusgrafana-ya-ce-kuang-jia.png" alt="封面图">
+          </img>
+          
+          <p>压测监控平台从0到1</p>
+<!-- more -->
+<h1 id="实现原理">实现原理</h1>
+<p>influxDB存储jmeter结果数据，prometheus采集服务器数据，通过grafana展示</p>
+<h1 id="框架优点">框架优点</h1>
+<p>可通过grafana面板实时监控服务器状态，压测完成后可通过两个数据面板定位问题</p>
+<h1 id="搭建过程">搭建过程</h1>
+<h2 id="windows下安装influxdb与grafana">windows下安装influxDB与grafana</h2>
+<h3 id="1influxdb安装">1.InfluxDB安装</h3>
+<p>进入<a href="https://portal.influxdata.com/downloads/">InfluxDB官网</a>下载influxDB<br>
+解压后如图<br>
+<img src="https://hellogu.github.io/post-images/1712891169336.png" alt="" loading="lazy"><br>
+双击influxd.exe启动数据库<br>
+<img src="https://hellogu.github.io/post-images/1712891241041.png" alt="" loading="lazy"><br>
+双击influx.exe进入influxdb客户端，进入后创建名字为“jmeter”的数据库</p>
+<pre><code>create database jmeter
+show databases
+</code></pre>
+<h3 id="2grafana安装">2.grafana安装</h3>
+<p>进入<a href="https://grafana.com/grafana/download">grafana官网</a>下载安装包<br>
+解压后如图<br>
+<img src="https://hellogu.github.io/post-images/1712891346558.png" alt="" loading="lazy"><br>
+解压后进入bin目录点击grafana-server.exe启动<br>
+<img src="https://hellogu.github.io/post-images/1712891435932.png" alt="" loading="lazy"><br>
+启动后浏览器输入http://127.0.0.1:3000/ 登录grafana后台，默认用户密码都是admin<br>
+<img src="https://hellogu.github.io/post-images/1712891483678.png" alt="" loading="lazy"><br>
+添加数据源，选择InfluxDB<br>
+<img src="https://hellogu.github.io/post-images/1712895763948.png" alt="" loading="lazy"><br>
+填入数据库地址，数据库名<br>
+<img src="https://hellogu.github.io/post-images/1712895811413.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712895829702.png" alt="" loading="lazy"><br>
+添加完成后<br>
+<img src="https://hellogu.github.io/post-images/1712895902648.png" alt="" loading="lazy"><br>
+然后进入Dashboard页面，点击import导入面板，可以直接输入ID导入<br>
+<img src="https://hellogu.github.io/post-images/1712895998227.png" alt="" loading="lazy"></p>
+<h3 id="3jmeter配置">3.jmeter配置</h3>
+<p>添加“监听器 -&gt; 后端监听器”<br>
+配置后端监听器，把jmeter的结果存入influxdb数据库<br>
+<img src="https://hellogu.github.io/post-images/1712896110785.png" alt="" loading="lazy"></p>
+<h3 id="4监控服务器prometheus配置">4.监控服务器prometheus配置</h3>
+<p>从 https://prometheus.io/download/ 下载相应版本，放到到服务器上。（我这边部署在了WSL中）<br>
+<img src="https://hellogu.github.io/post-images/1712896315021.png" alt="" loading="lazy"></p>
+<pre><code># 解压安装包
+tar -zxvf prometheus-2.51.1.linux-amd64.tar.gz -C /usr/local/
+# 进入解压目录进行重命名
+cd /usr/local/
+mv prometheus-2.38.0.linux-amd64/ prometheus
+# 进入prometheus目录下
+cd /usr/local/prometheus/
+# 编写启动脚本
+echo ' ./prometheus --config.file=./prometheus.yml &amp;' &gt; start.sh &amp;&amp; chmod +x start.sh
+# 编写停止脚本
+echo ' pkill prometheus' &gt; stop.sh &amp;&amp; chmod +x stop.sh
+#  确认是否正常启动（默认端口9090）
+[root@localhost prometheus]# netstat -ntlp | grep 9090
+tcp6       0      0 :::9090                 :::*                    LISTEN      31022/./prometheus
+[root@localhost prometheus]#
+</code></pre>
+<p>浏览器访问：ip:9090 访问到prometheus的主界面(我这边是WSL部署的，所以是个172.的桥接的ip)<br>
+<img src="https://hellogu.github.io/post-images/1712896532410.png" alt="" loading="lazy"><br>
+点击Status—&gt;Targets—&gt;就可以看到监控的本机（下面的192.168.123.157就是被压测的应用部署的服务器）<br>
+<img src="https://hellogu.github.io/post-images/1712896616103.png" alt="" loading="lazy"></p>
+<h3 id="5被测服务器部署node_exporter组件">5.被测服务器部署node_exporter组件</h3>
+<p>服务器ip：192.168.123.157<br>
+<a href="https://prometheus.io/download/">下载node_exporter组件</a>拷贝到服务器上解压<br>
+<img src="https://hellogu.github.io/post-images/1712896964884.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712896918869.png" alt="" loading="lazy"></p>
+<pre><code># 解压安装包
+tar -zxvf node_exporter-1.7.0.linux-arm64.tar.gz -C /usr/local/
+# 进入解压目录进行重命名
+cd /usr/local/
+mv node_exporter-1.2.2.linux-amd64/ node_exporter
+# 进入node_exporter目录下
+cd /usr/local/node_exporter/
+# 编写启动脚本
+echo ' ./node_exporter &amp;' &gt; start.sh &amp;&amp; chmod +x start.sh
+# 编写停止脚本
+echo ' pkill node_exporter ' &gt; stop.sh &amp;&amp; chmod +x stop.sh
+#  确认是否正常启动（默认端口9100）
+[root@localhost node_exporter]# netstat -ntlp | grep 9100
+tcp6       0      0 :::9100                 :::*                    LISTEN      31115/./node_export
+[root@localhost node_exporter]#
+</code></pre>
+<p>浏览器打开http://192.168.123.157:9100/ 查看node_exporter是否正常<br>
+<img src="https://hellogu.github.io/post-images/1712897148448.png" alt="" loading="lazy"></p>
+<h3 id="6配置prometheusyml在监控机prometheus中添加被监控机">6.配置prometheus.yml(在监控机prometheus中添加被监控机)</h3>
+<p>在prometheus.yml最后一行添加被监控机的ip<br>
+<img src="https://hellogu.github.io/post-images/1712897096101.png" alt="" loading="lazy"><br>
+回到prometheus的web管理页查看target中的被监控机状态<br>
+<img src="https://hellogu.github.io/post-images/1712897241677.png" alt="" loading="lazy"></p>
+<h3 id="7grafana导入被监控机状态监控面板">7.grafana导入被监控机状态监控面板</h3>
+<p>和步骤2中的添加数据源、导入面板操作类似<br>
+<img src="https://hellogu.github.io/post-images/1712897348776.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712897373320.png" alt="" loading="lazy"><br>
+导入面板的ID为8919<br>
+导入后查看Dashboard<br>
+<img src="https://hellogu.github.io/post-images/1712897450496.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712897415613.png" alt="" loading="lazy"></p>
+<p>参考文章：<br>
+<a href="https://cloud.tencent.com/developer/article/1809013">JMeter+Grafana+Influxdb搭建可视化性能测试监控平台</a><br>
+<a href="https://blog.csdn.net/weixin_43909790/article/details/126562341">0基础搭建Prometheus+Grafana监控服务器CPU、磁盘、内存等信息</a></p>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li><a href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">实现原理</a></li>
+<li><a href="#%E6%A1%86%E6%9E%B6%E4%BC%98%E7%82%B9">框架优点</a></li>
+<li><a href="#%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B">搭建过程</a>
+<ul>
+<li><a href="#windows%E4%B8%8B%E5%AE%89%E8%A3%85influxdb%E4%B8%8Egrafana">windows下安装influxDB与grafana</a>
+<ul>
+<li><a href="#1influxdb%E5%AE%89%E8%A3%85">1.InfluxDB安装</a></li>
+<li><a href="#2grafana%E5%AE%89%E8%A3%85">2.grafana安装</a></li>
+<li><a href="#3jmeter%E9%85%8D%E7%BD%AE">3.jmeter配置</a></li>
+<li><a href="#4%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%99%A8prometheus%E9%85%8D%E7%BD%AE">4.监控服务器prometheus配置</a></li>
+<li><a href="#5%E8%A2%AB%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2node_exporter%E7%BB%84%E4%BB%B6">5.被测服务器部署node_exporter组件</a></li>
+<li><a href="#6%E9%85%8D%E7%BD%AEprometheusyml%E5%9C%A8%E7%9B%91%E6%8E%A7%E6%9C%BAprometheus%E4%B8%AD%E6%B7%BB%E5%8A%A0%E8%A2%AB%E7%9B%91%E6%8E%A7%E6%9C%BA">6.配置prometheus.yml(在监控机prometheus中添加被监控机)</a></li>
+<li><a href="#7grafana%E5%AF%BC%E5%85%A5%E8%A2%AB%E7%9B%91%E6%8E%A7%E6%9C%BA%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF">7.grafana导入被监控机状态监控面板</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/zi-dong-fota-da-bao-jiao-ben/">
+              <span class="post-title">
+                自动FOTA打包脚本&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/jmeterinfluxdbprometheusgrafana-ya-ce-kuang-jia/" class="leancloud_visitors"
+              data-flag-title="Jmeter+influxDB+prometheus+grafana压测框架">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

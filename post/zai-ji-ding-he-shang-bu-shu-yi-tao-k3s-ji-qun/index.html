@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>在机顶盒上部署一套k3s集群 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="在机顶盒上部署一套k3s集群 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="在机顶盒上部署一套k3s集群" />
+  <meta property="og:url" content="https://hellogu.github.io/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="tag">搞机</a>
+                
+                <a href="https://hellogu.github.io/tag/9YwyGaFz3b/" class="tag">linux</a>
+                
+              </span>
+              <h1>在机顶盒上部署一套k3s集群</h1>
+              <span class="meta">
+                Posted on
+                2024-05-22，7 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun.jpg" alt="封面图">
+          </img>
+          
+          <p>捡垃圾好多年，攒了好多个机顶盒，都可以运行armbian系统，但每个盒子的磁盘都只有8G，用来跑docker服务没几个就磁盘满了，老是要我来规划哪些个服务跑在哪个机顶盒上，还要在路由器上设置端口转发，十分得不优雅，急需部署一套集群来自动编排这些docker应用，并且便宜的机顶盒如Q5仅需50元一个，以后资源不够了加机也很方便，还能挂载局域网中的共享存储给集群使用，非常的现代化</p>
+<!-- more -->
+<table>
+<thead>
+<tr>
+<th>hostname</th>
+<th>IP</th>
+<th>型号</th>
+<th>CPU内存配置</th>
+<th>磁盘</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k3s-master-octupos</td>
+<td>192.168.123.3</td>
+<td>章鱼星球</td>
+<td>8C2G</td>
+<td>8G</td>
+<td>Master</td>
+</tr>
+<tr>
+<td>k3s-worker-n1</td>
+<td>192.168.123.4</td>
+<td>斐讯N1</td>
+<td>4C2G</td>
+<td>8G</td>
+<td>Worker</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1系统准备">1.系统准备</h3>
+<ol>
+<li>下载章鱼星球和斐讯N1的armbian镜像<a href="https://github.com/ophub/amlogic-s9xxx-armbian/releases">ophub/amlogic-s9xxx-armbian</a></li>
+<li>使用balenaEtcher写入U盘</li>
+<li>机顶盒插入U盘，上电开机，如果机顶盒中已经是armbian或openwrt系统会默认从U盘启动，如果是安卓系统，可以安装Reboot to liberelec（需要root权限）从U盘启动</li>
+<li>执行命令刷入armbian系统<code>armbian-install</code>，刷写完输入命令<code>poweroff</code>关机，拔出U盘重新上电</li>
+</ol>
+<h3 id="2部署k3s-master节点">2.部署k3s Master节点</h3>
+<p>参考<a href="https://geekhour.net/2023/12/23/kubernetes/">geekhour的教程</a></p>
+<pre><code class="language-shell"># 安装k3s的master节点
+curl -sfL https://get.k3s.io | sh -
+# 如果安装失败可以使用ranher的镜像源来安装
+curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -
+# 安装完成后查看集群状态
+kubectl get nodes
+# 查看token，在下一步创建worker节点时需要认证
+cat /var/lib/rancher/k3s/server/node-token
+</code></pre>
+<h3 id="3部署worker节点">3.部署worker节点</h3>
+<ol>
+<li>需要用到token和Master节点的ip，在geekhour的教程中部署了多个worker节点，所以将token和ip写入到了环境变量中，利用for循环给多个worker进行部署，我暂时只有一个worker，直接输入token和ip也可以</li>
+</ol>
+<pre><code class="language-shell">export MASTER_IP=192.168.123.3
+export TOKEN=部署Master节点时获取的token
+bash -c &quot;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn K3S_URL=\&quot;https://$MASTER_IP:6443\&quot; K3S_TOKEN=\&quot;$TOKEN\&quot; sh -&quot;
+</code></pre>
+<p>此时再去Master节点上执行<code>kubectl get node</code>可以看到集群一主一从两个节点已经ready<br>
+<img src="https://hellogu.github.io/post-images/1716350549738.png" alt="" loading="lazy"><br>
+但是在worker节点上执行<code>kubectl get node</code>出现了报错<br>
+<img src="https://hellogu.github.io/post-images/1716356350789.png" alt="" loading="lazy"></p>
+<h3 id="4解决worker节点无法执行kubectl命令">4.解决worker节点无法执行kubectl命令</h3>
+<p>询问chatgpt，给出的解决办法如下：</p>
+<ol>
+<li>确认worker节点的kubectl配置<code>kubectl config view</code><br>
+<img src="https://hellogu.github.io/post-images/1716356646936.png" alt="" loading="lazy"></li>
+<li>从<code>kubectl config view</code>的输出来看，worker节点的kubectl配置为空，需要从master节点获取一份正确的配置，在 K3s 集群中，默认的 Kubeconfig 文件位于 /etc/rancher/k3s/k3s.yaml。我需要将这个文件复制到你的用户目录中，并设置 KUBECONFIG 环境变量指向它。</li>
+<li>复制k3s.yaml到worker节点<pre><code class="language-shell">mkdir -p ~/.kube
+scp root@192.168.123.3:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+</code></pre>
+</li>
+<li>修改文件权限<br>
+确保kubectl可以访问这个文件，设置正确的文件权限：<pre><code class="language-shell">chmod 600 ~/.kube/config
+</code></pre>
+</li>
+<li>设置KUBECONFIG环境变量<br>
+确保你的KUBECONFIG环境变量指向这个配置文件。你可以在终端中临时设置它，或者将其添加到你的shell配置文件（例如.bashrc或.zshrc）中：<pre><code class="language-shell">export KUBECONFIG=$HOME/.kube/config
+</code></pre>
+如果你希望这个设置在每次登录时都生效，可以将上面的命令添加到你的shell配置文件中。例如，编辑.bashrc文件：<pre><code class="language-shell">echo 'export KUBECONFIG=$HOME/.kube/config' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+</li>
+<li>验证配置<br>
+现在你可以验证kubectl是否已经正确配置并能够连接到你的K3s集群。<br>
+<img src="https://hellogu.github.io/post-images/1716357140625.png" alt="" loading="lazy"></li>
+</ol>
+<h3 id="5安装helm">5.安装Helm</h3>
+<p>Helm安装在任何可以访问 Kubernetes 集群的机器上，不一定要安装在Master节点上<br>
+执行命令<code>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</code><br>
+<img src="https://hellogu.github.io/post-images/1716357242375.png" alt="" loading="lazy"></p>
+<h3 id="6安装cert-manager">6.安装cert-manager</h3>
+<pre><code class="language-shell"># 添加Helm Chart仓库
+helm repo add &quot;stable&quot; &quot;https://charts.helm.sh/stable&quot; --force-update
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+# 定义一个Kubernetes名称空间，Chart创建的资源应该安装在这个名称空间中：cattle-system
+kubectl create namespace cattle-system
+# 安装cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.crds.yaml
+# Add the Jetstack Helm repository
+helm repo add jetstack https://charts.jetstack.io
+# Update your local Helm chart repository cache
+helm repo update
+# Install the cert-manager Helm chart
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1716357938076.png" alt="" loading="lazy"><br>
+master点也报了这个连接超时的错，再把步骤4中chatgpt给出的解决办法在master节点也操作一遍</p>
+<pre><code class="language-shell">mkdir -p $HOME/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+export KUBECONFIG=$HOME/.kube/config
+echo 'export KUBECONFIG=$HOME/.kube/config' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<p>重新安装cert-manager</p>
+<pre><code class="language-shell">helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
+</code></pre>
+<p>又报了个等待超时的错，但是查看cert-manager命名空间下的资源，都挺健康，可能是由于机顶盒性能太弱起来的太慢导致超时，所以我直接进行下一步<br>
+<img src="https://hellogu.github.io/post-images/1716359217200.png" alt="" loading="lazy"><br>
+重装完k3s 1.28版本后又试了一遍，应该确实是因为pod启动得慢了<br>
+<img src="https://hellogu.github.io/post-images/1716362515368.png" alt="" loading="lazy"></p>
+<h3 id="7安装rancher">7.安装Rancher</h3>
+<pre><code class="language-shell">helm install rancher rancher-stable/rancher --namespace cattle-system --set hostname=rancher.tianfeng.com
+</code></pre>
+<p>蚌埠住了😰竟然要版本低于1.29.0<br>
+<img src="https://hellogu.github.io/post-images/1716359334802.png" alt="" loading="lazy"></p>
+<h3 id="8卸载k3s重装低版本">8.卸载k3s，重装低版本</h3>
+<p>按照<a href="https://docs.rancher.cn/docs/k3s/installation/uninstall/_index">官方文档</a>来操作<br>
+<img src="https://hellogu.github.io/post-images/1716359991238.png" alt="" loading="lazy"><br>
+可以先停止k3s服务再进行卸载</p>
+<pre><code class="language-shell">sudo systemctl stop k3s
+sudo systemctl disable k3s
+</code></pre>
+<p>重新安装低于1.29的k3s，这里我使用最后一个1.28版本<br>
+<img src="https://hellogu.github.io/post-images/1716360253239.png" alt="" loading="lazy"></p>
+<pre><code class="language-shell"># 重新安装master节点的k3s
+curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn INSTALL_K3S_VERSION=v1.28.9+k3s1 sh -
+</code></pre>
+<p>worker节点：</p>
+<pre><code class="language-shell">export MASTER_IP=192.168.123.3
+export TOKEN=部署Master节点时获取的token
+bash -c &quot;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn INSTALL_K3S_VERSION=v1.28.9+k3s1 K3S_URL=\&quot;https://$MASTER_IP:6443\&quot; K3S_TOKEN=\&quot;$TOKEN\&quot; sh -&quot;
+</code></pre>
+<h3 id="9使用portainer">9使用portainer</h3>
+<p>机顶盒性能太弱，部署rancher一直无法正常启动，换成轻量化的portainer来管理<br>
+<img src="https://hellogu.github.io/post-images/1716366897534.png" alt="" loading="lazy"></p>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#1%E7%B3%BB%E7%BB%9F%E5%87%86%E5%A4%87">1.系统准备</a></li>
+<li><a href="#2%E9%83%A8%E7%BD%B2k3s-master%E8%8A%82%E7%82%B9">2.部署k3s Master节点</a></li>
+<li><a href="#3%E9%83%A8%E7%BD%B2worker%E8%8A%82%E7%82%B9">3.部署worker节点</a></li>
+<li><a href="#4%E8%A7%A3%E5%86%B3worker%E8%8A%82%E7%82%B9%E6%97%A0%E6%B3%95%E6%89%A7%E8%A1%8Ckubectl%E5%91%BD%E4%BB%A4">4.解决worker节点无法执行kubectl命令</a></li>
+<li><a href="#5%E5%AE%89%E8%A3%85helm">5.安装Helm</a></li>
+<li><a href="#6%E5%AE%89%E8%A3%85cert-manager">6.安装cert-manager</a></li>
+<li><a href="#7%E5%AE%89%E8%A3%85rancher">7.安装Rancher</a></li>
+<li><a href="#8%E5%8D%B8%E8%BD%BDk3s%E9%87%8D%E8%A3%85%E4%BD%8E%E7%89%88%E6%9C%AC">8.卸载k3s，重装低版本</a></li>
+<li><a href="#9%E4%BD%BF%E7%94%A8portainer">9使用portainer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/jing-dong-yun-lu-you-qi-shua-qwrt/">
+              <span class="post-title">
+                京东云路由器AX1800Pro(亚瑟)刷QWRT&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/zai-ji-ding-he-shang-bu-shu-yi-tao-k3s-ji-qun/" class="leancloud_visitors"
+              data-flag-title="在机顶盒上部署一套k3s集群">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>

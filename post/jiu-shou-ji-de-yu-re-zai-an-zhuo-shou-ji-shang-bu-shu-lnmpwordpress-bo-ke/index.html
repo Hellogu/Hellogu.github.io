@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta name="referrer" content="never">
+<meta name="keywords" content="">
+<meta name="description" content="欢迎访问[顾师傅的网络备忘录]的个人博客">
+<meta name="author" content="kveln">
+<title>旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客 | 顾师傅的网络备忘录</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link
+  href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+  rel='stylesheet' type='text/css'>
+<link rel="alternate" type="application/rss+xml" title="旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客 | 顾师傅的网络备忘录 » Feed"
+  href="https://hellogu.github.io/atom.xml">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/androidstudio.min.css">
+<link href="https://hellogu.github.io/styles/main.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+  <meta property="og:description" content="旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客" />
+  <meta property="og:url" content="https://hellogu.github.io/post/jiu-shou-ji-de-yu-re-zai-an-zhuo-shou-ji-shang-bu-shu-lnmpwordpress-bo-ke/" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="顾师傅的网络备忘录" />
+  <!-- <script src="../assets/styles/scripts/tocScript.js"></script> -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <!-- Page Header -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="https://hellogu.github.io">顾师傅的网络备忘录</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/">首页</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/archives">归档</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/tags">标签</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          
+          <a class="nav-link" href="/post/about">关于</a>
+          
+        </li>
+        
+        <li class="nav-item">
+          <div class="gridea-search-container">
+            <form id="gridea-search-form" style="position: relative" data-update="1716798625800"
+              action="/search/index.html">
+              <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+              <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="masthead" style="background-image: url('https://hellogu.github.io/media/images/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- 没Title为其他页面Header -->
+          
+            <!-- 没Title并且有headerType为Post：文章Header -->
+            <div class="post-heading">
+              <span class="tags">
+                
+                <a href="https://hellogu.github.io/tag/qtLRIqGGu/" class="tag">搞机</a>
+                
+                <a href="https://hellogu.github.io/tag/9YwyGaFz3b/" class="tag">linux</a>
+                
+              </span>
+              <h1>旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客</h1>
+              <span class="meta">
+                Posted on
+                2018-02-12，9 min read
+              </span>
+            </div>
+          
+        
+      </div>
+    </div>
+  </div>
+</header>
+  <!-- Post Content -->
+  <article id="post-content-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto post-content-container">
+          
+          <img class="post-feature-header-image" src="https://hellogu.github.io/post-images/jiu-shou-ji-de-yu-re-zai-an-zhuo-shou-ji-shang-bu-shu-lnmpwordpress-bo-ke.webp" alt="封面图">
+          </img>
+          
+          <p>旧手机的瞎折腾</p>
+<!-- more -->
+<h1 id="硬件安卓手机一台已root">硬件：安卓手机一台（已root）</h1>
+<h1 id="软件工具busybox-linuxdeploy-juicessh-securecrt">软件工具：BusyBox linuxdeploy JuiceSSH secureCRT</h1>
+<h1 id="思路">思路：</h1>
+<p>1.搭建linux环境--&gt;在安卓手机上安装BusyBox、linuxdeploy、JuiceSSH<br>
+2.部署LNMP--&gt;在linux环境中使用oneinstack工具一键部署LNMP<br>
+3.放置wordpress--&gt;将wordpress框架放到部署好的LNMP环境中<br>
+4.外网访问--&gt;使用ngrok工具，让你的博客能从外网访问</p>
+<h1 id="正文">正文：</h1>
+<p>自从屏幕坏掉，这个moto x style已经在我抽屉里躺了一年半了，本来拆散了裱起来以示情怀的，偶然间得知还有做成博客这么一种用法便行动了起来，废话不多说，开始了。</p>
+<h2 id="第一步">第一步：</h2>
+<p>1.在已经root过的手机上安装BusyBox、linuxdeploy、JuiceSSH这三个APP<br>
+<img src="https://hellogu.github.io/post-images/1712888135837.png" alt="" loading="lazy"><br>
+2.点开BusyBox，点击安装，弹出root权限确认点击授予。<br>
+<img src="https://hellogu.github.io/post-images/1712888152062.png" alt="" loading="lazy"><br>
+3.点开linux deploy，先点击右下角的设置，设置好要安装的linux版本，设置完之后，点击右上角的三个点点，点击安装。（我的手机屏幕一半黑了，所以是连着电脑控制着操作的）<br>
+具体linux版本和安装的设置可以参考我的：</p>
+<pre><code>容器类型：chroot 
+发行版GUN/Linux：Debian 
+架构：armhf  #最初我选的是arm64，后来想装花生壳的时候发现linux版的x86和x64都不能安装，而适配给树莓派的armhf版可以安装。
+发行版GUN/Linux版本：stretch
+源地址：[中科大的镜像源](https://mirrors.ustc.edu.cn/debian/)
+安装类型：目录
+安装路径：保持默认
+用户名：自定义
+用户密码：自定义
+特权用户：root
+DNS：自动
+</code></pre>
+<p>再下面的勾选启用SSH就行了，挂载Android上的资源以后空间不够了可以给SD卡分区一下挂上去，图形界面想用的也可以启用，基本用不着。<br>
+<img src="https://hellogu.github.io/post-images/1712888327628.png" alt="" loading="lazy"><br>
+家里联通50M，20分钟不到就部署完了，部署完点击左下角的启动，正常启动完，没报错啥的话，linux就已经装好了，点开另一个软件JuiceSSH，输入ip（这里的192.168.123.233是我随便输的，具体的局域网ip，linuxdeploy这个app打开，显示在最上面一行的就是，要连着家里的wifi，自己的电脑才能连的上，连4G网是连不上的），端口号：22，用户名密码是刚刚自己设置的，不过手机上字太小，不好操作我们用电脑上的SecureCRT或者putty、xshell连接这台手机的局域网IP来操作，这里我用的是secureCRT。<br>
+<img src="https://hellogu.github.io/post-images/1712888364587.webp" alt="" loading="lazy"><br>
+点击连接，输入完密码之后就进入了它的命令行界面。<br>
+先设置一下root用户的密码<br>
+sudo passwd root #输入回车后再输入两遍密码<br>
+<img src="https://hellogu.github.io/post-images/1712888395361.png" alt="" loading="lazy"><br>
+su #输入后回车，再输入刚刚设置的密码，切换成root用户<br>
+apt-get install vim #安装vim编辑器，需要确认的地方输个Y<br>
+vim /etc/ssh/sshd_config #编辑ssh设置文件，打开root用户的远程登陆权限<br>
+找到PermitRootLogin 这一样，按Shift+I键进入编辑，将PermitRootLogin前面的“#”删掉，后面的改成yes，如图<br>
+<img src="https://hellogu.github.io/post-images/1712888425274.png" alt="" loading="lazy"><br>
+然后按一下Esc键，输入:wq!后回车，注意有个冒号。<br>
+好了，接下来就直接用root用户登陆，不用先登陆admin再切换到root了<br>
+<img src="https://hellogu.github.io/post-images/1712888445522.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712888454569.png" alt="" loading="lazy"><br>
+接下来安装nginx，php，mysql，可以一次性输入安装命令</p>
+<pre><code>apt-getinstall nginx php7.0-fpm mysql-server-5.7 php7.0-mysql
+</code></pre>
+<p>装完之后启动服务</p>
+<pre><code>service nginx start
+service php7.0-fpm start
+service mysql start #我这里MySQL启动失败，输入 usermod -a -G aid_net_raw mysql后再次输入启动mysql的命令
+</code></pre>
+<p>然后配置一下nginx的配置文件</p>
+<pre><code>vim/etc/nginx/sites-available/default #修改两个，增加一个index.php格式支持，把关于php7.0-fpm的注释去掉
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712888528481.png" alt="" loading="lazy"><br>
+装一下防火墙并打开80和3306端口</p>
+<pre><code>apt-get install ufw #安装防火墙
+ufw allow 3306 #打开3306端口 数据库远程
+ufw allow 80 #打开80端口
+</code></pre>
+<p>然后重启一下服务</p>
+<pre><code>service nginx restart
+services php7.0-fpm restart
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712889320475.png" alt="" loading="lazy"><br>
+然后电脑打开浏览器访问 http://（你的手机的局域网ip）比如192.168.123.233 查看是否有welcome to  nginx！的提示<br>
+<img src="https://hellogu.github.io/post-images/1712889337883.png" alt="" loading="lazy"><br>
+然后下载wordpress上传到linux系统的 /var/www/html 路径下（这个路径在上面修改的那个文件里也可以改）,进入wordperss官网，找到下载Wordpress按钮 ，先放到本地电脑的随便哪里，比如说D:/Download这里<br>
+<img src="https://hellogu.github.io/post-images/1712889377719.png" alt="" loading="lazy"><br>
+下载.zip或者.tar.gz格式的都可以，只是一会儿解压的命令不同<br>
+点击SecureCRT左上角的File--&gt;Connect SFTP session，右边会出来一个sftp窗口<br>
+<img src="https://hellogu.github.io/post-images/1712889399393.png" alt="" loading="lazy"><br>
+在stfp窗口输入</p>
+<pre><code>cd /opt/ #表示进入linux的opt目录
+lcd D:/Download/ #表示进入本计算机的D:/Download （刚刚存放wordpress压缩包的路径）
+put wordpress-4.9.1-zh_CN.tar.gz #将此压缩包由本地推送到linux的指定目录
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712889433728.png" alt="" loading="lazy"><br>
+然后回到左边的linux命令行</p>
+<pre><code>cd /var/www/html/ #进入nginx配置文件中定义的网站根目录
+ls #可以输入ls查看一下有没有拷进来
+tar zxf wordpress-4.9.1-zh_CN.tar.gz  # 解压命令，这里我解压过了就不演示了，CTRL+C键是取消当前命令
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712889463319.png" alt="" loading="lazy"><br>
+然后浏览器访问http://192.168.123.233（你的手机的局域网ip）/wordpress  能看到wordpress的安装引导，我已经安装过了，就网上截了个图给大家看一下<br>
+<img src="https://hellogu.github.io/post-images/1712889484037.webp" alt="" loading="lazy"><br>
+接下来先不急着安装，我们得先准备这个页面上所说的数据库用户信息<br>
+<code>mysql -u root</code> # 以root用户登陆mysql数据库，这里之前apt-get install mysql的过程中如果让设置了密码，就要输入 mysql -u root -p，然后回车后输入密码，我这里没设置，不输密码就能进入<br>
+<img src="https://hellogu.github.io/post-images/1712889518743.png" alt="" loading="lazy"><br>
+然后开始进入数据库的操作命令行</p>
+<pre><code>CREATE DATABASE wpdb; #创建一个叫wpdb的数据库，这个名字自定义，记得就好，最后有分号不能漏
+CREATE USER wpuser@localhost IDENTIFIED BY ‘wppass’; #wpuser和wppass分别是用户名和密码，也可以自定义，注意分号
+GRANT ALL PRIVILEGES ON wpdb.* TO wpuser@localhost; #给wpuser操作wpdb的权限，注意分号
+FLUSH PRIVILEGES; #立即刷新生效，注意分号
+EXIT #退出mysql操作命令行，这个不需要分号
+</code></pre>
+<p>然后重启一下mysql和nginx服务</p>
+<pre><code>service mysql restart
+service nginx restart
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712889567893.webp" alt="" loading="lazy"><br>
+然后访问http://192.168.123.233（你的局域网里的手机ip）/wordpress再次进入wordpress的安装界面，根据提示填入刚刚设置的数据库名，数据库用户名，密码，就是下图打码的地方，我已经装好了，这是网上截图的。<br>
+<img src="https://hellogu.github.io/post-images/1712889583977.png" alt="" loading="lazy"><br>
+然后一直下一步就装完了，再次访问默认主题就是这样的，可以自己去搜个主题装一下哟<br>
+<img src="https://hellogu.github.io/post-images/1712889607136.jpg" alt="" loading="lazy"><br>
+后面可能出现一个wordpress无法操作一个contig文件的错误，照着它的提示在本地编辑好，再用sftp上传到/var/www/html/wordpress里就可以了<br>
+接下来是使你的博客能从外网访问，可以用花生壳，可以用ngrok，这里我用的是ngrok<br>
+打开ngrok 注册一个免费账户，申请一个免费的隧道，并记下隧道id，这里我买了10元钱的付费一个月服务，免费的就可以<br>
+<img src="https://hellogu.github.io/post-images/1712889628618.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712889637634.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712889646218.png" alt="" loading="lazy"><br>
+域名自定义，这里ngrok可以直接部署在你手机上的linux系统中，也可以部署在路由器中，直接部署在系统中就填127.0.0.1:80用户名密码不用填，部署在路由器上的话，填入路由器给你手机分的ip 192.168.123.233:80，用户名密码和路由器上设置的一样，撸了斐讯路由器的刷个padavan或者荒野无灯的固件就可以设置ngrok了<br>
+然后去ngrok的首页下载安装包<br>
+<img src="https://hellogu.github.io/post-images/1712889669681.png" alt="" loading="lazy"><br>
+然后还是用sftp推送到linux系统里<br>
+<img src="https://hellogu.github.io/post-images/1712889683012.png" alt="" loading="lazy"></p>
+<pre><code>cd /opt/ #进入目录
+chmod -R 777 sunny #给这个文件赋予可执行权限
+./sunny clientid ************  #这里的***是你的隧道id
+</code></pre>
+<p><img src="https://hellogu.github.io/post-images/1712889713111.png" alt="" loading="lazy"><br>
+出现下面页面就是运行成功了，然后访问http://你的前置域名.free.ngrok.cc/wordpress 就可以访问你的博客了，(如果是付费的，是http://前置域名.viphk.ngrok.org/wordpress我的前置域名是lipten哟)（这张图片来自ngrok官方指导）<br>
+<img src="https://hellogu.github.io/post-images/1712889730189.png" alt="" loading="lazy"><br>
+下面给大家看一下如果是把ngrok运行在路由器上怎么设置，刷了荒野无灯固件和padavan的斐讯路由器可以参考一下<br>
+<img src="https://hellogu.github.io/post-images/1712889762613.png" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712889771299.webp" alt="" loading="lazy"><br>
+最后，纪念一下我的狗魔<br>
+<img src="https://hellogu.github.io/post-images/1712889788958.jpg" alt="" loading="lazy"><br>
+<img src="https://hellogu.github.io/post-images/1712889798107.jpg" alt="" loading="lazy"></p>
+
+          <div class="toc-container"><ul class="markdownIt-TOC">
+<li><a href="#%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E4%B8%80%E5%8F%B0%E5%B7%B2root">硬件：安卓手机一台（已root）</a></li>
+<li><a href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7busybox-linuxdeploy-juicessh-securecrt">软件工具：BusyBox linuxdeploy JuiceSSH secureCRT</a></li>
+<li><a href="#%E6%80%9D%E8%B7%AF">思路：</a></li>
+<li><a href="#%E6%AD%A3%E6%96%87">正文：</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5">第一步：</a></li>
+</ul>
+</li>
+</ul>
+</div>
+          
+          <hr />
+          <p class="next-post">下一篇：
+            <a href="https://hellogu.github.io/post/git-cao-zuo-bei-wang-1/">
+              <span class="post-title">
+                Git操作备忘&rarr;
+              </span>
+            </a>
+          </p>
+          
+          <div class="comment" style="text-align: center;">
+            
+            <span id="/post/jiu-shou-ji-de-yu-re-zai-an-zhuo-shou-ji-shang-bu-shu-lnmpwordpress-bo-ke/" class="leancloud_visitors"
+              data-flag-title="旧手机的余热：在安卓手机上部署LNMP+WORDPRESS博客">
+              <em class="post-meta-item-text">阅读量 </em>
+              <i class="leancloud-visitors-count">loading...</i>
+            </span>
+            
+
+            
+            
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'k4T8Lpvev9NJGwCu9VaVeNze-gzGzoHsz',
+		appKey: 'dorqdPqqGXdoxatbYBezPNCQ',
+		avatar: '',
+		pageSize: 5,
+		recordIp: true,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+            
+          </div>
+        </div>
+      </div>
+  </article>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+              <!-- <li class="list-inline-item">
+              <a href="https://hellogu.github.io/atom.xml" target="_blank">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              </li> -->
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;<span>顾师傅的网络备忘录</span><br><a href="https://github.com/getgridea/gridea" class="Themeinfo">Powered by Gridea</a></p>
+        </div>
+      </div>
+    </div>
+   </footer>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/bootstrap.bundle.min.js"></script> -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/gh/Alanrk/clean-cdn@1.0/scripts/clean-blog.min.js"></script>
+  <!-- <script src="https://hellogu.github.io/media/scripts/clean-blog.min.js"></script> -->
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+  <style type="text/css">a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and(max-width:580px){.back_to_top{display:none!important}}</style>
+<a id="back_to_top" href="#" class="back_to_top">
+  <span>▲</span></a>
+<script>$(document).ready((function(_this) {
+    return function() {
+      var bt;
+      bt = $('#back_to_top');
+      if ($(document).width() > 480) {
+        $(window).scroll(function() {
+          var st;
+          st = $(window).scrollTop();
+          if (st > 30) {
+            return bt.css('display', 'block')
+          } else {
+            return bt.css('display', 'none')
+          }
+        });
+        return bt.click(function() {
+          $('body,html').animate({
+            scrollTop: 0
+          },
+          800);
+          return false
+        })
+      }
+    }
+  })(this));</script>
+  
+  <div id="landlord-parent">
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
+        //移动端
+        console.log("------ 移动端");
+    } else {
+        console.log("------ PC端 " + navigator.userAgent);
+
+        addScript("https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js", () => {
+            // 加载完成后再loadlive2d
+            loadlive2d("live2d", "https://hellogu.github.io/media/live2d/assets/hijiki.model.json");
+        });
+
+        var home_Path = "https://hellogu.github.io/";
+        addScript("https://hellogu.github.io/media/live2d/js/message.js", () => { });
+    }
+
+    // 插入js文件，完成后callback
+    function addScript(jsfile, callback) {
+        var landlord_parent = document.getElementById("landlord-parent");
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = jsfile;
+        landlord_parent.appendChild(script);
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                script.onload = script.onreadystatechange = null;
+                if (callback && typeof callback == "function") {
+                    callback(); //window[callback]();如果传递字符串过来 调用window['函数名']() 调用方法
+                }
+            }
+        };
+    }
+</script>
+  
+  <script src="https://hellogu.github.io/media/scripts/tocScript.js"></script>
+</body>
+
+</html>
